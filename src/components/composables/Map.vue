@@ -4,13 +4,17 @@
     id="mapid"
     style="height: 100%; width: 100%; border-radius: 10px"
   >
-    <div
-      class="layer-options row q-py-sm"
-      style="background-color: #002e6b00;"
-    >
-      <div class=""><q-btn @click="showLayerOptions = !showLayerOptions" padding="xs" color="primary" icon="mdi-chevron-right"/></div>
+    <div class="layer-options row q-py-sm" style="background-color: #002e6b00">
+      <div class="">
+        <q-btn
+          @click="showLayerOptions = !showLayerOptions"
+          padding="xs"
+          color="primary"
+          icon="mdi-chevron-right"
+        />
+      </div>
       <div v-if="showLayerOptions" class="col bg-white" style="">
-        <layerOptions/>
+        <layerOptions />
       </div>
     </div>
     <div
@@ -25,59 +29,64 @@
       class="legend-container"
       style="background-color: #002f6b05; backdrop-filter: blur(10px)"
     >
-      <div class="" style="min-width: 150px">
-        <div class="map-selection" style="">
-          <q-list class="row justify-around" style="min-width: 100px">
-            <q-item
-              class="column justify-center q-px-none"
-              clickable
-              v-ripple
-              @click="change_base_map('OSM')"
-            >
-              <q-item-section class="row q-px-sm">
-                <q-avatar rounded>
-                  <img
-                    src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099828/Screenshot_from_2022-04-04_22-14-36_z8raar.png"
-                  />
-                </q-avatar>
-                <!-- <div class="row justify-center" style="font-size: 0.75em">
+      <div class="col">
+        <div class="row justify-end q-px-sm">
+          <legendItem />
+        </div>
+        <div class="row justify-end" style="width: 100%">
+          <div class="map-selection" style="">
+            <q-list class="row q-gutter-x-md justify-around" style="min-width: 100%">
+              <q-item
+                class="column justify-center q-px-none"
+                clickable
+                v-ripple
+                @click="change_base_map('OSM')"
+              >
+                <q-item-section class="row q-px-sm">
+                  <q-avatar rounded>
+                    <img
+                      src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099828/Screenshot_from_2022-04-04_22-14-36_z8raar.png"
+                    />
+                  </q-avatar>
+                  <!-- <div class="row justify-center" style="font-size: 0.75em">
                   Mapbox
                 </div> -->
-              </q-item-section>
-            </q-item>
-            <q-item
-              class="column justify-center q-px-none"
-              clickable
-              @click="change_base_map('satellite')"
-            >
-              <q-item-section class="q-px-sm">
-                <q-avatar rounded>
-                  <img
-                    src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099830/Screenshot_from_2022-04-04_22-14-04_tnx5m7.png"
-                  />
-                </q-avatar>
-                <!-- <div class="row justify-center" style="font-size: 0.75em">
+                </q-item-section>
+              </q-item>
+              <q-item
+                class="column justify-center q-px-none"
+                clickable
+                @click="change_base_map('satellite')"
+              >
+                <q-item-section class="q-px-sm">
+                  <q-avatar rounded>
+                    <img
+                      src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099830/Screenshot_from_2022-04-04_22-14-04_tnx5m7.png"
+                    />
+                  </q-avatar>
+                  <!-- <div class="row justify-center" style="font-size: 0.75em">
                   Satellite
                 </div> -->
-              </q-item-section>
-            </q-item>
-            <q-item
-              class="column justify-center q-px-none"
-              clickable
-              @click="change_base_map('darkMap')"
-            >
-              <q-item-section class="q-px-sm">
-                <q-avatar rounded>
-                  <img
-                    src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099827/Screenshot_from_2022-04-04_22-16-08_mu5dfk.png"
-                  />
-                </q-avatar>
-                <!-- <div class="row justify-center" style="font-size: 0.75em">
+                </q-item-section>
+              </q-item>
+              <q-item
+                class="column justify-center q-px-none"
+                clickable
+                @click="change_base_map('darkMap')"
+              >
+                <q-item-section class="q-px-sm">
+                  <q-avatar rounded>
+                    <img
+                      src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099827/Screenshot_from_2022-04-04_22-16-08_mu5dfk.png"
+                    />
+                  </q-avatar>
+                  <!-- <div class="row justify-center" style="font-size: 0.75em">
                   dark
                 </div> -->
-              </q-item-section>
-            </q-item>
-          </q-list>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
         </div>
       </div>
     </div>
@@ -345,7 +354,8 @@ import baselayers from "./Modals/baselayers.js";
 import "./Modals/smoothWheelZoom";
 // import counties_2021 from './Modals/counties_2021.js'
 import datepicker from "../Analysis/datepicker.vue";
-import layerswitcher from "src/components/composables/Modals/Layercomponents/layerswitcher.vue"
+import layerswitcher from "src/components/composables/Modals/Layercomponents/layerswitcher.vue";
+import legend from "src/components/composables/Modals/Layercomponents/Legend.vue";
 
 import logos from "./Modals/logos.vue";
 
@@ -357,6 +367,7 @@ export default defineComponent({
   components: {
     dateslider: datepicker,
     layerOptions: layerswitcher,
+    legendItem: legend,
   },
   setup() {
     const $q = useQuasar();
