@@ -13,21 +13,21 @@
       @mouseleave="autoplay = true"
       height="700px"
     >
-      <q-carousel-slide :name="1" img-src="/src/assets/pictures/DJI_0037.JPG">
+      <q-carousel-slide :name="1" img-src="~/src/assets/DJI_05791.png">
         <div class="absolute-bottom custom-caption">
           <div class="text-h2">Coastal Ecosystem monitoring</div>
           <div class="text-subtitle1"></div>
         </div>
       </q-carousel-slide>
 
-      <q-carousel-slide :name="2" img-src="/src/assets/pictures/DJI_0055.JPG">
+      <q-carousel-slide :name="2" img-src="~/src/assets/DJI_08781.png">
         <div class="absolute-bottom custom-caption">
           <div class="text-h2">Potential Fishing Zones</div>
           <div class="text-subtitle1"></div>
         </div>
       </q-carousel-slide>
 
-       <q-carousel-slide :name="3" img-src="/src/assets/pictures/DJI_0878.JPG">
+      <q-carousel-slide :name="3" img-src="~/src/assets/DJI_05791.png">
         <div class="absolute-bottom custom-caption">
           <div class="text-h2">Coastal Vulnerability</div>
           <div class="text-subtitle1"></div>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { defineComponent,ref } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   setup() {

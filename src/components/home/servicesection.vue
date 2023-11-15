@@ -19,6 +19,12 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import myImage from 'src/assets/DJI_00302.png';
+import fishingImg from 'src/assets/DJI_08781.png';
+import oceanConditionsImg from 'src/assets/DJI_00371.png';
+import coastalVulnerabilityImg from 'src/assets/DJI_05791.png';
+import oilspillImg from 'src/assets/oil-spill2023-05-0323-12-122023-05-0513-53-20_2023-05-08_15-40-07.jpg';
+
 
 export default defineComponent({
   setup() {
@@ -27,7 +33,7 @@ export default defineComponent({
     services.value = [
       {
         id: 1,
-        image: "src/assets/pictures/DJI_0030.JPG",
+        image: oceanConditionsImg,
         title: "Oceanographic Variables",
         description: `This service generates two monthly bulletins: one for fisheries managers
         and fishermen focusing on local oceanographic processes and their impact
@@ -38,7 +44,7 @@ export default defineComponent({
       },
       {
         id: 2,
-        image: "src/assets/pictures/DJI_0055.JPG",
+        image: fishingImg,
         title: "Potential Fishing Zones (PFZS)",
         description: `Sea surface temperature and ocean colour products are useful for
             monitoring conditions that affect fish distribution. Ocean colour
@@ -63,19 +69,19 @@ export default defineComponent({
       },
       {
         id: 4,
-        image: "src/assets/pictures/DJI_0579.JPG",
+        image: myImage,
         title: "Coastal Ecosystem/Habitats",
         description: `Assessing, monitoring, and mapping the coastal zone is crucial to safeguarding it from degradation caused by natural processes and human activities. The Coastal Zone Mapping service aims to create accurate maps of coastal resources, enabling the management of natural and human-induced impacts on coastal habitats, such as storm surges affecting flora and fauna distribution and mangrove ecosystems. These maps will also provide data on land-use and land-cover changes, helping coastal zone managers and planners understand the drivers and effects of these changes. `,
       },
       {
         id: 5,
-        image: "src/assets/pictures/DJI_0878.JPG",
+        image: fishingImg,
         title: "Coastal Vulnerability Assesment",
         description: `The goal of Coastal Vulnerability service is to set up an efficient way of monitoring the coastal environment to address the issues related to coastal erosion in these critical areas. The morphological study of the beaches, with their characteristics and changes will provide relevant information for an efficient monitoring of the coastal areas and implement of sound beach-lagoon management practices. Inputs data will include raster and shapefiles of geomorphological, relief and natural habitats indicators. Winds, wave exposure and net sea level change products from models covering the West African region will be an essential input that will help estimate the effect of ocean and winds to the different types of coastal habitats.`,
       },
       {
         id: 5,
-        image: "src/assets/pictures/oil-spill2023-05-0323-12-122023-05-0513-53-20_2023-05-08_15-40-07.jpg",
+        image: oilspillImg,
         title: "Oil Spill Monitoring",
         description: `The Coastal Zone Mapping service aims to create accurate maps of
             coastal resources, enabling the management of natural and

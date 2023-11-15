@@ -25,6 +25,7 @@
 import { useQuasar } from "quasar";
 import { ref, onMounted, computed } from "vue";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
+//import {format, addDays } from 'date-fns'
 
 const store = useRasterStore();
 const $q = useQuasar();
@@ -40,8 +41,9 @@ const currentDay = currentDate.getDate();
 const selectedDate = ref(currentDay > 14 ? 14 : currentDay); // default to the current date or maximum of 14
 
 const setDateSlider = () => {
-  startDate.value = currentDay - 7;
-  endDate.value = currentDay + 7;
+  // calculate the date range
+  startDate.value = selectedDate.value - 7;
+  endDate.value = selectedDate.value + 7;
 
   // Generate marker labels
   const formatDate = (date) => {
@@ -63,23 +65,7 @@ const setDateSlider = () => {
 onMounted(() => {
   setDateSlider()
 });
-// Calculate the start and end dates
 
-// Generate marker labels
-const formatDate = (date) => {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  return `${year}/${month}/${day}`;
-};
-
-for (let i = startDate.value; i < endDate.value; i++) {
-  const nextDate = new Date(currentYear, currentMonth, i);
-
-  if (i % 2 === 0) {
-    markerLabels.value.push({ value: i, label: formatDate(nextDate) });
-  }
-}
 
 const formattedLabel = computed(() => {
   const selectedDay = selectedDate.value;
@@ -100,9 +86,10 @@ const handleDateChange = (value) => {
   const formattedDay = selectedDay.toString().padStart(2, "0");
   const formattedMonth = selectedMonth.toString().padStart(2, "0");
 
-  const formattedDate = `${selectedYear}${formattedMonth}${formattedDay}`;
+  const formattedDate = `${selectedYear}${formattedMonth}${formattedDay}`; //ocean_state_forecast_20231104
 
   store.setSelectedDate(formattedDate);
+  setDateSlider()
 };
 </script>
 

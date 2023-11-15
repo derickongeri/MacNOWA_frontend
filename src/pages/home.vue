@@ -83,7 +83,7 @@
               to="/dashboard"
             />
 
-            <q-btn-dropdown
+            <!-- <q-btn-dropdown
               class="dash-nav3"
               color="primary"
               rounded
@@ -125,7 +125,7 @@
                   }}</q-item-section>
                 </q-item>
               </q-list>
-            </q-btn-dropdown>
+            </q-btn-dropdown> -->
             <q-btn
               v-if="user"
               class="my-font-2 q-mr-md"

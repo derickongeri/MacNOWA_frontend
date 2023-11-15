@@ -2,7 +2,7 @@
   <q-page class="page-body">
     <div class="row" style="flex: 1">
       <div class="content" style="flex: 1; display: flex">
-        <div class="column">
+        <div class="column" style="max-height: 10%;">
           <div>
             <q-header
               reveal
@@ -15,7 +15,7 @@
                     <div class="column">
                       <img
                         src="~/src/assets/GMES.png"
-                        style="position: relative; width: 100%; height: 55px"
+                        style="position: relative; width: 100%; height: 35px"
                       />
                     </div>
                     <div class="column q-pl-md">
@@ -24,7 +24,7 @@
                         style="
                           position: relative;
                           width: 100%;
-                          height: 55px;
+                          height: 35px;
                           left: -1%;
                         "
                       />
@@ -36,7 +36,7 @@
                         style="
                           position: relative;
                           width: 100%;
-                          height: 55px;
+                          height: 35px;
                           left: -1%;
                         "
                       />
@@ -47,7 +47,7 @@
                         style="
                           position: relative;
                           width: 100%;
-                          height: 55px;
+                          height: 35px;
                           left: -1%;
                         "
                       />
