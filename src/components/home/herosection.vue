@@ -18,6 +18,10 @@
           <div class="text-h2">Coastal Ecosystem monitoring</div>
           <div class="text-subtitle1"></div>
         </div>
+
+        <!-- <div class="absolute hero-img">
+          <img src="~/src/assets/screnshot.png"/>
+        </div> -->
       </q-carousel-slide>
 
       <q-carousel-slide :name="2" img-src="~/src/assets/DJI_08781.png">

@@ -2,10 +2,10 @@
   <q-slider
     class=""
     v-model="selectedDate"
-    :min="startDate"
-    :max="endDate"
+    :min="min"
+    :max="max"
     ticks
-    :ticks-count="14"
+    :ticks-count="9"
     snap
     @change="handleDateChange"
     :label-value="formattedLabel"
@@ -25,52 +25,40 @@
 import { useQuasar } from "quasar";
 import { ref, onMounted, computed } from "vue";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
-//import {format, addDays } from 'date-fns'
+import { add, sub, format, eachDayOfInterval, parse, getDayOfYear } from "date-fns";
 
 const store = useRasterStore();
 const $q = useQuasar();
-const startDate = ref(null);
-const endDate = ref(null);
 
-const currentDate = new Date();
+const dateSelected = ref(new Date());
+const min = ref(null);
+const max = ref(null);
 const markerLabels = ref([]);
-const currentYear = currentDate.getFullYear();
-const currentMonth = currentDate.getMonth();
-const currentDay = currentDate.getDate();
 
-const selectedDate = ref(currentDay > 14 ? 14 : currentDay); // default to the current date or maximum of 14
+const selectedDate = ref(getDayOfYear(dateSelected.value));
 
-const setDateSlider = () => {
-  // calculate the date range
-  startDate.value = selectedDate.value - 7;
-  endDate.value = selectedDate.value + 7;
+const setDateSlider = (val) => {
+  // Use date-fns functions to calculate the date range
+  let start_date = sub(val, { days: 4 });
+  let end_date = add(val, { days: 4 });
 
-  // Generate marker labels
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    return `${year}/${month}/${day}`;
-  };
+  const datesList = eachDayOfInterval({ start: start_date, end: end_date });
 
-  for (let i = startDate.value; i < endDate.value; i++) {
-    const nextDate = new Date(currentYear, currentMonth, i);
+  markerLabels.value = datesList.map((date) => ({
+    value: getDayOfYear(date),
+    label: format(date, "yyyy/MM/dd"),
+  }));
 
-    if (i % 2 === 0) {
-      markerLabels.value.push({ value: i, label: formatDate(nextDate) });
-    }
-  }
+  selectedDate.value = getDayOfYear(dateSelected.value);
+  min.value = markerLabels.value[0].value
+  max.value = markerLabels.value[8].value
 };
 
-onMounted(() => {
-  setDateSlider()
-});
-
-
 const formattedLabel = computed(() => {
-  const selectedDay = selectedDate.value;
-  const selectedMonth = currentMonth + 1; // Adding 1 since getMonth() returns 0-indexed month
-  const selectedYear = currentYear;
+  const date = dateSelected.value;
+  const selectedDay = date.getDate();
+  const selectedMonth = date.getMonth() + 1;
+  const selectedYear = date.getFullYear();
 
   const formattedDay = selectedDay.toString().padStart(2, "0");
   const formattedMonth = selectedMonth.toString().padStart(2, "0");
@@ -78,18 +66,27 @@ const formattedLabel = computed(() => {
   return `${selectedYear}/${formattedMonth}/${formattedDay}`;
 });
 
+onMounted(() => {
+  setDateSlider(dateSelected.value);
+  store.setSelectedDate(dateSelected.value);
+});
+
+const stringToDate = (dateString) => {
+  const [year, month, day] = dateString.split("/").map(Number);
+
+  return new Date(year, month - 1, day);
+};
+
 const handleDateChange = (value) => {
-  const selectedDay = value;
-  const selectedMonth = currentMonth + 1; // Adding 1 since getMonth() returns 0-indexed month
-  const selectedYear = currentYear;
+  console.log(selectedDate.value)
+  const dateObject = markerLabels.value.find(obj => obj.value === value)
 
-  const formattedDay = selectedDay.toString().padStart(2, "0");
-  const formattedMonth = selectedMonth.toString().padStart(2, "0");
+  dateSelected.value = stringToDate(dateObject.label);
 
-  const formattedDate = `${selectedYear}${formattedMonth}${formattedDay}`; //ocean_state_forecast_20231104
+  selectedDate.value = value
 
-  store.setSelectedDate(formattedDate);
-  setDateSlider()
+  store.setSelectedDate(dateSelected.value);
+  setDateSlider(dateSelected.value);
 };
 </script>
 

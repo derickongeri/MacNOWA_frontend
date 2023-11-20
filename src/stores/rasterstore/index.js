@@ -20,8 +20,15 @@ export const useRasterStore = defineStore({
   actions: {
 
     setSelectedDate(date){
-      this.selectedDate = date
-      console.log(this.selectedDate)
+      const selectedDay = date.getDate();
+      const selectedMonth = date.getMonth() + 1;
+      const selectedYear = date.getFullYear();
+
+      const formattedDay = selectedDay.toString().padStart(2, "0");
+      const formattedMonth = selectedMonth.toString().padStart(2, "0");
+
+      this.selectedDate = `${selectedYear}${formattedMonth}${formattedDay}`; //ocean_state_forecast_20231104
+      console.log(this.selectedDate);
     },
 
     setLayerName(raster){

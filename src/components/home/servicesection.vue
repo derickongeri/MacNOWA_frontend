@@ -57,7 +57,7 @@ export default defineComponent({
       },
       {
         id: 3,
-        image: "src/assets/pictures/DJI_0037.JPG",
+        image: myImage,
         title: "Ocean Condition Forecast",
         description: `Access to oceanic data on waves, currents, winds, and sea surface
             heights is vital for safe navigation, especially in ocean
