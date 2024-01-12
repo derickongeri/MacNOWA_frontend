@@ -28,4 +28,4 @@ echo "Pushhing to github..."
 git push $REPO_URL main
 
 # deploying to dev server
-scp -r /home/derick/Desktop/uog-portal/dist/spa* gmes@197.255.126.45:/usr/share/nginx/html/dashboard
+scp -r /home/derick/Desktop/uog-portal/dist/spa* root@197.255.126.45:/usr/share/nginx/html/dashboard
