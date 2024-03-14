@@ -19,11 +19,17 @@ export default function setSelectedRaster() {
       transparent: "true",
       opacity: 1,
       tilematrixSet: "EPSG:4326",
-      //styles: `Mislanddata:${sldRequest.data[0].sldName}`,
+      styles: `marcnowa:${layerName}`,
       crs: L.CRS.EPSG4326,
     });
 
     return selectedLayer;
+  };
+
+  const fetchLegend = async function () {
+    let layerName = store.getLayerName;
+
+    let layer = layerName + "_" + layerDate;
   };
 
   const getEarthEngineLayer = async function (val) {
@@ -34,10 +40,10 @@ export default function setSelectedRaster() {
 
     switch (val) {
       case "landcover":
-        response = await axios.get("http://197.255.126.45:3000/api/landcovermap");
+        response = await axios.get("http://localhost:3000/api/landcovermap");
         break;
       default:
-        response = await axios.get("http://197.255.126.45:3000/api/mapid");
+        response = await axios.get("http://localhost:3000/api/mapid");
         break;
     }
 

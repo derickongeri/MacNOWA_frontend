@@ -1,10 +1,10 @@
 <template>
-  <div
-    class="q-pa-xs"
-    id="mapid"
-    style="height: 100%; width: 100%; border-radius: 10px"
-  >
-    <div class="layer-options row q-py-sm" style="background-color: #002e6b00">
+  <div class="q-pa-xs map-pannel" id="mapid" style="">
+    <div
+      v-if="matchMediaDesktop"
+      class="layer-options row q-py-sm"
+      style="background-color: #002e6b00"
+    >
       <div class="">
         <q-btn
           @click="showLayerOptions = !showLayerOptions"
@@ -18,84 +18,43 @@
       </div>
     </div>
     <div
-      v-if="datepicker"
-      class="gradient-rect q-pb-sm q-px-md"
+      v-if="datepicker && matchMediaDesktop"
+      class="gradient-rect q-pb-sm q-px-xl"
       style="background-color: #002f6b50; backdrop-filter: blur(10px)"
     >
-      <dateslider />
+      <dateslider class="" />
     </div>
 
+    <q-scroll-area
+      v-if="matchMediaMobile"
+      ref="scrollAreaRef"
+      class="absolute-bottom text-white"
+      visible
+      style="
+        z-index: 800;
+        height: 10%;
+        min-width: 100vw;
+        background-color: #002f6b75;
+        backdrop-filter: blur(10px);
+      "
+    >
+      <div class="row q-py-sm no-wrap">
+        <div v-if="datepicker" style="min-width: 300vw">
+          <dateslider class="" />
+        </div>
+      </div>
+    </q-scroll-area>
+
     <div
+      v-if="matchMediaDesktop"
       class="legend-container"
       style="background-color: #002f6b05; backdrop-filter: blur(10px)"
     >
-      <div class="col">
-        <div class="row justify-end q-px-sm">
-          <legendItem />
-        </div>
-        <div class="row justify-end" style="width: 100%">
-          <div class="map-selection" style="">
-            <q-list
-              class="row q-gutter-x-md justify-around"
-              style="min-width: 100%"
-            >
-              <q-item
-                class="column justify-center q-px-none"
-                clickable
-                v-ripple
-                @click="change_base_map('OSM')"
-              >
-                <q-item-section class="row q-px-sm">
-                  <q-avatar rounded>
-                    <img
-                      src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099828/Screenshot_from_2022-04-04_22-14-36_z8raar.png"
-                    />
-                  </q-avatar>
-                  <!-- <div class="row justify-center" style="font-size: 0.75em">
-                  Mapbox
-                </div> -->
-                </q-item-section>
-              </q-item>
-              <q-item
-                class="column justify-center q-px-none"
-                clickable
-                @click="change_base_map('satellite')"
-              >
-                <q-item-section class="q-px-sm">
-                  <q-avatar rounded>
-                    <img
-                      src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099830/Screenshot_from_2022-04-04_22-14-04_tnx5m7.png"
-                    />
-                  </q-avatar>
-                  <!-- <div class="row justify-center" style="font-size: 0.75em">
-                  Satellite
-                </div> -->
-                </q-item-section>
-              </q-item>
-              <q-item
-                class="column justify-center q-px-none"
-                clickable
-                @click="change_base_map('darkMap')"
-              >
-                <q-item-section class="q-px-sm">
-                  <q-avatar rounded>
-                    <img
-                      src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099827/Screenshot_from_2022-04-04_22-16-08_mu5dfk.png"
-                    />
-                  </q-avatar>
-                  <!-- <div class="row justify-center" style="font-size: 0.75em">
-                  dark
-                </div> -->
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div>
-        </div>
-      </div>
+      <legendItem />
     </div>
 
     <div class="zoom-controls q-gutter-xs q-py-sm" style="width: fit-content">
-      <div class="q-pa-none q-gutter-sm">
+      <div v-if="matchMediaDesktop" class="q-pa-none q-gutter-sm">
         <q-btn
           size="sm"
           outline
@@ -340,10 +299,18 @@
       </div>
     </div>
   </div>
+  <tour />
 </template>
 
 <script>
-import { defineComponent, onMounted, ref, watch, computed } from "vue";
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  watch,
+  computed,
+  onBeforeMount,
+} from "vue";
 import { Loading, QSpinnerFacebook, QSpinnerIos, QSpinnerOval } from "quasar";
 import { axios } from "src/boot/axios";
 
@@ -359,6 +326,7 @@ import "./Modals/smoothWheelZoom";
 import datepicker from "../Analysis/datepicker.vue";
 import layerswitcher from "src/components/composables/Modals/Layercomponents/layerswitcher.vue";
 import legend from "src/components/composables/Modals/Layercomponents/Legend.vue";
+import tour from "../composables/tour.vue";
 
 import logos from "./Modals/logos.vue";
 
@@ -380,7 +348,12 @@ export default defineComponent({
 
     const { setRasterLayerSelected, getEarthEngineLayer } = setSelectedRaster();
 
-    const map = ref(null),
+    const position = ref(300);
+    const scrollAreaRef = ref(null);
+
+    const matchMediaDesktop = ref(false),
+      matchMediaMobile = ref(false),
+      map = ref(null),
       current_selected_layer = ref(null),
       datepicker = ref(true),
       currentRasterLayer = ref(null),
@@ -566,17 +539,6 @@ export default defineComponent({
 
               currentRasterLayer.value.on("load", () => {
                 Loading.hide();
-                // if (currentRasterLayer.value.includes("vdn.ogc.se_xml")) {
-                //   // Response type is vdn.ogc.se_xml
-                //   $q.notify({
-                //     type: "negative",
-                //     message: `Could Not find data for the selected date!`,
-                //     color: "red",
-                //     classes: "notification",
-                //   });
-                // } else {
-                //   Loading.hide();
-                // }
               });
 
               if (map.value.hasLayer(currentRasterLayer.value)) {
@@ -596,6 +558,20 @@ export default defineComponent({
       }
     };
 
+    const mediaChange = computed(() => {
+      return window.matchMedia("(max-width: 768px)").matches;
+    });
+
+    watch(mediaChange, () => {
+      matchMediaMobile.value = window.matchMedia("(max-width: 768px)").matches;
+      matchMediaDesktop.value = window.matchMedia("(min-width: 768px)").matches;
+    });
+
+    onBeforeMount(() => {
+      matchMediaMobile.value = window.matchMedia("(max-width: 768px)").matches;
+      matchMediaDesktop.value = window.matchMedia("(min-width: 768px)").matches;
+    });
+
     onMounted(() => {
       setLeafletMap().then(() => {
         setRasterLayer();
@@ -610,8 +586,21 @@ export default defineComponent({
       return store.getLayerName;
     });
 
+    function animateScroll() {
+      if (matchMediaMobile.value) {
+        scrollAreaRef.value.setScrollPosition("horizontal", 415, 300);
+        position.value = Math.floor(Math.random() * 1001) * 20;
+      }
+    }
+
+    onMounted(() => {
+      animateScroll();
+    });
+
     watch(selectedDate, () => {
       console.log("changing dates");
+
+      animateScroll();
       setRasterLayer();
     });
 
@@ -655,6 +644,10 @@ export default defineComponent({
         { value: "en-US", label: "English" },
         { value: "fr", label: "French" },
       ],
+      matchMediaDesktop,
+      matchMediaMobile,
+      position,
+      scrollAreaRef,
     };
   },
 });
@@ -753,20 +746,20 @@ export default defineComponent({
 }
 
 .legend-container {
-  width: 20%;
-  min-height: 20px;
+  max-height: 25vh;
+  max-width: 20%;
   z-index: 2000;
   /* background: none; */
   position: absolute;
-  right: 0%;
-  bottom: 0%;
+  right: 2%;
+  bottom: 2%;
   color: rgb(228, 228, 228);
   border-radius: 10px;
 }
 
 .layer-options {
-  width: 25%;
-  min-height: 10%;
+  min-width: 25%;
+  /* min-height: 10%; */
   z-index: 2000;
   /* background: none; */
   position: absolute;
@@ -789,5 +782,25 @@ export default defineComponent({
 
 .notification {
   z-index: 10000;
+}
+
+@media screen and (max-width: 768px) {
+  .map-pannel {
+    height: 100%;
+    width: 100%;
+    border-radius: 0px;
+  }
+
+  .zoom-controls {
+    padding-right: 2%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .map-pannel {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+  }
 }
 </style>

@@ -23,9 +23,16 @@
 
 <script setup>
 import { useQuasar } from "quasar";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
-import { add, sub, format, eachDayOfInterval, parse, getDayOfYear } from "date-fns";
+import {
+  add,
+  sub,
+  format,
+  eachDayOfInterval,
+  parse,
+  getDayOfYear,
+} from "date-fns";
 
 const store = useRasterStore();
 const $q = useQuasar();
@@ -50,8 +57,8 @@ const setDateSlider = (val) => {
   }));
 
   selectedDate.value = getDayOfYear(dateSelected.value);
-  min.value = markerLabels.value[0].value
-  max.value = markerLabels.value[8].value
+  min.value = markerLabels.value[0].value;
+  max.value = markerLabels.value[8].value;
 };
 
 const formattedLabel = computed(() => {
@@ -72,24 +79,53 @@ onMounted(() => {
 });
 
 const stringToDate = (dateString) => {
+  console.log(dateString);
   const [year, month, day] = dateString.split("/").map(Number);
 
   return new Date(year, month - 1, day);
 };
 
 const handleDateChange = (value) => {
-  console.log(selectedDate.value)
-  const dateObject = markerLabels.value.find(obj => obj.value === value)
+  console.log(selectedDate.value);
+  const dateObject = markerLabels.value.find((obj) => obj.value === value);
 
   dateSelected.value = stringToDate(dateObject.label);
 
-  selectedDate.value = value
+  selectedDate.value = value;
 
   store.setSelectedDate(dateSelected.value);
   setDateSlider(dateSelected.value);
 };
+
+const dateChange = computed(() => {
+  return store.getSelectedDate;
+});
+
+watch(dateChange, () => {
+  console.log(store.getSelectedDate);
+
+  const dateString = store.getSelectedDate;
+
+  // Extract year, month, and day from the input string
+  const year = dateString.slice(0, 4);
+  const month = dateString.slice(4, 6);
+  const day = dateString.slice(6, 8);
+
+  // Create a new Date object with the extracted values
+  const date = new Date(`${year}-${month}-${day}`);
+
+  // Format the date as "yyyy/MM/dd"
+  const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
+
+  console.log("formated date", formattedDate)
+
+    dateSelected.value = stringToDate(formattedDate);
+
+  //store.setSelectedDate(dateSelected.value);
+  setDateSlider(dateSelected.value);
+});
 </script>
 
-<style>
-/* Add custom styles here */
-</style>
+<style></style>

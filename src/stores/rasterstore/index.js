@@ -6,8 +6,8 @@ export const useRasterStore = defineStore({
   id: "fetchRasterStore",
   state: () => ({
     selectedDate: "20231105",
-    layerName: "ocean_state_forecast",
-    selectedRaster: "ocean_state_forecast",
+    layerName: "UG_GMES_ocean_state_forecast",
+    selectedRaster: "UG_GMES_ocean_state_forecast",
     selectedLayerName: "",
     currentSelectedRaster: ""
   }),

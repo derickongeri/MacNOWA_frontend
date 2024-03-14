@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showDatePicker" class="row items-center q-pa-md">
+  <div class="row items-center q-pa-md">
     <div class="">
       <div class="q-pb-sm text-primary">Select Date</div>
     </div>
@@ -24,6 +24,14 @@
           class="q-my-none q-ml-xs q-mr-none"
         >
           {{ date }}
+          <q-popup-proxy
+          anchor="bottom left"
+          self="top left"
+          transition-show="scale"
+          transition-hide="scale"
+        >
+          <q-date v-model="date" mask="YYYY/MM/DD" minimal> </q-date>
+        </q-popup-proxy>
         </q-chip>
       </div>
     </div>
@@ -33,32 +41,48 @@
 <script setup>
 import { ref, onMounted, watch, computed } from "vue";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
+import { format } from "date-fns";
 
 const store = useRasterStore();
 const showDatePicker = ref(true);
-const date = ref("");
+const dateSelected = ref(new Date());
+const date = ref(format(new Date(), "yyyy/MM/dd"));
 
-const layer = computed(() => {
-  return store.getLayerName;
+const dateChange = computed(() => {
+  return date.value;
 });
 
-watch(layer, () => {
-  
+const stringToDate = (dateString) => {
+  console.log(dateString);
+  const [year, month, day] = dateString.split("/").map(Number);
+
+  return new Date(year, month - 1, day);
+};
+
+watch(dateChange, () => {
+  console.log("date change", date.value);
+
+  dateSelected.value = stringToDate(date.value);
+
+  store.setSelectedDate(dateSelected.value);
 });
 
-watch(selectedDate, () => {
-  date.value = `${store.selectedDate.slice(0, 4)}/${store.selectedDate.slice(
-    4,
-    6
-  )}/${store.selectedDate.slice(6, 8)}`;
-});
+watch(()=>store.getSelectedDate, () => {
+  const dateString = store.getSelectedDate;
 
-onMounted(() => {
-  // store.setSelectedLayerName();
-  layer_name.value = "Ocean State Forecast";
-  date.value = `${store.selectedDate.slice(0, 4)}/${store.selectedDate.slice(
-    4,
-    6
-  )}/${store.selectedDate.slice(6, 8)}`;
-});
+  // Extract year, month, and day from the input string
+  const year = dateString.slice(0, 4);
+  const month = dateString.slice(4, 6);
+  const day = dateString.slice(6, 8);
+
+  // Create a new Date object with the extracted values
+  const date = new Date(`${year}-${month}-${day}`);
+
+  // Format the date as "yyyy/MM/dd"
+  const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
+
+  date.value = formattedDate;
+}, { deep: true });
 </script>
