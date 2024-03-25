@@ -169,9 +169,9 @@
 
     <q-header
       v-if="matchMediaDesktop"
-      elevated
+
       reveal
-      class="text-white q-py-md navigation-background-color bg-white"
+      class="text-white q-py-sm navigation-background-color bg-white"
       height-hint="98"
     >
       <q-toolbar>
@@ -182,7 +182,7 @@
           <div class="row items-center justify-between">
             <div>
               <img
-                src="src/assets/marcnowa.jpeg"
+                src="~/src/assets/marcnowa.jpeg"
                 style="width: 100%; height: 50px"
               />
             </div>

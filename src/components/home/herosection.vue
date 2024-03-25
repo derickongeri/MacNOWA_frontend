@@ -7,9 +7,9 @@
     :style="{ backgroundImage: `url(${imagePath})` }"
   >
     <div
-      class="row  items-center"
+      class="row items-center"
       id="hero"
-      style="min-height: 70vh; max-width: 90%; margin-left: auto"
+      style="min-height: 75vh; max-width: 90%; margin-left: auto"
     >
       <div
         class="column items-left"
@@ -19,12 +19,8 @@
           <div class="column">
             <div class="col justify-left">
               <div
-                class="my-font-2 text-left text-grey-1 q-pa-none"
-                style="
-                  font-weight: bold;
-                  font-size: xxx-large;
-                  line-height: 1.5;
-                "
+                class="my-font-2 tagline text-left text-grey-1 q-pa-none"
+                style=""
               >
                 {{ $t("tagline") }}
               </div>
@@ -52,9 +48,22 @@
               :label="$t('webgis')"
               to="/dashboard"
             /> -->
-            <q-btn class="q-mx-none q-px-none" flat  color="white" to="/dashboard">
-              <q-avatar class="q-mx-none q-px-none" font-size="12px" size="md" color="indigo-12" text-color="white" icon="mdi-monitor-dashboard" />
-              <div class="q-px-md my-font-2">{{ $t('webgis') }}</div>
+            <q-btn
+              class="q-mx-none q-px-none"
+              rounded
+              color="white"
+              text-color="primary"
+              to="/dashboard"
+            >
+              <q-avatar
+                class="q-mx-sm q-px-none"
+                font-size="12px"
+                size="md"
+                color="indigo-12"
+                text-color="white"
+                icon="mdi-monitor-dashboard"
+              />
+              <div class="q-px-md my-font-2">{{ $t("webgis") }}</div>
             </q-btn>
           </div>
         </div>
@@ -68,7 +77,7 @@
             <div class="row">
               <q-img
                 class="col"
-                src="src/assets/screnshot.png"
+                src="~/src/assets/mockup.png"
                 style="
                   position: relative;
                   border-radius: 20px;
@@ -81,13 +90,18 @@
       </div>
     </div>
   </div>
-  <div class="page-tint" v-if="matchMediaMobile" style="min-width: 100%">
+  <div
+    class="page-tint"
+    v-if="matchMediaMobile"
+    style="min-width: 100%"
+    :style="{ backgroundImage: `url(${imagePath})` }"
+  >
     <div
-      class="my-font-2 text-left q-pt-xl text-grey-1 q-pa-none"
+      class="my-font-2 q-px-sm text-left q-pt-xl text-grey-1 q-pa-none"
       style="
         max-width: 90vw;
         margin: auto;
-        font-weight: medium;
+        font-weight: 700;
         font-size: xx-large;
         line-height: 1.75;
       "
@@ -95,7 +109,7 @@
       {{ $t("tagline") }}
     </div>
     <div
-      class="my-font-2 q-pt-lg text-left text-grey-1 q-px-none q-pb-md"
+      class="my-font-2 q-px-sm q-pt-lg text-left text-grey-1 q-px-none q-pb-md"
       style="font-weight: 400; font-size: 21px; max-width: 90vw; margin: auto"
     >
       {{ $t("subtag") }}
@@ -104,7 +118,7 @@
       <div class="text-left q-py-md my-font-2" style="min-width: 100vw">
         <q-btn
           class="my-font-2 q-ml-md text-bold"
-          size="lg"
+          size="md"
           text-color="blue-9"
           style="background-color: #ffffff; border-radius: 12px"
           :label="$t('webgis')"
@@ -140,18 +154,6 @@ onBeforeMount(() => {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-#hero {
-  background-image: url("~/src/assets/DJI_05791.png");
-  background-size: 100%;
-  /* Center and scale the image nicely */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* animation-name: beat;
-  animation-duration: 1.5s;
-  animation-iteration-count: 5; */
+  border-radius: 20px;
 }
 </style>

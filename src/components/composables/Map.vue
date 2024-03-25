@@ -1,9 +1,12 @@
 <template>
-  <div class="q-pa-xs map-pannel" id="mapid" style="">
+  <div class="q-pa-xs map-pannel" id="mapid" style="overflow: hidden">
     <div
       v-if="matchMediaDesktop"
       class="layer-options row q-py-sm"
       style="background-color: #002e6b00"
+      @mouseover="map.dragging.disable(), map.scrollWheelZoom.disable()"
+      @mouseleave="map.dragging.enable(), map.scrollWheelZoom.enable()"
+      @mouseup="map.dragging.enable(), map.scrollWheelZoom.enable()"
     >
       <div class="">
         <q-btn
@@ -47,13 +50,78 @@
 
     <div
       v-if="matchMediaDesktop"
-      class="legend-container"
-      style="background-color: #002f6b05; backdrop-filter: blur(10px)"
+      class="legend-container column"
+      style="background-color: #002f6b00; backdrop-filter: blur(0px)"
+      @mouseover="map.dragging.disable(), map.scrollWheelZoom.disable()"
+      @mouseleave="map.dragging.enable(), map.scrollWheelZoom.enable()"
+      @mouseup="map.dragging.enable(), map.scrollWheelZoom.enable()"
     >
-      <legendItem />
+      <div class="row q-mb-md justify-end">
+        <legendItem />
+      </div>
+
+      <div class="row bg-white text-grey-9">
+        <q-list class="row q-gutter-x-md" style="min-width: 100px">
+          <q-item
+            class="col q-px-none"
+            clickable
+            v-ripple
+            @click="change_base_map('OSM')"
+          >
+            <q-item-section class="row q-px-sm">
+              <q-avatar rounded>
+                <img
+                  src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099828/Screenshot_from_2022-04-04_22-14-36_z8raar.png"
+                />
+              </q-avatar>
+              <div class="row justify-center" style="font-size: 0.75em">
+                Mapbox
+              </div>
+            </q-item-section>
+          </q-item>
+          <q-item
+            class="col q-px-none"
+            clickable
+            @click="change_base_map('satellite')"
+          >
+            <q-item-section class="q-px-sm">
+              <q-avatar rounded>
+                <img
+                  src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099830/Screenshot_from_2022-04-04_22-14-04_tnx5m7.png"
+                />
+              </q-avatar>
+              <div class="row justify-center" style="font-size: 0.75em">
+                Satellite
+              </div>
+            </q-item-section>
+          </q-item>
+          <q-item
+            class="col q-px-none"
+            clickable
+            @click="change_base_map('darkMap')"
+          >
+            <q-item-section class="q-px-sm">
+              <q-avatar rounded>
+                <img
+                  src="https://res.cloudinary.com/dv3id0zrx/image/upload/v1649099827/Screenshot_from_2022-04-04_22-16-08_mu5dfk.png"
+                />
+              </q-avatar>
+              <div class="row justify-center" style="font-size: 0.75em">
+                dark
+              </div>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
     </div>
 
-    <div class="zoom-controls q-gutter-xs q-py-sm" style="width: fit-content">
+    <div
+      class="zoom-controls q-gutter-xs q-py-sm"
+      style="width: fit-content"
+      @mouseover="map.dragging.disable(), map.scrollWheelZoom.disable()"
+      @mouseleave="map.dragging.enable(), map.scrollWheelZoom.enable()"
+      @mouseup="map.dragging.enable(), map.scrollWheelZoom.enable()"
+    >
       <div v-if="matchMediaDesktop" class="q-pa-none q-gutter-sm">
         <q-btn
           size="sm"
@@ -65,6 +133,7 @@
           color="white"
           label="Take a Tour"
           icon="mdi-human-male-board"
+          @click="this.$tours['myTour'].start()"
         />
         <q-btn
           size="sm"
@@ -77,14 +146,14 @@
           label="Share/Print"
           icon="mdi-share-variant"
         >
-          <q-menu flat auto-close class="q-pa-sm menu-card" :offset="[120, 0]">
+          <q-menu flat auto-close class="q-pa-sm menu-card" :offset="[240, 0]">
             <div class="">
               <div
                 class="menu-content bg-grey-2 q-pa-sm q-ma-sm"
                 style="border-radius: 5px"
               >
                 <div class="arrow-up q-ma-xs" style="left: 45%"></div>
-                <span class="text-white q-mx-sm" style="font-size: 0.75em"
+                <span class="text-primary q-mx-sm" style="font-size: 0.75em"
                   >Copy Link</span
                 >
                 <q-separator />
@@ -102,22 +171,22 @@
                         class="btn-fixed-width"
                         no-caps
                         outline
-                        color="white"
-                        ><span>http://78.141.234.158/spa/#/</span></q-btn
+                        color="primary"
+                        ><span>http://geoportal.gmes.ug.gh</span></q-btn
                       >
-                      <q-btn rounded color="white" label="Copy" />
+                      <q-btn rounded color="primary" label="Copy" />
                     </q-btn-group>
                   </div>
                 </div>
                 <q-separator />
-                <span class="text-white q-mx-sm" style="font-size: 0.75em"
+                <span class="text-primary q-mx-sm" style="font-size: 0.75em"
                   >Print Map</span
                 >
                 <span class="row text-grey-9 q-mx-sm" style="font-size: 0.75em"
                   >Open a print version of this map</span
                 >
                 <div class="q-my-sm q-mx-sm" style="min-width: 150px">
-                  <q-btn color="white" label="Print" />
+                  <q-btn color="primary" label="Print" />
                 </div>
               </div>
             </div>
@@ -171,7 +240,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <q-space />
           <q-btn
             class="bg-grey-1"
@@ -283,7 +352,7 @@
               </div>
             </q-menu>
           </q-btn>
-        </div>
+        </div> -->
         <div class="row">
           <q-space />
           <q-btn
@@ -299,7 +368,6 @@
       </div>
     </div>
   </div>
-  <tour />
 </template>
 
 <script>
@@ -310,6 +378,7 @@ import {
   watch,
   computed,
   onBeforeMount,
+  inject,
 } from "vue";
 import { Loading, QSpinnerFacebook, QSpinnerIos, QSpinnerOval } from "quasar";
 import { axios } from "src/boot/axios";
@@ -322,25 +391,24 @@ import "leaflet/dist/leaflet.css";
 
 import baselayers from "./Modals/baselayers.js";
 import "./Modals/smoothWheelZoom";
-// import counties_2021 from './Modals/counties_2021.js'
 import datepicker from "../Analysis/datepicker.vue";
 import layerswitcher from "src/components/composables/Modals/Layercomponents/layerswitcher.vue";
 import legend from "src/components/composables/Modals/Layercomponents/Legend.vue";
-import tour from "../composables/tour.vue";
-
-import logos from "./Modals/logos.vue";
+import tour from "src/components/composables/Tour.vue";
 
 import setSelectedRaster from "./Modals/fetchrasters";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
-import { useQuasar } from "quasar";
+import { useQuasar, EventBus } from "quasar";
 
 export default defineComponent({
   components: {
     dateslider: datepicker,
     layerOptions: layerswitcher,
     legendItem: legend,
+    Tour: tour,
   },
   setup() {
+    const bus = new EventBus();
     const $q = useQuasar();
     const store = useRasterStore();
     //const router = { useRouter };
@@ -535,17 +603,9 @@ export default defineComponent({
               currentRasterLayer.value.addTo(map.value).bringToFront();
               //current_gee_layer.value.addTo(map.value).bringToFront();
 
-              console.log(currentRasterLayer.value);
-
               currentRasterLayer.value.on("load", () => {
                 Loading.hide();
               });
-
-              if (map.value.hasLayer(currentRasterLayer.value)) {
-                console.log("loaded layer");
-              } else {
-                console.log("no layer added");
-              }
             } catch (error) {
               Loading.hide();
             }
@@ -553,7 +613,6 @@ export default defineComponent({
             break;
         }
       } catch (error) {
-        //$q.notify(error);
         Loading.hide();
       }
     };
@@ -625,6 +684,10 @@ export default defineComponent({
       }
     });
 
+    const startTour = () => {
+      bus.emit("startTour");
+    };
+
     return {
       map,
       showLayerOptions: ref(true),
@@ -648,6 +711,7 @@ export default defineComponent({
       matchMediaMobile,
       position,
       scrollAreaRef,
+      startTour,
     };
   },
 });
@@ -746,13 +810,12 @@ export default defineComponent({
 }
 
 .legend-container {
-  max-height: 25vh;
   max-width: 20%;
   z-index: 2000;
   /* background: none; */
   position: absolute;
   right: 2%;
-  bottom: 2%;
+  bottom: 0%;
   color: rgb(228, 228, 228);
   border-radius: 10px;
 }

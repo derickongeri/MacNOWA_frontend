@@ -8,7 +8,7 @@
     animated
     navigation
     control-color="grey-7"
-    height="750px"
+    height="650px"
     style="background-color: #00000000"
     class="rounded-borders"
     ref="carousel"
@@ -23,62 +23,158 @@
         class="row fit justify-around items-center q-mx-auto q-col-gutter no-wrap"
         style="max-height: 600vh"
       >
-        <q-card class="my-card overlay bg-grey-2" flat style="max-width: 24%">
-          <q-img :src="getPrevService(index).image" style="max-height: 250px" />
+        <q-card
+          v-if="service.id !== 1"
+          class="my-card overlay bg-grey-2"
+          flat
+          style="max-width: 24%"
+        >
+          <q-img :src="getPrevService(index).image" style="max-height: 200px" />
 
           <q-card-section>
             <div class="text-overline text-orange-9"></div>
-            <div class="text-h5 q-mt-sm q-mb-xs">
+            <div class="text-subtitle1 q-mt-sm q-mb-xs">
               {{ getPrevService(index).title }}
             </div>
-            <div class="text-caption text-grey-7">
+            <div class="text-caption text-grey-7 service-desc">
               {{ getPrevService(index).description }}
             </div>
           </q-card-section>
 
           <q-card-actions>
-            <q-btn outline rounded color="primary" label="view on dashboard" />
+            <q-btn
+              to="/dashboard"
+              outline
+              rounded
+              color="primary"
+              label="view on dashboard"
+            />
 
             <q-space />
           </q-card-actions>
         </q-card>
-        <q-card class="my-card bg-grey-2" flat style="max-width: 24%">
-          <q-img :src="service.image" style="max-height: 250px" />
+        <q-card
+          v-else
+          class="my-card overlay bg-grey-2"
+          flat
+          style="max-width: 24%"
+        >
+          <q-img class="bg-white" style="height: 250px" />
 
           <q-card-section>
             <div class="text-overline text-orange-9"></div>
-            <div class="text-h5 q-mt-sm q-mb-xs">{{ service.title }}</div>
-            <div class="text-caption text-grey-7">
-              {{ service.description }}
+            <div class="text-h5 q-mt-sm q-mb-xs text-white">
+              {{ getPrevService(index).title }}
+            </div>
+            <div class="text-caption text-white service-desc">
+              {{ getPrevService(index).description }}
             </div>
           </q-card-section>
 
           <q-card-actions>
-            <q-btn outline rounded color="primary" label="view on dashboard" />
+            <!-- <q-btn
+              to="/dashboard"
+              outline
+              rounded
+              color="primary"
+              label="view on dashboard"
+            />
+
+            <q-space /> -->
+          </q-card-actions>
+        </q-card>
+        <q-card class="my-card bg-" flat style="max-width: 30%">
+          <q-card-section
+            ><div class="text-h5 text-primary q-mt-sm q-mb-xs" style="font-weight: 700;">
+              {{ service.title }}
+            </div></q-card-section
+          >
+          <q-img
+            :src="service.image"
+            style="max-height: 300px; border-radius: 10px"
+          />
+
+          <q-card-section style="min-height: 15vh">
+            <div class="text-overline text-orange-9"></div>
+            <!-- <div class="text-h5 q-mt-sm q-mb-xs">{{ service.title }}</div> -->
+            <div class="text-caption text-grey-7 service-desc">
+              {{ service.description }}
+            </div>
+          </q-card-section>
+
+          <q-card-actions class="q-mb-xl">
+            <q-btn
+              to="/dashboard"
+              outline
+              rounded
+              color="primary"
+              label="view on dashboard"
+            />
 
             <q-space />
           </q-card-actions>
         </q-card>
-        <q-card class="my-card bg-grey-2" flat style="max-width: 24%">
-          <q-img :src="getNextService(index).image" style="max-height: 250px" />
+        <q-card
+          v-if="service.id !== 6"
+          class="my-card overlay bg-grey-2"
+          flat
+          style="max-width: 24%"
+        >
+          <q-img :src="getNextService(index).image" style="max-height: 200px" />
 
           <q-card-section>
             <div class="text-overline text-orange-9"></div>
-            <div class="text-h5 q-mt-sm q-mb-xs">
+            <div class="text-subtitle1 q-mt-sm q-mb-xs">
               {{ getNextService(index).title }}
             </div>
-            <div class="text-caption text-grey-7">
+            <div class="text-caption text-grey-7 service-desc">
               {{ getNextService(index).description }}
             </div>
           </q-card-section>
 
           <q-card-actions>
-            <q-btn outline rounded color="primary" label="view on dashboard" />
+            <q-btn
+              to="/dashboard"
+              outline
+              rounded
+              color="primary"
+              label="view on dashboard"
+            />
 
             <q-space />
           </q-card-actions>
         </q-card>
-        <q-card class="my-card overlay bg-grey-2" flat style="max-width: 24%">
+        <q-card
+          v-else
+          class="my-card overlay bg-grey-2"
+          flat
+          style="max-width: 24%"
+        >
+          <q-img class="bg-white" style="height: 250px" />
+
+          <q-card-section>
+            <div class="text-overline text-orange-9"></div>
+            <div class="text-h5 q-mt-sm q-mb-xs text-white">
+              {{ getPrevService(index).title }}
+            </div>
+            <div class="text-caption text-white service-desc">
+              {{ getPrevService(index).description }}
+            </div>
+          </q-card-section>
+
+          <q-card-actions>
+            <!-- <q-btn
+              to="/dashboard"
+              outline
+              rounded
+              color="primary"
+              label="view on dashboard"
+            />
+
+            <q-space /> -->
+          </q-card-actions>
+        </q-card>
+        <!-- <q-card v-if="getNextService(index).id !== 6" class="my-card overlay bg-grey-2" flat style="max-width: 24%">
           <q-img
             :src="getNextService(index + 1).image"
             style="max-height: 250px"
@@ -95,37 +191,35 @@
           </q-card-section>
 
           <q-card-actions>
-            <q-btn outline rounded color="primary" label="view on dashboard" />
+            <q-btn to="/dashboard" outline rounded color="primary" label="view on dashboard" />
 
             <q-space />
           </q-card-actions>
-        </q-card>
+        </q-card> -->
       </div>
     </q-carousel-slide>
 
     <template v-slot:control>
-      <q-carousel-control
-        class=""
-        style="position: absolute; margin: auto; left: 25%; bottom: 45%"
-      >
+      <q-carousel-control class="carousel-control" style="left: 30%">
         <q-btn
+          v-if="slide !== 1"
+          outline
           round
           dense
           color="primary"
-          text-color="white"
+          text-color="primary"
           icon="arrow_left"
           @click="$refs.carousel.previous()"
         />
       </q-carousel-control>
-      <q-carousel-control
-        class=""
-        style="position: absolute; margin: auto; right: 25%; bottom: 45%"
-      >
+      <q-carousel-control class="carousel-control" style="right: 30%">
         <q-btn
+          v-if="slide !== 6"
+          outline
           round
           dense
           color="primary"
-          text-color="white"
+          text-color="primary"
           icon="arrow_right"
           @click="$refs.carousel.next()"
         />
@@ -158,8 +252,6 @@
         style="max-height: 600vh"
       >
         <q-card class="my-card bg-grey-2" flat style="max-width: 90%">
-
-
           <q-card-section>
             <div class="text-overline text-orange-9"></div>
             <div class="text-h6 q-mt-sm q-mb-xs">{{ service.title }}</div>
@@ -171,7 +263,14 @@
           <q-img :src="service.image" style="max-height: 250px" />
 
           <q-card-actions>
-            <q-btn class="q-my-md" outline rounded color="primary" label="view on dashboard" />
+            <q-btn
+              to="/dashboard"
+              class="q-my-md"
+              outline
+              rounded
+              color="primary"
+              label="view on dashboard"
+            />
 
             <q-space />
           </q-card-actions>
@@ -301,7 +400,7 @@ export default defineComponent({
     });
     return {
       services,
-      slide: ref(2),
+      slide: ref(3),
       getNextService,
       getPrevService,
       matchMediaDesktop,
@@ -333,4 +432,14 @@ export default defineComponent({
 }
 
 /* Your other styles for the div go here */
+
+.service-desc {
+  height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
 </style>

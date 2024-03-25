@@ -1,5 +1,8 @@
 <template>
-  <div class="row items-start jumbotron" id="hero" style="min-width: 100vw">
+  <div
+    class="row q-mx-md q-my-sm items-start jumbotron"
+    id="hero"
+  >
     <carouselContent>
       <!-- <div
       class="row q-pt-lg justify-center"
@@ -17,30 +20,44 @@
 
   <div
     class="bg-white"
-    style="min-width: 100vw; margin: auto; position: relative"
+    style="max-width: 90vw; margin: auto; position: relative"
     id="products-section"
   >
     <div
-      class="row justify-center"
-      style="min-width: 100vw; position: absolute; top: -2%; z-index: 1000"
+      v-if="matchMediaDesktop"
+      class="my-font-2 text-Primary text-center q-px-md q-mt-lg"
+      style="
+        font-weight: 700;
+        font-size: 30px;
+        color: #25408f;
+        max-width: 90vw;
+        margin-left: auto;
+      "
     >
-      <q-btn
-        unelevated
-        round
-        color="primary"
-        icon="mdi-chevron-down"
-        @click="scrollToProducts()"
-      />
+      <div
+        class="row justify-center"
+        style="
+          min-width: 0vw;
+          position: absolute;
+          right: 50%;
+          top: -7%;
+          z-index: 1000;
+        "
+      >
+        <q-btn
+          class="bg-white"
+          unelevated
+          round
+          outline
+          color="white"
+          text-color="primary"
+          icon="mdi-chevron-down"
+          @click="scrollToProducts()"
+        />
+      </div>
+      <!-- <div style="margin-top: 5vh">MarCNoWA Services</div> -->
     </div>
-    <serviceContent />
-  </div>
-
-  <div
-    v-if="matchMediaDesktop"
-    class="my-font-2 bg-primary text-white text-center q-px-md q-py-xl"
-    style="font-weight: 700; font-size: 30px; color: #25408f"
-  >
-    About the Project
+    <serviceContent/>
   </div>
 
   <div
@@ -82,45 +99,60 @@
     </div>
   </div>
 
-  <div
-    v-if="matchMediaDesktop"
-    style="min-width: 10vw; min-height: 70vh"
-    class="row items-center justify-center bg-primary q-px-none q-py-lg q-ma-none page-tint"
-    id="about-section"
-  >
+  <div v-if="matchMediaDesktop" class="about-container bg-primary">
     <div
-      class="col q-pa-none q-ma-none"
-      style="min-height: 70%; max-width: 70%"
+      class="row items-center justify-center my-font-2 text-white q-mt-lg"
+      style="
+        font-weight: 700;
+        font-size: 30px;
+        color: #25408f;
+        width: 90%;
+        min-height: 10vh;
+        margin: auto;
+      "
     >
-      <div class="row q-mb-lg">
-        <div class="col q-mx-xl">
-          <q-card
-            flat
-            class="my-card text-grey-9 my-font-2 text-justify"
-            style="background-color: #f1b24a00; border-radius: 15px"
-          >
-            <q-card-section
-              class="text-white"
-              style="font-weight: 400; font-size: 18px"
+      <div class="q-mx-lg">About the MarCNoWA Project</div>
+    </div>
+
+    <div
+      style="width: 90vw; min-height: 60vh; margin: auto"
+      class="row items-center justify-center bg-primary q-px-none q-py-lg q-ma-none page-tint"
+      id="about-section"
+    >
+      <div
+        class="col q-pa-none q-ma-none"
+        style="min-height: 70%; max-width: 90%"
+      >
+        <div class="row q-mb-lg">
+          <div class="col q-mx-xl">
+            <q-card
+              flat
+              class="my-card text-grey-9 my-font-2 text-justify"
+              style="background-color: #f1b24a00; border-radius: 15px"
             >
-              <P>
-                The MarCNoWA consortium is lead by the Regional Marine Centre of
-                the University of Ghana. The objective of the Action is to
-                provide decision-makers with EO information and tools that would
-                support effective marine and coastal resources management in
-                North and West Africa. This is being achieved through delivering
-                EO services that will enhance the formulation of marine,
-                fisheries and environmental policies to support decision-making
-                at the national and regional level.
-              </P>
-            </q-card-section>
-          </q-card>
-        </div>
-        <div class="col q-mx-xl" style="border-radius: 15px">
-          <q-video
-            src="https://www.youtube.com/embed/8TA9UvQjzmc?si=MHGa14cmwQb026Pb"
-            :ratio="16 / 9"
-          />
+              <q-card-section
+                class="text-white"
+                style="font-weight: 400; font-size: 18px"
+              >
+                <P>
+                  The MarCNoWA consortium is lead by the Regional Marine Centre
+                  of the University of Ghana. The objective of the Action is to
+                  provide decision-makers with EO information and tools that
+                  would support effective marine and coastal resources
+                  management in North and West Africa. This is being achieved
+                  through delivering EO services that will enhance the
+                  formulation of marine, fisheries and environmental policies to
+                  support decision-making at the national and regional level.
+                </P>
+              </q-card-section>
+            </q-card>
+          </div>
+          <div class="col q-mx-xl" style="border-radius: 15px">
+            <q-video
+              src="https://www.youtube.com/embed/8TA9UvQjzmc?si=MHGa14cmwQb026Pb"
+              :ratio="16 / 9"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -172,7 +204,7 @@
   </div>
 
   <div
-  v-if="matchMediaDesktop"
+    v-if="matchMediaDesktop"
     style="min-width: 100%; min-height: 45vh; background-color: #ffffff"
     class="row items-center justify-center q-pa-none q-ma-none"
   >
@@ -218,8 +250,7 @@
 
   <div
     v-if="matchMediaDesktop"
-    style="min-width: 100%; min-height: 30vh; background-color: #9fa6aa"
-    class="row justify-center q-pa-none q-ma-none"
+    class="footer-pc row justify-center q-pa-none q-ma-none"
   >
     <div
       class="column justify-center q-pa-none"
@@ -407,186 +438,3 @@ onBeforeMount(() => {
   matchMediaDesktop.value = window.matchMedia("(min-width: 768px)").matches;
 });
 </script>
-
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap");
-/* *{
-  box-sizing: border-box;
-  outline: 3px solid limegreen !important;
-} */
-/* Hide the scrollbar but retain functionality */
-::-webkit-scrollbar {
-  width: 0em; /* Adjust as needed */
-}
-
-::-webkit-scrollbar-track {
-  background: transparent; /* Set to the background color of your page */
-}
-
-::-webkit-scrollbar-thumb {
-  background: transparent; /* Set to the background color of your page */
-  border: none;
-}
-
-/* Optional: Hover styles for the thumb */
-::-webkit-scrollbar-thumb:hover {
-  background: transparent; /* Set to a different color for hover effect if desired */
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.scrollbar-hidden::-webkit-scrollbar {
-  display: none;
-  overflow: hidden;
-}
-
-/* Hide scrollbar for IE, Edge add Firefox */
-.scrollbar-hidden {
-  -ms-overflow-style: none;
-  scrollbar-width: none; /* Firefox */
-}
-
-.page-tint {
-  background-color: rgba(52, 64, 87, 0.301);
-  background-blend-mode: multiply;
-}
-
-#hero {
-  background-image: url("~/src/assets/DJI_00371.png");
-  background-size: 100%;
-  /* Center and scale the image nicely */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* animation-name: beat;
-  animation-duration: 1.5s;
-  animation-iteration-count: 5; */
-}
-
-#about-section {
-  background-color: rgba(52, 64, 87, 0.753);
-  background-blend-mode: multiply;
-  background-image: url("~/src/assets/bg_image.jpg");
-  background-attachment: fixed;
-  background-size: 100%;
-  /* Center and scale the image nicely */
-  background-position: left;
-  background-repeat: no-repeat;
-  background-size: fit;
-}
-
-#products-section {
-  /* background-color: rgba(52, 64, 87, 0.753); */
-  background-image: url("~/src/assets/bg_vector.svg");
-  background-color: #032135;
-  background-blend-mode: multiply;
-  background-attachment: fixed;
-  background-size: 100%;
-  /* Center and scale the image nicely */
-  background-position: left;
-  background-repeat: no-repeat;
-  background-size: fit;
-}
-
-#about {
-  background-image: url("~/src/assets/login_bg.jpg");
-  background-size: 100%;
-  /* Center and scale the image nicely */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* animation-name: beat;
-  animation-duration: 1.5s;
-  animation-iteration-count: 5; */
-}
-
-#plugin {
-  background-image: url("~/src/assets/hero2.jpg");
-  background-size: 100%;
-  /* Center and scale the image nicely */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* animation-name: beat;
-  animation-duration: 1.5s;
-  animation-iteration-count: 5; */
-}
-
-#blog {
-  background-image: url("~/src/assets/comoros.png");
-  background-size: 100%;
-  /* Center and scale the image nicely */
-  /*background-attachment: fixed;*/
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* animation-name: beat;
-  animation-duration: 1.5s;
-  animation-iteration-count: 5; */
-}
-
-.custom-caption {
-  /* text-align: center; */
-  max-width: 35vw;
-  bottom: 5%;
-  left: 5%;
-  padding: 12px;
-  border-radius: 20px;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.hero-img {
-  /* text-align: center; */
-  max-width: 15vw;
-  bottom: 5%;
-  right: 0%;
-  padding: 12px;
-  border-radius: 20px;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-/* #pulse {
-  animation-name: beat;
-  animation-duration: 1.5s;
-  animation-iteration-count: 5;
-} */
-
-@keyframes beat {
-  from {
-    background-size: cover;
-  }
-  to {
-    background-size: 150%;
-  }
-}
-
-.jumbotron {
-  height: 100%;
-  background-size: cover;
-  /* background-color: rgb(51, 51, 51, 0.1);
-  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.1); */
-}
-
-.content-card {
-  height: 80vh;
-  background-size: cover;
-  background: #ffffff;
-  box-shadow: 0 0 3rem 0 rgb(0 0 0 / 10%);
-}
-
-@media screen and (max-width: 768px) {
-  .head-text {
-    font-size: 28px;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .head-text {
-    font-size: 48px;
-  }
-}
-</style>

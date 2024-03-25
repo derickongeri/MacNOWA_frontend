@@ -14,14 +14,13 @@
     >
       <q-tabs
         v-model="tab"
-        class="bg-primary text-grey-1 q-pa-none q-ma-none"
-        active-color="grey-1"
-
+        class="tab-item text-grey-9 q-pa-none q-ma-md"
+        active-class="active-tab"
         switch-indicator
-        indicator-color="grey-1"
+        indicator-color="transparent"
         align="justify"
       >
-        <q-tab name="services" label="MarCNoWA Services" no-caps />
+        <q-tab name="services" label="MarcNoWa Services" no-caps />
         <q-tab name="analysis" label="Analysis" no-caps />
       </q-tabs>
 
@@ -36,99 +35,51 @@
             <q-scroll-area
               :thumb-style="scrollBar.thumbStyle"
               :bar-style="scrollBar.barStyle"
-              style="height: 70vh; min-width: 300px; overflow: hidden;"
+              style="height: 70vh; min-width: 300px; overflow: hidden"
             >
               <layerselectpanel />
               <div
-              class="row justify-between items-center bg-white q-px-md"
-              style="min-width: 100%; height: 70px; border-bottom: 10px"
-            ></div>
+                class="row justify-between items-center bg-white q-px-md"
+                style="min-width: 100%; height: 70px; border-bottom: 10px"
+              ></div>
             </q-scroll-area>
           </div>
         </q-tab-panel>
 
-        <q-tab-panel name="analysis">
-          <div class="text-h6"></div>
-          <div class="row" style="height: 35vh"><linechart /></div>
+        <q-tab-panel name="analysis" style="min-height: 85vh">
+          <div class="">
+            <div class="row q-mx-none q-mb-lg items-center">
+              <div class="col">
+                <q-select
+                  readonly
+                  outlined
+                  v-model="model"
+                  :options="options"
+                  label="LatLong"
+                />
+              </div>
+              <q-btn
+                class="q-mx-md"
+                flat
+                round
+                color="primary"
+                icon="mdi-share-variant-outline"
+              />
+            </div>
+            <q-scroll-area
+              :thumb-style="scrollBar.thumbStyle"
+              :bar-style="scrollBar.barStyle"
+              style="height: 65vh; min-width: 300px; overflow: hidden"
+            >
+              <layerAnalysis />
+              <div
+                class="row justify-between items-center bg-white q-px-md"
+                style="min-width: 100%; height: 70px; border-bottom: 10px"
+              ></div>
+            </q-scroll-area>
+          </div>
         </q-tab-panel>
       </q-tab-panels>
-      <!-- <div class="q-ma-md absolute-bottom">
-        <q-scroll-area
-          :thumb-style="scrollBar.thumbStyle"
-          :bar-style="scrollBar.barStyle"
-          style="height: 70vh; min-width: 300px"
-        >
-          <div class="q-px-md" style="min-height: 30vh"><linechart /></div>
-          <div class="q-px-md" style="min-height: 30vh"><linechart /></div>
-          <div class="q-px-md" style="min-height: 30vh"><linechart /></div>
-        </q-scroll-area>
-      </div> -->
-
-      <div
-        class="row shadow-up-1 justify-between items-center absolute-bottom bg-white q-px-md"
-        style="min-width: 100%; height: 70px; border-bottom: 10px"
-      >
-        <div class="col">
-          <img src="src/assets/GMES.png" style="width: 70%" />
-        </div>
-        <div class="col">
-          <img src="src/assets/AUlogo.png" style="width: 70%" />
-        </div>
-        <div class="col">
-          <img
-            class="q-ml-lg"
-            src="src/assets/EU logo.png"
-            style="width: 40%"
-          />
-        </div>
-        <div class="col">
-          <img src="src/assets/UG_logo.png" style="width: 70%" />
-        </div>
-      </div>
-
-      <!-- <q-card flat>
-        <q-tabs
-          v-model="tab"
-          class="bg-grey-2 text-grey-7"
-          active-color="primary"
-          narrow-indicator
-          indicator-color="primary"
-          align="justify"
-        >
-          <q-tab name="services" label="MacNOWA Services" no-caps />
-          <q-tab name="analysis" label="Analysis" no-caps />
-
-        </q-tabs>
-
-        <q-tab-panels
-          v-model="tab"
-          animated
-          class="text-grey-9"
-          style="background-color: rgba(240, 248, 255, 0)"
-        >
-          <q-tab-panel name="services" style="min-height: 84vh;">
-
-            <layerselectpanel />
-            <div class="q-ma-md">
-              <q-scroll-area
-                :thumb-style="scrollBar.thumbStyle"
-                :bar-style="scrollBar.barStyle"
-                style="height: 600px; min-width: 300px"
-              >
-                <div class="row" style="min-height: 30vh"><linechart /></div>
-                <div class="row" style="min-height: 30vh"><linechart /></div>
-                <div class="row" style="min-height: 30vh"><linechart /></div>
-              </q-scroll-area>
-            </div>
-
-          </q-tab-panel>
-
-          <q-tab-panel name="analysis">
-            <div class="text-h6"></div>
-            <div class="row" style="height: 35vh"><linechart /></div>
-          </q-tab-panel>
-        </q-tab-panels>
-      </q-card> -->
     </div>
   </div>
 </template>
@@ -136,16 +87,16 @@
 <script setup>
 import { ref } from "vue";
 import layerselectpanel from "src/components/Analysis/Layerselection.vue";
-import linechart from "src/components/composables/charts/lineChart.vue";
+import layerAnalysis from "src/components/Analysis/charts/oceanconditions.vue";
 
 const tab = ref("services");
 
 const scrollBar = ref({
   thumbStyle: {
-    right: "-2px",
+    right: "2px",
     borderRadius: "5px",
-    backgroundColor: "#027be300",
-    width: "5px",
+    backgroundColor: "#002F6B",
+    width: "10px",
     height: "100px",
     opacity: 0.75,
   },
@@ -159,3 +110,18 @@ const scrollBar = ref({
   },
 });
 </script>
+
+<style>
+.active-tab{
+  background-color: #002e6b2d;
+  color: #002F6B;
+  border-radius: 10px;
+  margin:5px;
+}
+
+.tab-item:hover {
+  background-color: white;
+}
+
+
+</style>
