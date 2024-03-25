@@ -40,10 +40,10 @@ export default function setSelectedRaster() {
 
     switch (val) {
       case "landcover":
-        response = await axios.get("http://localhost:3000/api/landcovermap");
+        response = await axios.get("http://197.255.126.45:3000/api/landcovermap");
         break;
       default:
-        response = await axios.get("http://localhost:3000/api/mapid");
+        response = await axios.get("http://197.255.126.45:3000/api/mapid");
         break;
     }
 
@@ -68,8 +68,6 @@ export default function setSelectedRaster() {
     for (let i = 0; i < mapidList.length; i++) {
       createTileLayer(i, mapidList[i]);
     }
-
-    //console.log(layerList)
 
     return layerList;
   };

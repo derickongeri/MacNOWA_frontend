@@ -1,8 +1,26 @@
 import 'chartjs-adapter-date-fns';
 import {de} from 'date-fns/locale';
 
+function datesTwoWeeksBack() {
+    let datesList = [];
+    let today = new Date();
+
+    // Loop to generate dates for the past two weeks
+    for (let i = 0; i < 14; i++) {
+        let date = new Date(today);
+        date.setDate(today.getDate() - i);
+
+        // Format date as 'dd-MM-yyyy'
+        let formattedDate = `${('0' + date.getDate()).slice(-2)}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getFullYear()}`;
+
+        datesList.push(formattedDate);
+    }
+
+    return datesList;
+}
+
 export const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: datesTwoWeeksBack(),
   datasets: [
     {
       label: 'Data One',
@@ -15,5 +33,24 @@ export const data = {
 export const options = {
   responsive: true,
   maintainAspectRatio: false,
-  
+  plugins: {
+    zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x'
+            },
+            limits: {
+              // axis limits
+            },
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
+          },
+  }
 }

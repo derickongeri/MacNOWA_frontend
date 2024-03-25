@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE ServiceExceptionReport SYSTEM "http://197.255.126.45:8080/geoserver/schemas/wms/1.1.1/WMS_exception_1_1_1.dtd"> <ServiceExceptionReport version="1.1.1" >   <ServiceException>
-      java.lang.reflect.UndeclaredThrowableExceptionNo such resource: SALT_20150520.sld in workspace WorkspaceInfoImpl[marcnowa]
-</ServiceException></ServiceExceptionReport>

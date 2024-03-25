@@ -68,7 +68,7 @@
             <div class="row">
               <q-img
                 class="col"
-                src="src/assets/screnshot.png"
+                src="src/assets/mockup.png"
                 style="
                   position: relative;
                   border-radius: 20px;

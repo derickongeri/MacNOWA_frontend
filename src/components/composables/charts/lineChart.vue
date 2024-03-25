@@ -1,5 +1,6 @@
 <template>
-  <Line :data="data" :options="options" />
+  <div style="height: 350px;"><Line :data="data" :options="options" /></div>
+
 </template>
 
 <script lang="ts">
@@ -15,6 +16,7 @@ import {
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import * as chartConfig from './chartConfig.js'
+import zoomPlugin from "chartjs-plugin-zoom";
 import 'chartjs-adapter-date-fns';
 import {de} from 'date-fns/locale';
 
@@ -25,7 +27,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  zoomPlugin
 )
 
 export default {
@@ -33,6 +36,10 @@ export default {
   components: {
     Line
   },
+  props: {
+    
+  },
+
   data() {
     return chartConfig
   }
