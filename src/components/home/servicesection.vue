@@ -85,7 +85,10 @@
         </q-card>
         <q-card class="my-card bg-" flat style="max-width: 30%">
           <q-card-section
-            ><div class="text-h5 text-primary q-mt-sm q-mb-xs" style="font-weight: 700;">
+            ><div
+              class="text-h5 text-primary q-mt-sm q-mb-xs"
+              style="font-weight: 700"
+            >
               {{ service.title }}
             </div></q-card-section
           >
@@ -100,17 +103,47 @@
             <div class="text-caption text-grey-7 service-desc">
               {{ service.description }}
             </div>
+
+            <q-dialog v-model="alert">
+              <q-card style="border-radius: 20px;">
+                <q-card-section class="row items-center q-pb-none">
+                  <div class="text-h6">{{ service.title }}</div>
+                  <q-space />
+                  <q-btn icon="close" flat round dense v-close-popup />
+                </q-card-section>
+
+                <q-card-section horizontal class="q-pa-md">
+                  <q-card-section class="q-pt-none">
+                    {{ service.description }}
+                  </q-card-section>
+
+                  <q-img class="col-5" :src="service.image" />
+                </q-card-section>
+
+                <!-- <q-card-actions align="right">
+                  <q-btn flat label="OK" color="primary" v-close-popup />
+                </q-card-actions> -->
+              </q-card>
+            </q-dialog>
           </q-card-section>
 
           <q-card-actions class="q-mb-xl">
-            <q-btn
-              to="/dashboard"
-              outline
-              rounded
-              color="primary"
-              label="view on dashboard"
-            />
-
+            <div class="row q-gutter-md">
+              <q-btn
+                no-caps
+                flat
+                label="Read More"
+                color="primary"
+                @click="alert = true"
+              />
+              <q-btn
+                to="/dashboard"
+                outline
+                rounded
+                color="primary"
+                label="view on dashboard"
+              />
+            </div>
             <q-space />
           </q-card-actions>
         </q-card>
@@ -401,6 +434,7 @@ export default defineComponent({
     return {
       services,
       slide: ref(3),
+      alert: ref(false),
       getNextService,
       getPrevService,
       matchMediaDesktop,
