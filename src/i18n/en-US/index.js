@@ -63,6 +63,29 @@ export default {
   invite_text: `Stay informed about coastal wonders. Sing up now for exclusive
                 updates on geomorphology, shoreline change, and environmental
                 conservation.`,
+
+  serviceTitleOne: `Ocean Conditions Forecast`,
+  serviceTitleTwo: `Potential Fishing zones`,
+  serviceTitleThree: `Coastal Ecosystem Monitoring`,
+
+  CoastalLanduse: `Coastal Landuse`,
+  MangroveCover: `Mangrove Cover`,
+  pfzLayer: `Potential Fishing Zones(PFZs)`,
+  fdmLayer: `Fishing Density Map`,
+
+  OceanState: `Ocean State`,
+  Temperature: `Temperature`,
+  Salinity: `Salinity`,
+  Currents: `Currents`,
+  SurfaceHeight: `Surface Height`,
+  WaveHeight: `Wave Height`,
+
+  serviceTab: `MarcNoWa Services`,
+  analysisTab: `Analysis`,
+  selectDate: `Select Date`,
+
+  tour: `Take a Tour`,
+  sharePrint: `Share/Print`,
 };
 
 /*
@@ -109,6 +132,13 @@ export default {
           backtologin: `Return to Login`,
           ForgotPassword?: `Forgot Password?`,
           account:`Don't have an account?`
+
+
+          serviceTab: `MarcNoWa Services`,
+          analysisTab: `Analysis`,
+          selectDate: `Select Date`,
+
+
 
 
 

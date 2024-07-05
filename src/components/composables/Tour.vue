@@ -45,6 +45,13 @@ export default {
     // this.$tours["myTour"].start();
   },
 };
+
+/*
+
+
+
+
+*/
 </script>
 
 <style>
@@ -62,3 +69,14 @@ export default {
   z-index: 4200;
 }
 </style>
+
+
+
+
+
+
+
+
+
+
+

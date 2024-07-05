@@ -51,48 +51,50 @@ import saltImg from "src/assets/saltThumb.png";
 import currentsImg from "src/assets/currentsThumb.png";
 import sshImg from "src/assets/sshThumb.png";
 import swhImg from "src/assets/swhThumb.png";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const store = useRasterStore();
 
 const group = ref(store.getLayerName);
-const options = ref([
+const options = computed(()=>{return [
   {
-    label: "Ocean State",
+    label: t("OceanState"),
     icon: "mdi-alert",
     value: "UG_GMES_ocean_state_forecast",
     img: oceanstateImg,
     activeStatus: false,
   },
   {
-    label: "Temperature",
+    label: t("Temperature"),
     icon: "mdi-thermometer-water",
     value: "SST",
     img: sstImg,
     activeStatus: false,
   },
   {
-    label: "Salinity",
+    label: t("Salinity"),
     icon: "mdi-grain",
     value: "SALT",
     img: saltImg,
     activeStatus: false,
   },
   {
-    label: "Currents",
+    label: t("Currents"),
     icon: "mdi-weather-windy",
     value: "SSC",
     img: currentsImg,
     activeStatus: false,
   },
   {
-    label: "Surface Height",
+    label: t("SurfaceHeight"),
     icon: "mdi-waves-arrow-up",
     value: "SSH",
     img: sshImg,
     activeStatus: false,
   },
   {
-    label: "Wave Height",
+    label: t("WaveHeight"),
     icon: "mdi-surfing",
     value: "SWH",
     img: swhImg,
@@ -103,7 +105,7 @@ const options = ref([
   //   value: "RAINFALL",
   //   img: oceanstateImg
   // },
-]);
+]});
 
 const setSelectedLayer = (val) => {
   options.value.forEach((option) => {

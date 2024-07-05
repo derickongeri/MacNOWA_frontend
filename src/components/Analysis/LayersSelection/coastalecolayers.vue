@@ -49,27 +49,29 @@ import { ref, watch, onUnmounted, computed } from "vue";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
 import lulcImg from "src/assets/lulcThumb.png";
 import mangroveImg from "src/assets/mangroveThumb.png";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const store = useRasterStore();
 const layerSelected = ref("");
 
 const group = ref(store.getLayerName);
-const options = ref([
+const options = computed(()=>{return [
   {
-    label: "Coastal Landuse",
+    label: t("CoastalLanduse"),
     icon: "mdi-map-legend",
     value: "landcover",
     img: lulcImg,
     activeStatus: false,
   },
   {
-    label: "Mangrove Cover",
+    label: t("MangroveCover"),
     icon: "mdi-forest",
     value: "mangrove",
     img: mangroveImg,
     activeStatus: false,
   },
-]);
+]});
 
 const setSelectedLayer = (val) => {
   options.value.forEach((option) => {

@@ -23,31 +23,40 @@
 <script setup>
 import { ref, watch, onBeforeMount, computed } from "vue";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const store = useRasterStore();
 const layerSelected = ref("");
 
 const group = ref(store.getLayerName);
-const options = ref([
-  {
-    label: "Coastal Landuse",
-    value: "landcover",
-  },
-  {
-    label: "Mangrove Cover",
-    value: "mangrove",
-  },
-]);
+const options = computed(() => {
+  return [
+    {
+      label: t("CoastalLanduse"),
+      value: "landcover",
+    },
+    {
+      label: t("MangroveCover"),
+      value: "mangrove",
+    },
+  ];
+});
 
-
-watch(group, (val)=>{
+watch(group, (val) => {
   store.setLayerName(val);
-})
+});
 
-const layeName = computed(()=>{store.getLayerName})
+const layeName = computed(() => {
+  store.getLayerName;
+});
 
-watch(layeName, ()=>{
-  group.value = store.getLayerName
-}, {deep: true})
-
+watch(
+  layeName,
+  () => {
+    group.value = store.getLayerName;
+  },
+  { deep: true }
+);
 </script>

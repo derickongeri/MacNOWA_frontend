@@ -20,8 +20,8 @@
         indicator-color="transparent"
         align="justify"
       >
-        <q-tab name="services" label="MarcNoWa Services" no-caps />
-        <q-tab name="analysis" label="Analysis" no-caps />
+        <q-tab name="services" :label="$t('serviceTab')" no-caps />
+        <q-tab name="analysis" :label="$t('analysisTab')" no-caps />
       </q-tabs>
 
       <q-tab-panels

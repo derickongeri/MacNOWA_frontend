@@ -12,7 +12,6 @@ export default {
   dashboard: "Tableau de bord",
   home: "Accueil",
 
-
   login: "Connexion",
   signup: "S'inscrire",
   Yourname: `Votre nom`,
@@ -64,4 +63,27 @@ export default {
 
   invite_text: `Restez informé des merveilles côtières. Inscrivez-vous maintenant pour recevoir des
                 mises à jour exclusives sur la géomorphologie, les changements du littoral et la conservation de l'environnement.`,
+
+  serviceTitleOne: `Prévisions des conditions océaniques`,
+  serviceTitleTwo: `Zones de pêche potentielles`,
+  serviceTitleThree: `Surveillance de l'écosystème côtier`,
+
+  CoastalLanduse: `Utilisation des terres côtières`,
+  MangroveCover: `Couverture de mangrove`,
+  pfzLayer: `Zones de pêche potentielles (PFZs)`,
+  fdmLayer: `Carte de densité de pêche`,
+
+  OceanState: `État de l'océan`,
+  Temperature: `Température`,
+  Salinity: `Salinité`,
+  Currents: `Courants`,
+  SurfaceHeight: `Hauteur de surface`,
+  WaveHeight: `Hauteur des vagues`,
+
+  serviceTab: `Services MarCNoWA`,
+  analysisTab: `Analyse`,
+  selectDate: `Sélectionner une date`,
+
+  tour: `Faire un tour`,
+  sharePrint: `Partager/Imprimer`,
 };

@@ -8,7 +8,7 @@
       >
         <q-item-label class="col text-primary text-bold" header
           ><q-icon class="q-pr-lg" size="sm" color="primary" name="mdi-ferry" />
-          Ocean Conditions Forecast</q-item-label
+          {{$t('serviceTitleOne')}}</q-item-label
         >
         <q-space />
         <q-icon class="q-mr-lg" :name="chevron" size="sm"></q-icon>
@@ -27,7 +27,7 @@
       >
         <q-item-label class="col text-primary text-bold" header
           ><q-icon class="q-pr-lg" size="sm" color="primary" name="mdi-fish" />
-          Potential Fishing zones</q-item-label
+          {{$t('serviceTitleTwo')}}</q-item-label
         >
         <q-space />
         <q-icon class="q-mr-lg" :name="chevron" size="sm"></q-icon>
@@ -46,7 +46,7 @@
       >
         <q-item-label class="col text-primary text-bold" header
           ><q-icon class="q-pr-lg" size="sm" color="primary" name="mdi-sprout" />
-          Coastal Ecosystem Monitoring</q-item-label
+          {{$t('serviceTitleThree')}}</q-item-label
         >
         <q-space />
         <q-icon class="q-mr-lg" :name="chevron" size="sm"></q-icon>

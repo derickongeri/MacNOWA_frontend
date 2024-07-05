@@ -1,7 +1,7 @@
 <template>
   <div class="row items-center q-pa-md">
     <div class="">
-      <div class="q-pb-sm text-primary">Select Date</div>
+      <div class="q-pb-sm text-primary">{{ $t('selectDate') }}</div>
     </div>
     <div class="q-pb-sm q-px-md">
       <q-icon color="primary" size="xs" name="event" class="cursor-pointer">

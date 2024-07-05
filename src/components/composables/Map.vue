@@ -131,7 +131,7 @@
           align="between"
           class="bg-primary btn-fixed-width q-px-md"
           color="white"
-          label="Take a Tour"
+          :label="$t('tour')"
           icon="mdi-human-male-board"
           @click="this.$tours['myTour'].start()"
         />
@@ -143,7 +143,7 @@
           align="between"
           class="bg-white btn-fixed-width q-px-md"
           color="primary"
-          label="Share/Print"
+          :label="$t('sharePrint')"
           icon="mdi-share-variant"
         >
           <q-menu flat auto-close class="q-pa-sm menu-card" :offset="[240, 0]">

@@ -48,27 +48,32 @@
 import { ref, watch, onUnmounted, computed } from "vue";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
 import pfzImg from "src/assets/pfzThumb.png";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const store = useRasterStore();
 const layerSelected = ref("");
 
 const group = ref(store.getLayerName);
-const options = ref([
-  {
-    label: "Potential Fishing Zones(PFZs)",
-    icon: "mdi-fish",
-    value: "PFZ",
-    img: pfzImg,
-    activeStatus: false,
-  },
-  {
-    label: "Fishing Density Map",
-    icon: "mdi-fish",
-    value: "FDM",
-    img: pfzImg,
-    activeStatus: false,
-  },
-]);
+
+const options = computed(() => {
+  return [
+    {
+      label: t('pfzLayer'),
+      icon: "mdi-fish",
+      value: "PFZ",
+      img: pfzImg,
+      activeStatus: false,
+    },
+    {
+      label: t("fdmLayer"),
+      icon: "mdi-fish",
+      value: "FDM",
+      img: pfzImg,
+      activeStatus: false,
+    },
+  ];
+});
 
 const setSelectedLayer = (val) => {
   options.value.forEach((option) => {
