@@ -28,4 +28,4 @@ echo "Pushhing to github..."
 git push $REPO_URL main
 
 # deploying to dev server
-rsync -av --exclude='spa' /home/derick/Desktop/uog-portal/dist gmes@197.255.126.45:/home/gmes
+rsync -av /home/derick/Desktop/uog-portal/dist gmes@197.255.126.45:/home/gmes

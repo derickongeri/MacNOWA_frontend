@@ -48,15 +48,14 @@
 }
 
 .footer-pc {
-  max-width: 90%;
+  min-width: 90%;
   min-height: 30vh;
   background-color: #9fa6aa;
-  margin: auto;
   border-radius: 20px 20px 0px 0px;
 }
 
 #hero {
-  background-image: url("~/src/assets/DJI_00371.png");
+  background-image: url("~src/assets/DJI_00371.png");
   background-size: 100%;
   /* Center and scale the image nicely */
   // background-attachment: fixed;
@@ -133,8 +132,7 @@
 }
 
 .about-container {
-  max-width: 90vw;
-  margin: auto;
+
   border-radius: 20px;
 }
 
@@ -158,6 +156,12 @@
   border-radius: 20px;
   color: white;
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+.login-card {
+  // min-width: 50vw;
+  // min-height: 60vh;
+  border-radius: 20px;
 }
 
 /* #pulse {

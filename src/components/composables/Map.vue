@@ -433,6 +433,7 @@ export default defineComponent({
       current_top_base_layer = ref(null),
       baseMaps = ref([]),
       showBaseMapList = ref(false),
+      showLayer = ref(false),
       currentBaseLayer = ref(null);
 
     const setLeafletMap = async function () {
@@ -480,8 +481,8 @@ export default defineComponent({
 
       //L.control.layers(baseMaps.value).addTo(map.value);
 
-      current_top_base_layer.value = darkMap;
-      current_top_base_layer.value.addTo(map.value);
+      // current_top_base_layer.value = darkMap;
+      // current_top_base_layer.value.addTo(map.value);
 
       map.value.scrollWheelZoom = true;
 
@@ -533,6 +534,38 @@ export default defineComponent({
       }
     };
 
+    const resetZoomLevel = function () {
+      const layers = [
+        currentRasterLayer.value,
+        mangrove_layer_2015.value,
+        mangrove_layer_2020.value,
+        change_layer_2015_2020.value,
+        landcoverLayer.value,
+      ];
+
+      // map.value.eachLayer(function (layer) {
+      //   //
+      //   console.log(layer);
+      // });
+
+      layers.forEach((layer) => {
+        if (currentRasterLayer.value || landcoverLayer.value) {
+          // const bounds = layer.getBounds()
+          console.log(layer);
+          const southWest = L.latLng(-3.057970512549133, -24.192587749018344),
+            northEast = L.latLng(36.86581397425627, 37.478968184546005),
+            bounds = L.latLngBounds(southWest, northEast);
+
+          map.value.flyToBounds(bounds);
+        } else {
+          const targetPoint = [13.254094739970756, -16.17314525052899]; // New center point
+          const newZoomLevel = 9; // New zoom level
+
+          map.value.setView(targetPoint, newZoomLevel);
+        }
+      });
+    };
+
     const setRasterLayer = async function () {
       try {
         Loading.show({
@@ -541,21 +574,25 @@ export default defineComponent({
           message: "Loading map data...",
         });
 
-        if (currentRasterLayer.value) {
-          map.value.removeLayer(currentRasterLayer.value);
-        }
-        if (mangrove_layer_2015.value) {
-          map.value.removeLayer(mangrove_layer_2015.value);
-        }
-        if (mangrove_layer_2020.value) {
-          map.value.removeLayer(mangrove_layer_2020.value);
-        }
-        if (change_layer_2015_2020.value) {
-          map.value.removeLayer(change_layer_2015_2020.value);
-        }
-        if (landcoverLayer.value) {
-          map.value.removeLayer(landcoverLayer.value);
-        }
+        const layers = [
+          currentRasterLayer.value,
+          mangrove_layer_2015.value,
+          mangrove_layer_2020.value,
+          change_layer_2015_2020.value,
+          landcoverLayer.value,
+        ];
+
+        // map.value.eachLayer(function (layer) {
+        //   //
+        //   console.log(layer);
+        // });
+
+        layers.forEach((layer) => {
+          if (layer) {
+            console.log(layer);
+            map.value.removeLayer(layer);
+          }
+        });
 
         current_selected_layer.value = store.getLayerName;
 
@@ -563,6 +600,7 @@ export default defineComponent({
 
         switch (current_selected_layer.value) {
           case "landcover":
+            //clearMap();
             map.value.setView([18.678691, 4.329978], 4.7);
             let landcover = await getEarthEngineLayer("landcover");
 
@@ -575,6 +613,7 @@ export default defineComponent({
             });
             break;
           case "mangrove":
+            //clearMap();
             const targetPoint = [13.254094739970756, -16.17314525052899]; // New center point
             const newZoomLevel = 9; // New zoom level
 
@@ -601,7 +640,6 @@ export default defineComponent({
               currentRasterLayer.value = await setRasterLayerSelected();
 
               currentRasterLayer.value.addTo(map.value).bringToFront();
-              //current_gee_layer.value.addTo(map.value).bringToFront();
 
               currentRasterLayer.value.on("load", () => {
                 Loading.hide();
@@ -633,7 +671,12 @@ export default defineComponent({
 
     onMounted(() => {
       setLeafletMap().then(() => {
-        setRasterLayer();
+        showLayer.value = !showLayer.value;
+        //  setRasterLayer();
+        // map.value.eachLayer(function (layer) {
+        //   //
+        //   console.log(layer);
+        // });
       });
     });
 
@@ -642,7 +685,11 @@ export default defineComponent({
     });
 
     const selectedLayer = computed(() => {
-      return store.getLayerName;
+      return {
+        layer: store.getLayerName,
+        date: store.getSelectedDate,
+        showLayer: showLayer.value,
+      };
     });
 
     function animateScroll() {
@@ -657,14 +704,11 @@ export default defineComponent({
     });
 
     watch(selectedDate, () => {
-      console.log("changing dates");
-
       animateScroll();
-      setRasterLayer();
+      // setRasterLayer();
     });
 
     watch(selectedLayer, () => {
-      // console.log("changing Layer")
       setRasterLayer();
     });
 
@@ -712,6 +756,7 @@ export default defineComponent({
       position,
       scrollAreaRef,
       startTour,
+      resetZoomLevel,
     };
   },
 });

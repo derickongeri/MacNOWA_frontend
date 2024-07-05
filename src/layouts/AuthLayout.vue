@@ -169,68 +169,63 @@
 
     <q-header
       v-if="matchMediaDesktop"
-
       reveal
       class="text-white q-py-sm navigation-background-color bg-white"
       height-hint="98"
     >
       <q-toolbar>
-        <q-toolbar-title
-          class="q-pa-none"
-          style="margin-left: 2%;"
-        >
+        <q-toolbar-title class="q-pa-none" style="margin-left: 2%">
           <div class="row items-center justify-between">
             <div>
               <router-link to="/home">
                 <img
-                src="~/src/assets/marcnowa.jpeg"
-                style="width: 100%; height: 50px"
-              />
+                  src="~/src/assets/marcnowa.jpeg"
+                  style="width: 100%; height: 50px"
+                />
               </router-link>
-
             </div>
             <div class="col">
-              <div class="row items-center" style="margin-left:10%">
+              <div class="row items-center" style="margin-left: 10%">
                 <div class="column">
-                <img
-                  src="~/src/assets/GMES.png"
-                  style="position: relative; width: 100%; height: 35px"
-                />
-              </div>
-              <div class="column q-pl-md">
-                <img
-                  src="~/src/assets/AU logo.png"
-                  style="
-                    position: relative;
-                    width: 100%;
-                    height: 35px;
-                    left: -1%;
-                  "
-                />
-              </div>
-              <div class="column q-pl-md">
-                <img
-                  src="~/src/assets/EU logo.png"
-                  style="
-                    position: relative;
-                    width: 100%;
-                    height: 35px;
-                    left: -1%;
-                  "
-                />
-              </div>
-              <div class="column q-pl-md ">
-                <img
-                  src="~/src/assets/UG logo 23.png"
-                  style="
-                    position: relative;
-                    width: 100%;
-                    height: 50px;
-                    left: -1%;
-                  "
-                />
-              </div>
-              <!-- <div class="column q-pr-xl">
+                  <img
+                    src="~/src/assets/GMES.png"
+                    style="position: relative; width: 100%; height: 35px"
+                  />
+                </div>
+                <div class="column q-pl-md">
+                  <img
+                    src="~/src/assets/AU logo.png"
+                    style="
+                      position: relative;
+                      width: 100%;
+                      height: 35px;
+                      left: -1%;
+                    "
+                  />
+                </div>
+                <div class="column q-pl-md">
+                  <img
+                    src="~/src/assets/EU logo.png"
+                    style="
+                      position: relative;
+                      width: 100%;
+                      height: 35px;
+                      left: -1%;
+                    "
+                  />
+                </div>
+                <div class="column q-pl-md">
+                  <img
+                    src="~/src/assets/UG logo 23.png"
+                    style="
+                      position: relative;
+                      width: 100%;
+                      height: 50px;
+                      left: -1%;
+                    "
+                  />
+                </div>
+                <!-- <div class="column q-pr-xl">
                 <router-link to="/home">
                   <img
                     src="~/src/assets/MarCNoWA_blue.jpeg"
@@ -251,96 +246,15 @@
           style="margin-right: auto"
         >
           <q-route-tab name="images" :label="$t(`home`)" to="/home" />
-          <q-route-tab
+          <!-- <q-route-tab
             ripple="false"
             name="videos"
             :label="$t('dashboard')"
             to="/dashboard"
-          />
-
-          <!-- <q-btn-dropdown
-              class="dash-nav3"
-              color="primary"
-              rounded
-              no-caps
-              auto-close
-              stretch
-              flat
-              label="Services"
-            >
-              <q-list>
-                <q-item clickable @click="tab = 'movies'">
-                  <q-item-section>{{ $t("ocean_condition") }}</q-item-section>
-                </q-item>
-                <q-item clickable @click="tab = 'movies'">
-                  <q-item-section>{{ $t("ocean_forecast") }}</q-item-section>
-                </q-item>
-
-                <q-item clickable @click="tab = 'photos'">
-                  <q-item-section>{{
-                    $t("potential_fishing_zones")
-                  }}</q-item-section>
-                </q-item>
-
-                <q-item clickable @click="tab = 'photos'">
-                  <q-item-section>{{
-                    $t("oil_spill_monitoring")
-                  }}</q-item-section>
-                </q-item>
-
-                <q-item clickable @click="tab = 'photos'">
-                  <q-item-section>{{
-                    $t("coastal_ecosystem_maping")
-                  }}</q-item-section>
-                </q-item>
-
-                <q-item clickable @click="tab = 'photos'">
-                  <q-item-section>{{
-                    $t("coastal_vulnerability")
-                  }}</q-item-section>
-                </q-item>
-              </q-list>
-            </q-btn-dropdown> -->
-          <q-btn
-            v-if="user"
-            class="my-font-2 q-mr-md"
-            style="font-weight: 400"
-            flat
-            no-caps
-            color="grey-9"
-            icon="mdi-account"
-            icon-right="mdi-menu-down"
-            :label="'Hi, ' + user.user_metadata.firstName"
-          >
-            <q-menu fit>
-              <q-list>
-                <q-item clickable v-close-popup to="/me">
-                  <q-item-section>
-                    <q-item-label>{{ $t("profile") }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup @click="handleLogout">
-                  <q-item-section>
-                    <q-item-label>{{ $t("logout") }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
-          <q-btn
-            v-else
-            class="my-font-2 q-mr-lg"
-            style="font-weight: 700"
-            flat
-            no-caps
-            color="grey-9"
-            icon="mdi-account"
-            :label="$t('login')"
-            to="login"
-          />
+          /> -->
         </q-tabs>
 
-        <div class="my-font q-mr-md" style="font-weight: 700">
+        <div class="my-font q-mx-md" style="font-weight: 700">
           <q-select
             label-color="grey-9"
             v-model="locale"
@@ -382,7 +296,7 @@
         />
       </div>
     </q-header>
-    <q-page-container>
+    <q-page-container >
       <router-view />
     </q-page-container>
   </q-layout>

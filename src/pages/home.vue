@@ -1,6 +1,6 @@
 <template>
   <div
-    class="row q-mx-md q-my-sm items-start jumbotron"
+    class="row q-mx-xl q-my-sm items-start jumbotron"
     id="hero"
   >
     <carouselContent>
@@ -19,8 +19,8 @@
   </div>
 
   <div
-    class="bg-white"
-    style="max-width: 90vw; margin: auto; position: relative"
+    class="bg-white q-mx-md q-my-sm"
+    style="margin: auto; position: relative"
     id="products-section"
   >
     <div
@@ -30,7 +30,7 @@
         font-weight: 700;
         font-size: 30px;
         color: #25408f;
-        max-width: 90vw;
+
         margin-left: auto;
       "
     >
@@ -65,7 +65,7 @@
     class="my-font-2 bg-grey-3 text-h6 text-Primary q-px-md q-pt-lg"
     style="font-weight: 700; color: #25408f"
   >
-    About MarCNoWA
+    {{ $t('about_project') }}
   </div>
 
   <div class="column bg-grey-3" v-if="matchMediaMobile">
@@ -79,13 +79,7 @@
       "
     >
       <P>
-        The MarCNoWA consortium is lead by the Regional Marine Centre of the
-        University of Ghana. The objective of the Action is to provide
-        decision-makers with EO information and tools that would support
-        effective marine and coastal resources management in North and West
-        Africa. This is being achieved through delivering EO services that will
-        enhance the formulation of marine, fisheries and environmental policies
-        to support decision-making at the national and regional level.
+        {{ $t('about_text') }}
       </P>
     </div>
   </div>
@@ -99,19 +93,19 @@
     </div>
   </div>
 
-  <div v-if="matchMediaDesktop" class="about-container bg-primary">
+  <div v-if="matchMediaDesktop" class="about-container q-mx-xl q-my-sm bg-primary">
     <div
       class="row items-center justify-center my-font-2 text-white q-mt-lg"
       style="
         font-weight: 700;
         font-size: 30px;
         color: #25408f;
-        width: 90%;
+
         min-height: 10vh;
         margin: auto;
       "
     >
-      <div class="q-mx-lg">About the MarCNoWA Project</div>
+      <div class="q-mx-lg">{{ $t('about_project') }}</div>
     </div>
 
     <div
@@ -135,14 +129,7 @@
                 style="font-weight: 400; font-size: 18px"
               >
                 <P>
-                  The MarCNoWA consortium is lead by the Regional Marine Centre
-                  of the University of Ghana. The objective of the Action is to
-                  provide decision-makers with EO information and tools that
-                  would support effective marine and coastal resources
-                  management in North and West Africa. This is being achieved
-                  through delivering EO services that will enhance the
-                  formulation of marine, fisheries and environmental policies to
-                  support decision-making at the national and regional level.
+                  {{ $t('about_text') }}
                 </P>
               </q-card-section>
             </q-card>
@@ -210,13 +197,13 @@
   >
     <div
       class="column justify-center q-pa-none q-ma-none"
-      style="min-height: 70%; max-width: 90%"
+      style="min-height: 60vh;"
     >
       <div
         class="my-font-2 text-center q-px-md q-py-md"
         style="font-weight: 700; font-size: 30px; color: #25408f"
       >
-        Implementing Partners
+        {{ $t('partners') }}
       </div>
       <div class="row q-gutter-x-lg">
         <div class="column">
@@ -250,11 +237,11 @@
 
   <div
     v-if="matchMediaDesktop"
-    class="footer-pc row justify-center q-pa-none q-ma-none"
+    class="footer-pc row q-mx-xl justify-center q-pa-none"
   >
     <div
       class="column justify-center q-pa-none"
-      style="max-width: 90vw; min-height: 100%"
+      style="min-width: 90vw; min-height: 100%"
     >
       <div class="row q-my-lg">
         <div class="col q-ma-md" style="min-width: 25vw">
@@ -292,10 +279,10 @@
               style="max-width: 25vw"
             >
               <div class="q-pa-md" style="font-weight: 700; font-size: 21px">
-                Community
+                {{ $t('community') }}
               </div>
               <div class="q-px-md q-pb-md">
-                Stay informed about coastal wonders. Subscribe now for
+                {{ $t('community_text') }}
               </div>
               <div class="row justify-left q-gutter-lg items-left">
                 <q-btn
@@ -332,12 +319,14 @@
               style="max-width: 15vw"
             >
               <div class="q-pa-md" style="font-weight: 700; font-size: 21px">
-                Make your contribution
+                {{ $t('invite_title') }}
               </div>
               <div class="q-px-md q-pb-md">
-                Stay informed about coastal wonders. Subscribe now for exclusive
-                updates on geomorphology, shoreline change, and environmental
-                conservation.
+                {{ $t('invite_text') }}
+              </div>
+              <div class="q-px-md q-pb-md row q-gutter-sm">
+                <q-btn unelevated color="white" text-color="grey-7" :label="$t('signup')" />
+                <q-btn outline color="white" :label="$t('login')" />
               </div>
             </div>
           </div>

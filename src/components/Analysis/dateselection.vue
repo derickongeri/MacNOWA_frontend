@@ -23,15 +23,15 @@
           text-color="grey-9"
           class="q-my-none q-ml-xs q-mr-none"
         >
-          {{ date }}
+          {{ layerDate }}
           <q-popup-proxy
-          anchor="bottom left"
-          self="top left"
-          transition-show="scale"
-          transition-hide="scale"
-        >
-          <q-date v-model="date" mask="YYYY/MM/DD" minimal> </q-date>
-        </q-popup-proxy>
+            anchor="bottom left"
+            self="top left"
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <q-date v-model="date" mask="YYYY/MM/DD" minimal> </q-date>
+          </q-popup-proxy>
         </q-chip>
       </div>
     </div>
@@ -52,6 +52,24 @@ const dateChange = computed(() => {
   return date.value;
 });
 
+const layerDate = computed(() => {
+  const val = store.getSelectedDate;
+
+  // Extract year, month, and day from the input string
+  const year = val.slice(0, 4);
+  const month = val.slice(4, 6);
+  const day = val.slice(6, 8);
+
+  // Create a new Date object with the extracted values
+  const date = new Date(`${year}-${month}-${day}`);
+
+  // Format the date as "yyyy/MM/dd"
+  const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
+  return formattedDate;
+});
+
 const stringToDate = (dateString) => {
   console.log(dateString);
   const [year, month, day] = dateString.split("/").map(Number);
@@ -67,13 +85,36 @@ watch(dateChange, () => {
   store.setSelectedDate(dateSelected.value);
 });
 
-watch(()=>store.getSelectedDate, () => {
-  const dateString = store.getSelectedDate;
+watch(
+  () => store.getSelectedDate,
+  () => {
+    const dateString = store.getSelectedDate;
+
+    // Extract year, month, and day from the input string
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(4, 6);
+    const day = dateString.slice(6, 8);
+
+    // Create a new Date object with the extracted values
+    const date = new Date(`${year}-${month}-${day}`);
+
+    // Format the date as "yyyy/MM/dd"
+    const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
+
+    date.value = formattedDate;
+  },
+  { deep: true }
+);
+
+watch(layerDate, (val) => {
+  console.log("from datepicker", val);
 
   // Extract year, month, and day from the input string
-  const year = dateString.slice(0, 4);
-  const month = dateString.slice(4, 6);
-  const day = dateString.slice(6, 8);
+  const year = val.slice(0, 4);
+  const month = val.slice(4, 6);
+  const day = val.slice(6, 8);
 
   // Create a new Date object with the extracted values
   const date = new Date(`${year}-${month}-${day}`);
@@ -82,7 +123,5 @@ watch(()=>store.getSelectedDate, () => {
   const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
     .toString()
     .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
-
-  date.value = formattedDate;
-}, { deep: true });
+});
 </script>
