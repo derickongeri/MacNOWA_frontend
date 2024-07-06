@@ -169,68 +169,63 @@
 
     <q-header
       v-if="matchMediaDesktop"
-
       reveal
       class="text-white q-py-sm navigation-background-color bg-white"
       height-hint="98"
     >
       <q-toolbar>
-        <q-toolbar-title
-          class="q-pa-none"
-          style="margin-left: 2%;"
-        >
+        <q-toolbar-title class="q-pa-none" style="margin-left: 2%">
           <div class="row items-center justify-between">
             <div>
               <router-link to="/home">
                 <img
-                src="~/src/assets/marcnowa.jpeg"
-                style="width: 100%; height: 50px"
-              />
+                  src="~/src/assets/marcnowa.jpeg"
+                  style="width: 100%; height: 50px"
+                />
               </router-link>
-
             </div>
             <div class="col">
-              <div class="row items-center" style="margin-left:10%">
+              <div class="row items-center" style="margin-left: 10%">
                 <div class="column">
-                <img
-                  src="~/src/assets/GMES.png"
-                  style="position: relative; width: 100%; height: 35px"
-                />
-              </div>
-              <div class="column q-pl-md">
-                <img
-                  src="~/src/assets/AU logo.png"
-                  style="
-                    position: relative;
-                    width: 100%;
-                    height: 35px;
-                    left: -1%;
-                  "
-                />
-              </div>
-              <div class="column q-pl-md">
-                <img
-                  src="~/src/assets/EU logo.png"
-                  style="
-                    position: relative;
-                    width: 100%;
-                    height: 35px;
-                    left: -1%;
-                  "
-                />
-              </div>
-              <div class="column q-pl-md ">
-                <img
-                  src="~/src/assets/UG logo 23.png"
-                  style="
-                    position: relative;
-                    width: 100%;
-                    height: 50px;
-                    left: -1%;
-                  "
-                />
-              </div>
-              <!-- <div class="column q-pr-xl">
+                  <img
+                    src="~/src/assets/GMES.png"
+                    style="position: relative; width: 100%; height: 35px"
+                  />
+                </div>
+                <div class="column q-pl-md">
+                  <img
+                    src="~/src/assets/AU logo.png"
+                    style="
+                      position: relative;
+                      width: 100%;
+                      height: 35px;
+                      left: -1%;
+                    "
+                  />
+                </div>
+                <div class="column q-pl-md">
+                  <img
+                    src="~/src/assets/EU logo.png"
+                    style="
+                      position: relative;
+                      width: 100%;
+                      height: 35px;
+                      left: -1%;
+                    "
+                  />
+                </div>
+                <div class="column q-pl-md">
+                  <img
+                    src="~/src/assets/UG logo 23.png"
+                    style="
+                      position: relative;
+                      width: 100%;
+                      height: 50px;
+                      left: -1%;
+                    "
+                  />
+                </div>
+                <!-- <div class="column q-pr-xl">
                 <router-link to="/home">
                   <img
                     src="~/src/assets/MarCNoWA_blue.jpeg"
@@ -406,6 +401,7 @@ const localeOptions = ref([
 ]);
 
 const rightDrawerOpen = ref(false),
+  toggleSettings = ref(false),
   matchMediaDesktop = ref(false),
   matchMediaMobile = ref(false);
 

@@ -1,21 +1,18 @@
 <template>
   <div
+    v-if="matchMediaDesktop"
     class="row q-mx-xl q-my-sm items-start jumbotron"
     id="hero"
   >
-    <carouselContent>
-      <!-- <div
-      class="row q-pt-lg justify-center"
-      style="z-index: 1000; min-width: 100vw; position: relative;bottom: -15%;"
-    >
-      <q-btn
-        round
-        color="primary"
-        @click="scrollToProducts()"
-        icon="mdi-chevron-down"
-      />
-    </div> -->
-    </carouselContent>
+    <carouselContent/>
+  </div>
+
+  <div
+    v-if="matchMediaMobile"
+    class="row q-mx-md q-my-sm items-start jumbotron"
+    id="hero"
+  >
+    <carouselContent/>
   </div>
 
   <div
