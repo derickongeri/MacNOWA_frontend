@@ -6,7 +6,10 @@
     style="min-width: 100vw; min-height: 95vh"
   >
     <div class="absolute-center q-pa-md bg-white login-card text-center">
-      <div class="row text-h4 text-left justify-center text-primary" style="font-weight: 400">
+      <div
+        class="row text-h4 text-left justify-center text-primary"
+        style="font-weight: 400"
+      >
         {{ $t("login") }}
       </div>
 
@@ -14,30 +17,23 @@
         <div style="font-weight: 400" class="text-left text-grey-7">
           {{ $t("Emailaddress") }}
         </div>
-        <div
-          class="row q-pa-xs"
-          style="min-width: 25vw;"
-        >
+        <div class="row q-pa-xs" style="min-width: 25vw">
           <q-input
             class="q-px-none full-width"
             v-model="form.email"
             color="grey-1"
             bg-color="grey-1"
-
             type="email"
             placeholder="email@example.com*"
           />
         </div>
 
         <div style="font-weight: 400" class="text-left text-grey-7 q-mt-md">
-          {{$t('Password')}}
+          {{ $t("Password") }}
         </div>
-        <div
-          class="row q-pa-xs"
-          style="min-width: 25vw;"
-        >
+        <div class="row q-pa-xs" style="min-width: 25vw">
           <q-input
-          class="full-width"
+            class="full-width"
             :type="isPwd ? 'password' : 'text'"
             v-model="form.password"
             type="password"
@@ -88,9 +84,11 @@
         class="row justify-center items-center q-gutter-md full-width text-grey-7"
         style="font-weight: 400; font-size: medium"
       >
-        <div>{{ $t('account') }}</div>
+        <div>{{ $t("account") }}</div>
 
-        <router-link to="signup"><div class="">{{ $t('Register') }}</div></router-link>
+        <router-link to="signup"
+          ><div class="">{{ $t("Register") }}</div></router-link
+        >
       </div>
     </div>
   </div>
@@ -105,7 +103,9 @@ const form = ref({
   password: "",
 });
 
-const isValid = computed(()=> (form.value.password && form.value.password.length > 0) )
+const isValid = computed(
+  () => form.value.password && form.value.password.length > 0
+);
 
 const rememberMe = ref(false);
 const isPwd = ref(true);

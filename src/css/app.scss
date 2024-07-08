@@ -132,7 +132,6 @@
 }
 
 .about-container {
-
   border-radius: 20px;
 }
 
@@ -156,12 +155,6 @@
   border-radius: 20px;
   color: white;
   background-color: rgba(0, 0, 0, 0.3);
-}
-
-.login-card {
-  // min-width: 50vw;
-  // min-height: 60vh;
-  border-radius: 20px;
 }
 
 /* #pulse {
@@ -216,5 +209,21 @@
 
   @media (max-width: $breakpoint-sm-max) {
     font-size: 27px;
+  }
+}
+
+.login-card {
+  // min-width: 50vw;
+  // min-height: 60vh;
+  border-radius: 20px;
+
+  @media (min-width: $breakpoint-md-min) {
+    // font-size: 39px;
+  }
+
+  @media (max-width: $breakpoint-sm-max) {
+    // font-size: 27px;
+    min-width: 96%;
+    border-radius: 10px;
   }
 }
