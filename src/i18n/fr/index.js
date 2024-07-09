@@ -86,4 +86,17 @@ export default {
 
   tour: `Faire un tour`,
   sharePrint: `Partager/Imprimer`,
+
+  Grey: `Gris`,
+  Satellite: `Satellite`,
+  Dark: `Sombre`,
+
+  copylink: `Copier le lien`,
+  copylinktext: `Toute personne disposant de cette URL pourra accéder à cette carte.`,
+  printmap: `Imprimer la carte`,
+  printmaptext: `Ouvrir une version imprimable de cette carte`,
+  copy: `Copier`,
+  print: `Imprimer`,
 };
+
+

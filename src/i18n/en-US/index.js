@@ -86,6 +86,17 @@ export default {
 
   tour: `Take a Tour`,
   sharePrint: `Share/Print`,
+
+  Grey: `Grey`,
+  Satellite: `Satellite`,
+  Dark: `Dark`,
+
+  copylink: `Copy Link`,
+  copylinktext: `Anyone with this URL will be able to access this map.`,
+  printmap: `Print Map`,
+  printmaptext: `Open a print version of this map`,
+  copy: `Copy`,
+  print: `Print`,
 };
 
 /*
@@ -138,6 +149,16 @@ export default {
           analysisTab: `Analysis`,
           selectDate: `Select Date`,
 
+          Grey: `Grey`,
+          Satellite: `Satellite`,
+          Dark: `Dark`,
+
+          copylink: `Copy Link`,
+          copylinktext: `Anyone with this URL will be able to access this map.`,
+          printmap: `Print Map`,
+          printmaptext: `Open a print version of this map`,
+          copy: `Copy`,
+          print: `Print`,
 
 
 

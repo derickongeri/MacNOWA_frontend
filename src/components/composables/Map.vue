@@ -1,4 +1,7 @@
 <template>
+  <div>
+    <burnedAreaLayout />
+  </div>
   <div class="q-pa-xs map-pannel" id="mapid" style="overflow: hidden">
     <div
       v-if="matchMediaDesktop"
@@ -60,7 +63,7 @@
         <legendItem />
       </div>
 
-      <div class="row bg-white text-grey-9">
+      <div class="row basemap-selection bg-white text-grey-9">
         <q-list class="row q-gutter-x-md" style="min-width: 100px">
           <q-item
             class="col q-px-none"
@@ -75,7 +78,7 @@
                 />
               </q-avatar>
               <div class="row justify-center" style="font-size: 0.75em">
-                Mapbox
+                {{ $t(`Grey`) }}
               </div>
             </q-item-section>
           </q-item>
@@ -91,7 +94,7 @@
                 />
               </q-avatar>
               <div class="row justify-center" style="font-size: 0.75em">
-                Satellite
+                {{ $t(`Satellite`) }}
               </div>
             </q-item-section>
           </q-item>
@@ -107,7 +110,7 @@
                 />
               </q-avatar>
               <div class="row justify-center" style="font-size: 0.75em">
-                dark
+                {{ $t("Dark") }}
               </div>
             </q-item-section>
           </q-item>
@@ -153,17 +156,16 @@
                 style="border-radius: 5px"
               >
                 <div class="arrow-up q-ma-xs" style="left: 45%"></div>
-                <span class="text-primary q-mx-sm" style="font-size: 0.75em"
-                  >Copy Link</span
-                >
+                <span class="text-primary q-mx-sm" style="font-size: 0.75em">{{
+                  $t("copylink")
+                }}</span>
                 <q-separator />
                 <div class="q-my-sm q-mx-sm" style="min-width: 150px">
                   <div class="map-selection q-pa-xs" style="">
                     <span
                       class="row text-grey-9 q-mx-sm"
                       style="font-size: 0.75em"
-                      >Anyone with this URL will be able to access this
-                      map.</span
+                      >{{ $t("copylinktext") }}</span
                     >
                     <q-btn-group outlined rounded flat>
                       <q-btn
@@ -174,19 +176,25 @@
                         color="primary"
                         ><span>http://geoportal.gmes.ug.gh</span></q-btn
                       >
-                      <q-btn rounded color="primary" label="Copy" />
+                      <q-btn rounded color="primary" :label="$t('copy')" />
                     </q-btn-group>
                   </div>
                 </div>
                 <q-separator />
-                <span class="text-primary q-mx-sm" style="font-size: 0.75em"
-                  >Print Map</span
-                >
-                <span class="row text-grey-9 q-mx-sm" style="font-size: 0.75em"
-                  >Open a print version of this map</span
+                <span class="text-primary q-mx-sm" style="font-size: 0.75em">{{
+                  $t("printmap")
+                }}</span>
+                <span
+                  class="row text-grey-9 q-mx-sm"
+                  style="font-size: 0.75em"
+                  >{{ $t("printmaptext") }}</span
                 >
                 <div class="q-my-sm q-mx-sm" style="min-width: 150px">
-                  <q-btn color="primary" label="Print" />
+                  <q-btn
+                    color="primary"
+                    :label="$t('print')"
+                    @click="printLayer"
+                  />
                 </div>
               </div>
             </div>
@@ -195,8 +203,7 @@
       </div>
 
       <div class="q-gutter-sm q-py-md" id="#v-step-1">
-        <div class="row">
-          <q-space />
+        <div class="row zoom-buttons justify-end">
           <div
             class="bg-grey-1 q-pa-none q-ma-none"
             style="border-radius: 20px; border: 1px solid #002f6b"
@@ -368,6 +375,8 @@
       </div>
     </div>
   </div>
+
+  <Tour />
 </template>
 
 <script>
@@ -389,12 +398,17 @@ import { useI18n } from "vue-i18n";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+import "leaflet.browser.print/dist/leaflet.browser.print";
+
+import "./Modals/betterScale";
+
 import baselayers from "./Modals/baselayers.js";
 import "./Modals/smoothWheelZoom";
 import datepicker from "../Analysis/datepicker.vue";
 import layerswitcher from "src/components/composables/Modals/Layercomponents/layerswitcher.vue";
 import legend from "src/components/composables/Modals/Layercomponents/Legend.vue";
 import tour from "src/components/composables/Tour.vue";
+import printLayout from "./Modals/printlayouts/burnedarea.vue";
 
 import setSelectedRaster from "./Modals/fetchrasters";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
@@ -406,6 +420,7 @@ export default defineComponent({
     layerOptions: layerswitcher,
     legendItem: legend,
     Tour: tour,
+    burnedAreaLayout: printLayout,
   },
   setup() {
     const bus = new EventBus();
@@ -432,6 +447,7 @@ export default defineComponent({
       center = ref([18.678691, 4.329978]),
       current_top_base_layer = ref(null),
       baseMaps = ref([]),
+      scaleBar = ref(null),
       showBaseMapList = ref(false),
       showLayer = ref(false),
       currentBaseLayer = ref(null);
@@ -492,6 +508,13 @@ export default defineComponent({
         "leaflet-control-layers"
       );
       layerControl[0].style.visibility = "hidden";
+
+      // L.control
+      //   .betterscale({
+      //     position: "bottomright",
+      //     metric: true,
+      //   })
+      //   .addTo(map.value);
     };
 
     const zoom_in = function () {
@@ -534,7 +557,7 @@ export default defineComponent({
       }
     };
 
-    const resetZoomLevel = function () {
+    const resetZoomLevel = async function () {
       const layers = [
         currentRasterLayer.value,
         mangrove_layer_2015.value,
@@ -563,6 +586,57 @@ export default defineComponent({
 
           map.value.setView(targetPoint, newZoomLevel);
         }
+      });
+    };
+
+    const printLayer = async () => {
+      await resetZoomLevel().then(() => {
+        let clonedDiv = null;
+
+        const targetDiv = document.querySelector(".target-div");
+        const scaleBarElement = document.querySelector(
+          ".leaflet-control-better-scale"
+        );
+        const overlayCanvas = document.querySelector(".leaflet-tile-loaded");
+
+        if (!targetDiv) {
+          console.error("targetDiv not found");
+          return;
+        }
+        if (!scaleBarElement) {
+          console.error("scaleBar element not found");
+          return;
+        }
+        if (!overlayCanvas) {
+          console.error("overlayCanvas not found");
+          return;
+        }
+
+        console.log(scaleBarElement, "div scalebar");
+
+        clonedDiv = scaleBarElement.cloneNode(true);
+
+        clonedDiv.setAttribute("data-cloned", "true");
+
+        // Check if the target div already contains the cloned div
+        if (targetDiv.querySelector('[data-cloned="true"]')) {
+          console.log("Cloned div already appended");
+        } else {
+          targetDiv.appendChild(clonedDiv);
+        }
+        targetDiv.appendChild(overlayCanvas);
+
+        var options = {
+          documentTitle: ``,
+          closePopupsOnPrint: false,
+          manualMode: false,
+          //printLayer: vectorTileLayers.value
+        };
+        var browserPrint = L.browserPrint(
+          map.value,
+          /*scaleBar.value,*/ options
+        );
+        browserPrint.print(L.BrowserPrint.Mode.Landscape());
       });
     };
 
@@ -672,6 +746,13 @@ export default defineComponent({
     onMounted(() => {
       setLeafletMap().then(() => {
         showLayer.value = !showLayer.value;
+
+        L.control
+          .betterscale({
+            position: "bottomright",
+            metric: true,
+          })
+          .addTo(map.value);
         //  setRasterLayer();
         // map.value.eachLayer(function (layer) {
         //   //
@@ -757,12 +838,14 @@ export default defineComponent({
       scrollAreaRef,
       startTour,
       resetZoomLevel,
+      printLayer,
+      scaleBar,
     };
   },
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #mapid {
   /* position: relative;
   top: 0%;
@@ -860,7 +943,7 @@ export default defineComponent({
   /* background: none; */
   position: absolute;
   right: 2%;
-  bottom: 0%;
+  bottom: 5%;
   color: rgb(228, 228, 228);
   border-radius: 10px;
 }
@@ -910,5 +993,243 @@ export default defineComponent({
     width: 100%;
     border-radius: 10px;
   }
+}
+
+.pop-up-btn {
+  background: #dca257;
+  color: white;
+  text-align: center;
+  border-radius: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 100%;
+  border-width: 0px;
+}
+
+.pop-up-btn:hover {
+  background-color: #dca2578a;
+  /* Green */
+  color: white;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #f1f8e9;
+  color: #333;
+  box-shadow: 0 3px 14px rgb(0 0 0 / 40%);
+  border-radius: 0%;
+  min-width: 200px;
+}
+
+.leaflet-popup-tip {
+  background: #f1f8e9;
+}
+
+.box {
+  display: flex;
+  flex-flow: row;
+  height: 100%;
+}
+
+.box .row.map-selection {
+  flex: 0 1 auto;
+  /* The above is shorthand for:
+  flex-grow: 0,
+  flex-shrink: 1,
+  flex-basis: auto
+  */
+}
+
+.box .row.map-content {
+  flex: 1 1 auto;
+}
+
+.leaflet-right .leaflet-control {
+  float: right;
+}
+
+.leaflet-left .leaflet-control {
+  float: left;
+}
+
+.leaflet-control {
+  position: relative;
+  bottom: 50%;
+  z-index: 800;
+  pointer-events: visiblePainted;
+  pointer-events: auto;
+}
+
+.leaflet-top {
+  margin: 20vh 0px;
+  display: none;
+}
+
+.leaflet-right {
+  margin-right: 10px;
+  right: 5vw;
+}
+
+.leaflet-bottom .leaflet-right {
+  margin: 20vh 0px;
+}
+
+.custom-map-tools-section {
+  position: absolute;
+  right: 0;
+  margin: 50px 20px 0px 0px;
+  z-index: 500;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.custom-tool {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+  border-radius: 10px;
+  padding: 7px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.layer-control {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+  padding: 10px;
+}
+.layer-control label {
+  display: block;
+  margin-bottom: 5px;
+  z-index: 50000;
+}
+.layer-control input[type="radio"] {
+  margin-right: 5px;
+}
+.map-container {
+  height: 500px;
+}
+
+leaflet-browser-print-content {
+  .leaflet-control-better-scale {
+    position: absolute;
+  }
+}
+</style>
+
+<style>
+.grid-print-container {
+  display: grid;
+  grid-template: auto 1fr auto / 1fr;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(0, 0, 0);
+  max-height: 680px;
+  max-width: 99%;
+  top: 2%;
+}
+
+.title {
+  grid-row: 1;
+  justify-self: center;
+  text-align: center;
+  color: grey;
+  box-sizing: border-box;
+  margin-top: 0;
+}
+
+.grid-map-print {
+  grid-row: 1;
+  max-height: 89%;
+  max-width: 760px;
+  top: 7%;
+  left: 2%;
+  border: 2px solid rgb(12, 12, 12);
+}
+
+.sub-content {
+  position: relative;
+  grid-row: 1;
+  max-width: fit-content;
+  /* padding-left: 10px; */
+  box-sizing: border-box;
+  top: 7%;
+  left: 2%;
+  height: 89%;
+  /* margin: auto; */
+  background-color: rgb(255, 255, 255);
+}
+</style>
+<style>
+[leaflet-browser-print-pages] {
+  display: none;
+}
+
+.pages-print-container [leaflet-browser-print-pages] {
+  display: block;
+}
+</style>
+<style leaflet-browser-print-content>
+.leaflet-control-better-scale {
+  height: 15px;
+  padding: 5px;
+}
+.leaflet-control-better-scale-upper-first-piece {
+  top: 0%;
+  left: 0%;
+  width: 25%;
+}
+.leaflet-control-better-scale-upper-second-piece {
+  top: 0%;
+  left: 50%;
+  width: 25%;
+}
+.leaflet-control-better-scale-lower-first-piece {
+  top: 50%;
+  left: 25%;
+  width: 25%;
+}
+.leaflet-control-better-scale-lower-second-piece {
+  top: 50%;
+  left: 75%;
+  width: 30%;
+}
+.leaflet-control-better-scale-ruler-block {
+  overflow: hidden;
+  position: absolute;
+  height: 50%;
+  background-color: #444444;
+}
+.leaflet-control-better-scale-ruler {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 7px;
+  background-color: White;
+  border: 1px solid #444444;
+}
+.leaflet-control-better-scale-label-div {
+  position: relative;
+  width: 100%;
+}
+.leaflet-control-better-scale-label {
+  position: absolute;
+  width: 10%;
+  text-align: center;
+  color: #fff;
+  font: sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  height: 5px;
+  top: -1px;
+  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
+.leaflet-control-better-scale-first-number {
+  left: 45%;
+}
+.leaflet-control-better-scale-second-number {
+  left: 95%;
 }
 </style>
