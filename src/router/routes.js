@@ -9,7 +9,11 @@ const routes = [
         component: () => import("pages/dashboard.vue"),
         meta: { keepAlive: true },
       },
-      { path: "/home", component: () => import("pages/home.vue") },
+      {
+        path: "/home",
+        name: "home",
+        component: () => import("pages/home.vue"),
+      },
     ],
   },
 
@@ -31,6 +35,11 @@ const routes = [
         path: "/resetpassword",
         name: "resetpassword",
         component: () => import("pages/user/resetpassword.vue"),
+      },
+      {
+        path: "/email-confirmation",
+        name: "email-confirmation",
+        component: () => import("pages/user/EmailConfirmation.vue"),
       },
     ],
   },

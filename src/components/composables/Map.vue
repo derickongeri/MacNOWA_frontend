@@ -5,7 +5,7 @@
   <div class="q-pa-xs map-pannel" id="mapid" style="overflow: hidden">
     <div
       v-if="matchMediaDesktop"
-      class="layer-options row q-py-sm"
+      class="layer-options overlay-div row q-py-sm"
       style="background-color: #002e6b00"
       @mouseover="map.dragging.disable(), map.scrollWheelZoom.disable()"
       @mouseleave="map.dragging.enable(), map.scrollWheelZoom.enable()"
@@ -25,7 +25,7 @@
     </div>
     <div
       v-if="datepicker && matchMediaDesktop"
-      class="gradient-rect q-pb-sm q-px-xl"
+      class="gradient-rect overlay-div q-pb-sm q-px-xl"
       style="background-color: #002f6b50; backdrop-filter: blur(10px)"
     >
       <dateslider class="" />
@@ -34,7 +34,7 @@
     <q-scroll-area
       v-if="matchMediaMobile"
       ref="scrollAreaRef"
-      class="absolute-bottom text-white"
+      class="absolute-bottom overlay-div text-white"
       visible
       style="
         z-index: 800;
@@ -53,7 +53,7 @@
 
     <div
       v-if="matchMediaDesktop"
-      class="legend-container column"
+      class="legend-container overlay-div column"
       style="background-color: #002f6b00; backdrop-filter: blur(0px)"
       @mouseover="map.dragging.disable(), map.scrollWheelZoom.disable()"
       @mouseleave="map.dragging.enable(), map.scrollWheelZoom.enable()"
@@ -119,7 +119,7 @@
     </div>
 
     <div
-      class="zoom-controls q-gutter-xs q-py-sm"
+      class="zoom-controls overlay-div q-gutter-xs q-py-sm"
       style="width: fit-content"
       @mouseover="map.dragging.disable(), map.scrollWheelZoom.disable()"
       @mouseleave="map.dragging.enable(), map.scrollWheelZoom.enable()"
@@ -369,7 +369,7 @@
             outline
             color="primary"
             icon="mdi-select-drag"
-            @click="openCloseStats"
+            @click="toggleDrawingTools"
           />
         </div>
       </div>
@@ -402,6 +402,8 @@ import "leaflet.browser.print/dist/leaflet.browser.print";
 
 import "./Modals/betterScale";
 
+import "./Modals/leaflet-measure-ext/dist/leaflet-measure";
+
 import baselayers from "./Modals/baselayers.js";
 import "./Modals/smoothWheelZoom";
 import datepicker from "../Analysis/datepicker.vue";
@@ -412,6 +414,7 @@ import printLayout from "./Modals/printlayouts/burnedarea.vue";
 
 import setSelectedRaster from "./Modals/fetchrasters";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
+import { useStatsStore } from "src/stores/statsStore";
 import { useQuasar, EventBus } from "quasar";
 
 export default defineComponent({
@@ -426,6 +429,7 @@ export default defineComponent({
     const bus = new EventBus();
     const $q = useQuasar();
     const store = useRasterStore();
+    const statsStore = useStatsStore();
     //const router = { useRouter };
     const { locale } = useI18n({ useScope: "global" });
 
@@ -450,7 +454,9 @@ export default defineComponent({
       scaleBar = ref(null),
       showBaseMapList = ref(false),
       showLayer = ref(false),
-      currentBaseLayer = ref(null);
+      currentBaseLayer = ref(null),
+      vectorLayer = ref(null),
+      marker = ref(null);
 
     const setLeafletMap = async function () {
       const { osmTiles, darkMap, satellite } = baselayers;
@@ -509,12 +515,19 @@ export default defineComponent({
       );
       layerControl[0].style.visibility = "hidden";
 
+      var measureControl = new L.Control.Measure({ position: "topright" });
+      measureControl.addTo(map.value);
+
+      // measureControl.getContainer().classList.add('custom-control-position');
+
       // L.control
       //   .betterscale({
       //     position: "bottomright",
       //     metric: true,
       //   })
       //   .addTo(map.value);
+
+      map.value.getContainer().classList.add("crosshair-cursor");
     };
 
     const zoom_in = function () {
@@ -523,6 +536,17 @@ export default defineComponent({
 
     const zoom_out = function () {
       map.value.setZoom(map.value.getZoom() - 1);
+    };
+
+    const toggleDrawingTools = function () {
+      const box = document.getElementsByClassName(
+        "leaflet-top leaflet-right"
+      )[0];
+      if (box.style.display === "none") {
+        box.style.display = "block";
+      } else {
+        box.style.display = "none";
+      }
     };
 
     const showListofBaseMaps = function () {
@@ -640,6 +664,81 @@ export default defineComponent({
       });
     };
 
+    const setVectorLayer = async (lat, lng) => {
+      if (vectorLayer.value) {
+        map.value.removeLayer(vectorLayer.value);
+        vectorLayer.value = null;
+      }
+      if (marker.value) {
+        map.value.removeLayer(marker.value);
+      }
+      // Construct WFS URL with CQL filter
+      const wfsBaseURL = "http://197.255.126.45/geoserver/marcnowa/ows";
+      const wfsParams = new URLSearchParams({
+        service: "WFS",
+        version: "1.0.0",
+        request: "GetFeature",
+        typeName: "marcnowa:SALT_grids",
+        outputFormat: "application/json",
+        srsName: "EPSG:4326", // Specify the desired CRS here
+        CQL_FILTER: `DWITHIN(the_geom, POINT(${lng} ${lat}), 0.000001, meters)`,
+      });
+
+      const wfsURL = `${wfsBaseURL}?${wfsParams.toString()}`;
+      console.log(wfsURL);
+
+      let response = await axios.get(wfsURL);
+      let vectLayer = response.data;
+
+      console.log("response", vectLayer.features);
+
+      if (vectLayer.features.length === 0) {
+      } else {
+        statsStore.setSelectedGrid(vectLayer.features[0].properties);
+        // statsStore.setChartData(vectLayer.features[0].properties);
+
+        vectorLayer.value = new L.geoJSON([vectLayer], {
+          style: {
+            fillOpacity: 0,
+            fillColor: "#42424200",
+            weight: 2,
+            color: "#484c4d00",
+          },
+          // onEachFeature: function (feature, layer) {
+          //   feature = layer.bindPopup(
+          //     "<br><strong>" +
+          //     feature.properties.UniqueID + "</br>" +
+          //     feature.properties.majorid + "</br>" +
+          //       feature.properties.minorid +
+          //       "</strong><br><br> <button id='pop-up-selector' class='pop-up-btn'>Analyze</button>"
+          //   );
+          // },
+        });
+
+        console.log("vector", vectorLayer.value);
+
+        const gridBounds = vectorLayer.value.getBounds();
+        const centerPoint = gridBounds.getCenter();
+
+        statsStore.setCenterPoint(`${centerPoint.lat},${centerPoint.lng}`);
+
+        console.log("Centerpoint Coordinates:", centerPoint);
+
+        marker.value = L.marker([lat, lng]);
+
+
+        map.value.setView([centerPoint.lat, centerPoint.lng], 9);
+        marker.value.addTo(map.value);
+
+        vectorLayer.value.addTo(map.value).bringToFront();
+      }
+
+      // map.value.fitBounds(vectorLayer.value.getBounds(), {
+      //   // paddingBottomRight: [0, 0],
+      //   setZoom: 2,
+      // });
+    };
+
     const setRasterLayer = async function () {
       try {
         Loading.show({
@@ -753,11 +852,29 @@ export default defineComponent({
             metric: true,
           })
           .addTo(map.value);
+
+        map.value.on("click", function (e) {
+          var coords = e.latlng;
+          var lat = coords.lat;
+          var lng = coords.lng;
+          console.log(lat, lng);
+
+          setVectorLayer(lat, lng);
+        });
+
         //  setRasterLayer();
         // map.value.eachLayer(function (layer) {
         //   //
         //   console.log(layer);
         // });
+      });
+
+      // Select all elements with class 'overlay-div'
+      var overlayDivs = document.querySelectorAll(".overlay-div");
+
+      // Loop through each overlay div and disable click propagation
+      overlayDivs.forEach(function (overlayDiv) {
+        L.DomEvent.disableClickPropagation(overlayDiv);
       });
     });
 
@@ -840,12 +957,13 @@ export default defineComponent({
       resetZoomLevel,
       printLayer,
       scaleBar,
+      toggleDrawingTools,
     };
   },
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #mapid {
   /* position: relative;
   top: 0%;
@@ -858,6 +976,11 @@ export default defineComponent({
   border-color: rgb(19, 19, 19);
   background: none;
 }
+
+.crosshair-cursor {
+  cursor: crosshair;
+}
+
 #chart-area {
   background: none;
   border-radius: 20px;
@@ -922,20 +1045,7 @@ export default defineComponent({
   width: fit-content;
 }
 
-.gradient-rect {
-  width: 70%;
-  min-height: 20px;
-  z-index: 2000;
-  /* background: none; */
-  position: absolute;
-  left: 0%;
-  bottom: 0%;
-  color: rgb(228, 228, 228);
-  border-radius: 10px;
-  /* text-align: center;
-  line-height: 40px;
-  font-size: 16px; */
-}
+
 
 .legend-container {
   max-width: 20%;
@@ -1015,7 +1125,7 @@ export default defineComponent({
 }
 
 .leaflet-popup-content-wrapper {
-  background: #f1f8e9;
+  background: #d2dcf3;
   color: #333;
   box-shadow: 0 3px 14px rgb(0 0 0 / 40%);
   border-radius: 0%;
@@ -1023,7 +1133,7 @@ export default defineComponent({
 }
 
 .leaflet-popup-tip {
-  background: #f1f8e9;
+  background: #d2dcf3;
 }
 
 .box {
@@ -1061,20 +1171,17 @@ export default defineComponent({
   pointer-events: auto;
 }
 
+// overwrite the leaflet top control
 .leaflet-top {
-  margin: 20vh 0px;
   display: none;
 }
 
 .leaflet-right {
-  margin-right: 10px;
-  right: 5vw;
+  margin-top: 15vh;
+  margin-right: 5px;
 }
 
-.leaflet-bottom .leaflet-right {
-  margin: 20vh 0px;
-}
-
+//
 .custom-map-tools-section {
   position: absolute;
   right: 0;
@@ -1084,6 +1191,7 @@ export default defineComponent({
   padding: 10px;
 }
 
+//custom draw button
 .custom-tool {
   display: flex;
   justify-content: center;
@@ -1231,5 +1339,179 @@ leaflet-browser-print-content {
 }
 .leaflet-control-better-scale-second-number {
   left: 95%;
+}
+</style>
+
+<style lang="scss">
+// leaflet-measure.scss
+
+$color-divider: #ddd;
+$color-button: #5e66cc;
+$color-lightertext: #999;
+
+$spacing-external: 12px;
+$spacing-internal: 15px;
+
+$max-width: 280px;
+
+$button-icon-size: 12px;
+$button-icon-spacing: 4px;
+
+@mixin hoverbutton {
+  color: $color-button;
+  text-decoration: none;
+  &:hover {
+    opacity: 0.5;
+    text-decoration: none;
+  }
+}
+
+@mixin button($icon) {
+  display: inline;
+  width: auto;
+  height: auto;
+  padding-left: 20px;
+  margin-right: $button-icon-spacing;
+  line-height: 1.75em;
+  border: 0;
+  text-align: left;
+  color: $color-button;
+  &,
+  &:hover {
+    background-color: transparent;
+  }
+  background: {
+    image: url("assets/#{ $icon }.png");
+    repeat: no-repeat;
+    position: 0% 50%;
+    size: $button-icon-size $button-icon-size;
+  }
+  .leaflet-retina & {
+    background-image: url("assets/#{ $icon }_@2X.png");
+  }
+
+  @include hoverbutton;
+}
+
+.leaflet-control-measure,
+.leaflet-measure-resultpopup {
+  h3 {
+    margin: 0 0 $spacing-external 0;
+    padding-bottom: $spacing-internal;
+    border-bottom: solid 1px $color-divider;
+    font-size: medium;
+  }
+  p {
+    margin: $spacing-internal 0 0 0;
+    line-height: 1.5em;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  .tasks {
+    margin: $spacing-external 0 0 0;
+    padding: $spacing-internal 0 0 0;
+    border-top: solid 1px $color-divider;
+    text-align: right;
+
+    list-style: none;
+    list-style-image: none;
+
+    li {
+      display: inline;
+      margin: 0 $spacing-internal 0 0;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .coorddivider {
+    color: $color-lightertext;
+  }
+}
+
+.leaflet-control-measure {
+  max-width: $max-width;
+  background: #fff;
+
+  .leaflet-control-measure-toggle,
+  .leaflet-control-measure-toggle:hover {
+    background: {
+      size: 14px 14px;
+      image: url(assets/rulers.png);
+    }
+    border: 0;
+    border-radius: 4px;
+    .leaflet-touch & {
+      border-radius: 2px;
+    }
+
+    // Hide text
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+
+    .leaflet-retina & {
+      background-image: url(assets/rulers_@2X.png);
+    }
+
+    .leaflet-touch & {
+      background-size: 16px 16px;
+    }
+  }
+
+  // Special styling because start prompt has no content, just header and tasks
+  .startprompt {
+    h3 {
+      margin-bottom: $spacing-internal;
+    }
+    .tasks {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+      text-align: left;
+    }
+  }
+
+  .leaflet-control-measure-interaction {
+    padding: $spacing-internal $spacing-external;
+  }
+
+  .results {
+    .group {
+      margin-top: $spacing-internal;
+      padding-top: $spacing-internal;
+      border-top: dotted 1px lighten($color-divider, 5);
+      &:first-child {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+      }
+    }
+    .heading {
+      margin-right: $spacing-internal * 0.5;
+      color: $color-lightertext;
+    }
+  }
+
+  a.start {
+    @include button(start);
+  }
+  a.cancel {
+    @include button(cancel);
+  }
+  a.finish {
+    @include button(check);
+  }
+}
+
+.leaflet-measure-resultpopup {
+  a.zoomto {
+    @include button(focus);
+  }
+  a.deletemarkup {
+    @include button(trash);
+  }
 }
 </style>

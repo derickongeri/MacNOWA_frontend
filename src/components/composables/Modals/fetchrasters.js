@@ -18,9 +18,9 @@ export default function setSelectedRaster() {
       format: "image/png",
       transparent: "true",
       opacity: 1,
-      tilematrixSet: "EPSG:4326",
+      //tilematrixSet: "EPSG:4326",
       styles: `marcnowa:${layerName}`,
-      crs: L.CRS.EPSG4326,
+      //crs: L.CRS.EPSG4326,
     });
 
     return selectedLayer;

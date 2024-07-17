@@ -77,6 +77,7 @@
           unelevated
           color="primary"
           :label="$t('login')"
+          @click="handleLogin"
         />
       </div>
 
@@ -98,10 +99,31 @@
 import { defineComponent, ref, onBeforeMount, computed } from "vue";
 import imagePath from "src/assets/DJI_00371.png";
 
+import userAuthUser from "src/composables/userAuthUser";
+import useNotify from "src/composables/useNotify";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const { login, isLoggedIn } = userAuthUser();
+const { notifyError, notifySuccess } = useNotify();
+
 const form = ref({
   email: "",
   password: "",
 });
+
+//method to handle login and redirect to dashboard
+const handleLogin = async () => {
+  try {
+    await login(form.value);
+    notifySuccess("Login successfully!");
+    router.push({
+      name: "home",
+    });
+  } catch (error) {
+    notifyError(error.message);
+  }
+};
 
 const isValid = computed(
   () => form.value.password && form.value.password.length > 0

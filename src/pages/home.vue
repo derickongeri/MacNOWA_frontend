@@ -4,7 +4,7 @@
     class="row q-mx-xl q-my-sm items-start jumbotron"
     id="hero"
   >
-    <carouselContent/>
+    <carouselContent />
   </div>
 
   <div
@@ -12,7 +12,7 @@
     class="row q-mx-md q-my-sm items-start jumbotron"
     id="hero"
   >
-    <carouselContent/>
+    <carouselContent />
   </div>
 
   <div
@@ -54,7 +54,7 @@
       </div>
       <!-- <div style="margin-top: 5vh">MarCNoWA Services</div> -->
     </div>
-    <serviceContent/>
+    <serviceContent />
   </div>
 
   <div
@@ -62,7 +62,7 @@
     class="my-font-2 bg-grey-3 text-h6 text-Primary q-px-md q-pt-lg"
     style="font-weight: 700; color: #25408f"
   >
-    {{ $t('about_project') }}
+    {{ $t("about_project") }}
   </div>
 
   <div class="column bg-grey-3" v-if="matchMediaMobile">
@@ -76,7 +76,7 @@
       "
     >
       <P>
-        {{ $t('about_text') }}
+        {{ $t("about_text") }}
       </P>
     </div>
   </div>
@@ -90,7 +90,10 @@
     </div>
   </div>
 
-  <div v-if="matchMediaDesktop" class="about-container q-mx-xl q-my-sm bg-primary">
+  <div
+    v-if="matchMediaDesktop"
+    class="about-container q-mx-xl q-my-sm bg-primary"
+  >
     <div
       class="row items-center justify-center my-font-2 text-white q-mt-lg"
       style="
@@ -102,7 +105,7 @@
         margin: auto;
       "
     >
-      <div class="q-mx-lg">{{ $t('about_project') }}</div>
+      <div class="q-mx-lg">{{ $t("about_project") }}</div>
     </div>
 
     <div
@@ -126,7 +129,7 @@
                 style="font-weight: 400; font-size: 18px"
               >
                 <P>
-                  {{ $t('about_text') }}
+                  {{ $t("about_text") }}
                 </P>
               </q-card-section>
             </q-card>
@@ -194,15 +197,15 @@
   >
     <div
       class="column justify-center q-pa-none q-ma-none"
-      style="min-height: 60vh;"
+      style="min-height: 60vh"
     >
       <div
-        class="my-font-2 text-center q-px-md q-py-md"
+        class="my-font-2 text-center q-px-md q-py-md q-mb-lg"
         style="font-weight: 700; font-size: 30px; color: #25408f"
       >
-        {{ $t('partners') }}
+        {{ $t("partners") }}
       </div>
-      <div class="row q-gutter-x-lg">
+      <div class="row q-gutter-x-lg justify-center">
         <div class="column">
           <img
             src="~/src/assets/GMES.png"
@@ -225,6 +228,74 @@
         <div class="column q-pl-md">
           <img
             src="~/src/assets/UG logo 23.png"
+            style="position: relative; width: 100%; height: 70px; left: -1%"
+          />
+        </div>
+      </div>
+      <div
+        class="my-font-2 text-center q-px-md q-py-md q-mb-lg"
+        style="
+          font-weight: 700;
+          font-size: 30px;
+          color: #25408f;
+          margin-top: 5%;
+        "
+      >
+        <!-- {{ $t("other partners") }} -->
+      </div>
+      <div class="row q-gutter-x-lg">
+        <div class="column">
+          <img
+            src="~/src/assets/Partner_logos/cert.gif"
+            style="position: relative; width: 100%; height: 70px"
+          />
+        </div>
+        <div class="column q-pl-md">
+          <img
+            src="~/src/assets/Partner_logos/CRODT.png"
+            style="position: relative; width: 100%; height: 70px; left: -1%"
+          />
+        </div>
+
+        <div class="column q-pl-md">
+          <img
+            src="~/src/assets/Partner_logos/CURAT_LOGO.jpg"
+            style="position: relative; width: 100%; height: 70px; left: -1%"
+          />
+        </div>
+        <div class="column q-pl-md">
+          <img
+            src="~/src/assets/Partner_logos/Edenwaylogo.png"
+            style="position: relative; width: 100%; height: 70px; left: -1%"
+          />
+        </div>
+        <div class="column q-pl-md">
+          <img
+            src="~/src/assets/Partner_logos/Ghana Met 2.jpg"
+            style="position: relative; width: 100%; height: 70px; left: -1%"
+          />
+        </div>
+        <div class="column q-pl-md">
+          <img
+            src="~/src/assets/Partner_logos/Logo_IRHOB_New logo.png"
+            style="position: relative; width: 100%; height: 70px; left: -1%"
+          />
+        </div>
+        <div class="column q-pl-md">
+          <img
+            src="~/src/assets/Partner_logos/LOGO-UCD.jpeg"
+            style="position: relative; width: 100%; height: 70px; left: -1%"
+          />
+        </div>
+        <div class="column q-pl-md">
+          <img
+            src="~/src/assets/Partner_logos/NatureTodayLogo.jpg"
+            style="position: relative; width: 100%; height: 70px; left: -1%"
+          />
+        </div>
+        <div class="column q-pl-md">
+          <img
+            src="~/src/assets/Partner_logos/NIOMR.jpg"
             style="position: relative; width: 100%; height: 70px; left: -1%"
           />
         </div>
@@ -276,10 +347,10 @@
               style="max-width: 25vw"
             >
               <div class="q-pa-md" style="font-weight: 700; font-size: 21px">
-                {{ $t('community') }}
+                {{ $t("community") }}
               </div>
               <div class="q-px-md q-pb-md">
-                {{ $t('community_text') }}
+                {{ $t("community_text") }}
               </div>
               <div class="row justify-left q-gutter-lg items-left">
                 <q-btn
@@ -316,13 +387,18 @@
               style="max-width: 15vw"
             >
               <div class="q-pa-md" style="font-weight: 700; font-size: 21px">
-                {{ $t('invite_title') }}
+                {{ $t("invite_title") }}
               </div>
               <div class="q-px-md q-pb-md">
-                {{ $t('invite_text') }}
+                {{ $t("invite_text") }}
               </div>
               <div class="q-px-md q-pb-md row q-gutter-sm">
-                <q-btn unelevated color="white" text-color="grey-7" :label="$t('signup')" />
+                <q-btn
+                  unelevated
+                  color="white"
+                  text-color="grey-7"
+                  :label="$t('signup')"
+                />
                 <q-btn outline color="white" :label="$t('login')" />
               </div>
             </div>

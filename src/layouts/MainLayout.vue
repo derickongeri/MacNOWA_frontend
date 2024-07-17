@@ -391,6 +391,11 @@ import { useRoute, useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 import { useI18n } from "vue-i18n";
 
+import userAuthUser from "src/composables/userAuthUser";
+import useNotify from "src/composables/useNotify";
+
+const { logout, user } = userAuthUser();
+
 const { locale } = useI18n({ useScope: "global" });
 const route = useRoute();
 const router = useRouter();

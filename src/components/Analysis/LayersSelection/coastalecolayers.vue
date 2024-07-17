@@ -12,13 +12,13 @@
         clickable
         @click="setSelectedLayer(option.value, option.activeStatus)"
         class="column q-mx-sm items-center"
-        style="max-width: 150px"
+        style="max-width: 100px"
         :class="{ clicked: option.activeStatus }"
       >
         <q-item-section>
           <img
             :src="option.img"
-            style="width: 100%; height: 70px; border-radius: 5px"
+            style="width: 100%; height: 70%; border-radius: 5px"
           />
         </q-item-section>
         <q-item-section>

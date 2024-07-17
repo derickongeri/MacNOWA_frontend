@@ -15,7 +15,7 @@
 
       <div style="margin: auto; min-width: 25vw" class="q-pt-lg">
         <div style="font-weight: 400" class="text-left text-grey-7">
-          {{$t('Yourname')}}
+          {{ $t("Yourname") }}
         </div>
         <div class="row q-gutter-md q-pa-xs q-mb-md">
           <div class="col">
@@ -41,7 +41,7 @@
         </div>
 
         <div style="font-weight: 400" class="text-left text-grey-7">
-          {{$t('Emailaddress')}}
+          {{ $t("Emailaddress") }}
         </div>
         <div class="row q-pa-xs" style="min-width: 25vw">
           <q-input
@@ -55,7 +55,7 @@
         </div>
 
         <div style="font-weight: 400" class="text-left text-grey-7 q-mt-md">
-          {{$t('Password')}}
+          {{ $t("Password") }}
         </div>
         <div class="row q-pa-xs" style="min-width: 25vw">
           <q-input
@@ -66,7 +66,9 @@
             lazy-rules
             color="grey-1"
             bg-color="grey-1"
-            :rules="[(val) => (val && val.length > 0) || $t('Field is required *')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('Field is required *'),
+            ]"
           >
             <template v-slot:append>
               <q-icon
@@ -79,13 +81,13 @@
         </div>
 
         <div style="font-weight: 400" class="text-left text-grey-7 q-mt-md">
-          {{$t('Confirmpassword')}}
+          {{ $t("Confirmpassword") }}
         </div>
         <div class="row q-pa-xs" style="min-width: 25vw">
           <q-input
             class="full-width"
             :type="isPwd ? 'password' : 'text'"
-            v-model="form.password"
+            v-model="confirmedpassword"
             type="password"
             lazy-rules
             color="grey-1"
@@ -105,13 +107,13 @@
 
       <div class="row justify-center q-px-xl q-my-md">
         <q-btn
-
           class="full-width text-h6"
           rounded
           no-caps
           unelevated
           color="primary"
           :label="$t('Register')"
+          @click="handleRegister"
         />
       </div>
 
@@ -119,9 +121,11 @@
         class="row justify-center items-center q-gutter-md full-width text-grey-7"
         style="font-weight: 400; font-size: medium"
       >
-        <div>{{$t('haveAccount')}}</div>
+        <div>{{ $t("haveAccount") }}</div>
 
-        <router-link to="login"><div class="">{{$t('login')}}</div></router-link>
+        <router-link to="login"
+          ><div class="">{{ $t("login") }}</div></router-link
+        >
       </div>
     </div>
   </div>
@@ -130,6 +134,15 @@
 <script setup>
 import { defineComponent, ref, onBeforeMount, computed } from "vue";
 import imagePath from "src/assets/DJI_00371.png";
+import userAuthUser from "src/composables/userAuthUser";
+import useNotify from "src/composables/useNotify";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const { register } = userAuthUser();
+const { notifyError, notifySuccess } = useNotify();
+
+const confirmedpassword = ref("");
 
 const form = ref({
   email: "",
@@ -143,6 +156,25 @@ const form = ref({
 const isValid = computed(
   () => form.value.password && form.value.password.length > 0
 );
+
+//method to handle login and redirect to dashboard
+const handleRegister = async () => {
+  if (confirmedpassword.value === form.value.password) {
+    try {
+      await register(form.value);
+      notifySuccess("Success");
+      router.push({
+        name: "email-confirmation",
+        query: { email: form.value.email },
+        // path: "/dashboard"
+      });
+    } catch (error) {
+      notifyError(error.message);
+    }
+  } else {
+    notifyError(`Your passwords do not match`);
+  }
+};
 
 const rememberMe = ref(false);
 const isPwd = ref(true);

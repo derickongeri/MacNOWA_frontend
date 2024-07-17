@@ -55,7 +55,7 @@
                   outlined
                   v-model="model"
                   :options="options"
-                  label="LatLong"
+                  :label="centerPoint"
                 />
               </div>
               <q-btn
@@ -71,11 +71,10 @@
               :bar-style="scrollBar.barStyle"
               style="height: 65vh; min-width: 300px; overflow: hidden"
             >
-              <layerAnalysis />
-              <div
-                class="row justify-between items-center bg-white q-px-md"
-                style="min-width: 100%; height: 70px; border-bottom: 10px"
-              ></div>
+              <layerAnalysis v-if="centerPoint" />
+              <div v-else class="absolute-center">
+                Click on map for analysis
+              </div>
             </q-scroll-area>
           </div>
         </q-tab-panel>
@@ -85,11 +84,28 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import layerselectpanel from "src/components/Analysis/Layerselection.vue";
 import layerAnalysis from "src/components/Analysis/charts/oceanconditions.vue";
+import { useStatsStore } from "src/stores/statsStore";
+
+const statsStore = useStatsStore();
 
 const tab = ref("services");
+
+const analysisState = computed(() => {
+  return statsStore.getSelectedGrid;
+});
+
+const centerPoint = computed(() => {
+  return statsStore.getCenterPoint;
+});
+
+watch(analysisState, (val) => {
+  if (val) {
+    tab.value = "analysis";
+  }
+});
 
 const scrollBar = ref({
   thumbStyle: {
@@ -112,16 +128,14 @@ const scrollBar = ref({
 </script>
 
 <style>
-.active-tab{
+.active-tab {
   background-color: #002e6b2d;
-  color: #002F6B;
+  color: #002f6b;
   border-radius: 10px;
-  margin:5px;
+  margin: 5px;
 }
 
 .tab-item:hover {
   background-color: white;
 }
-
-
 </style>

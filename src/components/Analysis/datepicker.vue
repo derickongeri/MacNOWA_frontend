@@ -46,8 +46,8 @@ const selectedDate = ref(getDayOfYear(dateSelected.value));
 
 const setDateSlider = (val) => {
   // Use date-fns functions to calculate the date range
-  let start_date = sub(val, { days: 4 });
-  let end_date = add(val, { days: 4 });
+  let start_date = sub(val, { days: 3 });
+  let end_date = add(val, { days: 3 });
 
   const datesList = eachDayOfInterval({ start: start_date, end: end_date });
 
@@ -58,7 +58,7 @@ const setDateSlider = (val) => {
 
   selectedDate.value = getDayOfYear(dateSelected.value);
   min.value = markerLabels.value[0].value;
-  max.value = markerLabels.value[8].value;
+  max.value = markerLabels.value[6].value;
 };
 
 const formattedLabel = computed(() => {
@@ -126,6 +126,10 @@ watch(dateChange, () => {
   //store.setSelectedDate(dateSelected.value);
   setDateSlider(dateSelected.value);
 });
+
+const getLastTwoCharacters = function (strings) {
+  return strings.map(str => str.slice(-2));
+}
 </script>
 
 <style></style>
