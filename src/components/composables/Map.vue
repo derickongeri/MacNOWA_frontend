@@ -724,8 +724,16 @@ export default defineComponent({
 
         console.log("Centerpoint Coordinates:", centerPoint);
 
-        marker.value = L.marker([lat, lng]);
+        const icon = L.divIcon({
+          className: "custom-div-icon",
+          html: "<div style='background-color:#0096FF;' class='marker-pin-selected'></div><i class='material-icons' style='font-size: 18px; color: #dfe8f5'>circle</i>",
+          iconSize: [30, 42],
+          iconAnchor: [15, 42],
+        });
 
+        marker.value = L.marker([lat, lng], {
+          icon: icon,
+        });
 
         map.value.setView([centerPoint.lat, centerPoint.lng], 9);
         marker.value.addTo(map.value);
@@ -1044,8 +1052,6 @@ export default defineComponent({
   top: 2vh;
   width: fit-content;
 }
-
-
 
 .legend-container {
   max-width: 20%;

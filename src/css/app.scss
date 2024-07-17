@@ -242,3 +242,127 @@
   line-height: 40px;
   font-size: 16px; */
 }
+
+.circle-pin {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #dfe8f5;
+  position: absolute;
+  transform: rotate(0deg);
+  left: 50%;
+  top: 50%;
+  margin: -15px 0 0 -15px;
+}
+
+/* // to draw white circle */
+.circle-pin::after {
+  content: "";
+  width: 18px;
+  height: 18px;
+  margin: 3px 0 0 3px;
+  background-color: #fff;
+  position: absolute;
+  border-radius: 50%;
+}
+
+/* // to align icon */
+.custom-div-icon-circle i {
+  position: absolute;
+  width: 22px;
+  font-size: 22px;
+  left: 0;
+  right: 0;
+  margin: 12px auto;
+  text-align: center;
+}
+
+.marker-pin {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  background: #0b70c3;
+  position: absolute;
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 50%;
+  margin: -15px 0 0 -15px;
+}
+
+// to draw white circle
+.marker-pin::after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  margin: 3px 0 0 3px;
+  background: #fff;
+  position: absolute;
+  border-radius: 50%;
+}
+
+// to align icon
+.custom-div-icon i {
+  position: absolute;
+  width: 22px;
+  font-size: 22px;
+  left: 0;
+  right: 0;
+  margin: 12px auto;
+  text-align: center;
+}
+
+// to align icon
+.custom-div-icon span {
+  position: absolute;
+  width: 24px;
+  font-size: 22px;
+  left: 0;
+  right: 0;
+  margin: 6px auto;
+  text-align: center;
+}
+
+.marker-pin-selected {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  background: #0b70c3;
+  position: absolute;
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 50%;
+  margin: -15px 0 0 -15px;
+}
+
+// to draw white circle
+.marker-pin-selected::after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  margin: 3px 0 0 3px;
+  background: #0197c5;
+  position: absolute;
+  border-radius: 50%;
+}
+
+// to align icon
+.custom-div-icon i {
+  position: absolute;
+  width: 22px;
+  font-size: 22px;
+  left: 0;
+  right: 0;
+  margin: 12px auto;
+  text-align: center;
+}
+
+// to draw white circle
+.marker-pin-select::after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  margin: 3px 0 0 3px;
+  background: #01515f;
+  position: absolute;
+  border-radius: 50%;
+}
