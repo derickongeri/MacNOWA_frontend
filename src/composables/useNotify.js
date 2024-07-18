@@ -37,6 +37,7 @@ export default function useNotify() {
   const mapError = (message) => {
     $q.notify({
       type: "negative",
+      color: "primary",
       message: message || "Error !",
       icon: "report_problem",
       position: "center",

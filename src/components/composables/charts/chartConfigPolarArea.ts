@@ -10,7 +10,7 @@ export const data = {
       pointHoverBackgroundColor: "#fff",
       pointHoverBorderColor: "#2bdc1070",
       data: [9, 5, 7],
-      circular:true,
+      circular: true,
     },
   ],
 };
@@ -18,4 +18,15 @@ export const data = {
 export const options = {
   responsive: true,
   maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: true,
+      position: "right",
+      labels: {
+        usePointStyle: true,
+        pointStyle: "circle",
+        boxWidth: 24,
+      },
+    },
+  },
 };

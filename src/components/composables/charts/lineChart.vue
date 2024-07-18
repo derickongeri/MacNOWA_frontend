@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 350px;"><Line :data="chartData" :options="chartOptions" /></div>
+  <div style="height: 200px;"><Line :data="chartData" :options="chartOptions" /></div>
 </template>
 
 <script lang="ts">
@@ -11,7 +11,8 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import * as chartConfig from './chartConfig.js'
@@ -27,6 +28,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
+  Filler,
   zoomPlugin
 )
 

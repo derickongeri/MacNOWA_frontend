@@ -7,7 +7,7 @@
       class="q-mx-xs bg-white q-mx-auto"
       style="
         position: absolute;
-        width: 32.5vw;
+        width: 34vw;
         max-height: 96%;
         border-radius: 10px;
       "
@@ -67,9 +67,10 @@
               />
             </div>
             <q-scroll-area
+              class="analysis-scroll-area"
               :thumb-style="scrollBar.thumbStyle"
               :bar-style="scrollBar.barStyle"
-              style="height: 65vh; min-width: 300px; overflow: hidden"
+              style=""
             >
               <layerAnalysis v-if="centerPoint" />
               <div v-else class="absolute-center">

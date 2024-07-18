@@ -416,6 +416,7 @@ import setSelectedRaster from "./Modals/fetchrasters";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
 import { useStatsStore } from "src/stores/statsStore";
 import { useQuasar, EventBus } from "quasar";
+import useNotify from "src/composables/useNotify";
 
 export default defineComponent({
   components: {
@@ -432,6 +433,8 @@ export default defineComponent({
     const statsStore = useStatsStore();
     //const router = { useRouter };
     const { locale } = useI18n({ useScope: "global" });
+
+    const { notifyError, notifySuccess, mapError } = useNotify();
 
     const { setRasterLayerSelected, getEarthEngineLayer } = setSelectedRaster();
 
@@ -693,6 +696,7 @@ export default defineComponent({
       console.log("response", vectLayer.features);
 
       if (vectLayer.features.length === 0) {
+        mapError("Click on the map layer for analysis!");
       } else {
         statsStore.setSelectedGrid(vectLayer.features[0].properties);
         // statsStore.setChartData(vectLayer.features[0].properties);
@@ -860,6 +864,7 @@ export default defineComponent({
             metric: true,
           })
           .addTo(map.value);
+
 
         map.value.on("click", function (e) {
           var coords = e.latlng;

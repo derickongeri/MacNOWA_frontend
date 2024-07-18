@@ -8,7 +8,7 @@
         </div>
         <div
           class="column q-ma-none"
-          style="max-width: 33vw; height: 100%; flex: 1"
+          style="max-width: 35vw; height: 100%; flex: 1"
         >
           <div><analysiltabs /></div>
         </div>

@@ -1,5 +1,8 @@
 <template>
-  <PolarArea :data="chartData" :options="chartOptions" />
+
+    <PolarArea :data="chartData" :options="chartOptions" />
+ 
+
 </template>
 
 <script lang="ts">

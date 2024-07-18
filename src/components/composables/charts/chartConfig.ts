@@ -56,7 +56,10 @@ export const options = {
       },
     },
     legend: {
-      display: false
-    }
+      display: false,
+    },
+    filler: {
+      propagate: true,
+    },
   },
 };

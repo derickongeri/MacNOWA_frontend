@@ -7,19 +7,25 @@ export const useStatsStore = defineStore({
   state: () => ({
     selectedGrid: null,
     centerPoint: null,
+    oceanConditionList: {
+      calm: null,
+      rough: null,
+      dangerous: null,
+    },
     chartData: {
-      oceanState: null,
-      SST: null,
+      oceanstate: null,
       salt: null,
-      currents: null,
-      height: null,
-      waveHeight: null,
+      sst: null,
+      ssc: null,
+      ssh: null,
+      swh: null,
     },
   }),
   getters: {
     getSelectedGrid: (state) => state.selectedGrid,
     getCenterPoint: (state) => state.centerPoint,
     getChartData: (state) => (variable) => state.chartData[variable],
+    getOceanConditionList: (state) => state.oceanConditionList,
   },
   actions: {
     setSelectedGrid(val) {
@@ -35,6 +41,13 @@ export const useStatsStore = defineStore({
       } else {
         console.error(`Unknown variable: ${variable}`);
       }
+    },
+    updateOceanCondition(val) {
+      this.oceanConditionList = {
+        calm: val[0],
+        rough: val[1],
+        dangerous: val[2]
+      };
     },
   },
 });
