@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 200px;"><Line :data="chartData" :options="chartOptions" /></div>
+  <div style="height: 200px;"><Line :id="id" :data="chartData" :options="chartOptions" /></div>
 </template>
 
 <script lang="ts">
@@ -38,6 +38,10 @@ export default {
     Line
   },
   props: {
+    id: {
+      type: String,
+      default: 'line-chart'
+    },
     data: {
       type: Object,
       default: ()=> chartConfig.data
@@ -46,7 +50,6 @@ export default {
       type: Object,
       default: ()=> chartConfig.options
     }
-
   },
 
   computed: {
@@ -55,6 +58,12 @@ export default {
     },
     chartOptions() {
       return this.options;
+    }
+  },
+
+  methods: {
+    getChartData() {
+      return this.data;
     }
   }
 }

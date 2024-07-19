@@ -1,6 +1,6 @@
 <template>
   <div class="row" style="width: 100%">
-    <div class="col">
+    <div class="col" v-if="visibleItems.calm.length !== 0">
       <div
         class="row items-center justify-center"
         style="background-color: #2bdc1080"
@@ -20,12 +20,12 @@
         :items="visibleItems.calm"
         v-slot="{ item: row, index }"
       >
-        <div class="row justify-center q-px-md">
+        <div class="row items-center justify-center q-px-md">
           {{ row }}
         </div>
       </q-virtual-scroll>
     </div>
-    <div class="col">
+    <div class="col" v-if="visibleItems.rough.length !== 0">
       <div
         class="row items-center justify-center"
         style="background-color: #efe44d80"
@@ -50,8 +50,13 @@
         </div>
       </q-virtual-scroll>
     </div>
-    <div class="col">
-      <div class="row" style="background-color: #de1d1380">Rough Days</div>
+    <div class="col" v-if="visibleItems.dangerous.length !== 0">
+      <div
+        class="row items-center justify-center"
+        style="background-color: #de1d1380"
+      >
+        Dangerous Days
+      </div>
       <q-virtual-scroll
         class="scroll-area q-pt-md"
         type="table"
@@ -65,11 +70,37 @@
         :items="visibleItems.dangerous"
         v-slot="{ item: row, index }"
       >
-        <div class="row q-px-md">
+        <div class="row items-center justify-center q-px-md">
           {{ row }}
         </div>
       </q-virtual-scroll>
     </div>
+
+     <!-- <div class="col" v-for="category in categories" :key="category.name" v-if="category.items.length !== 0">
+      <div
+        class="row items-center justify-center"
+        :style="'background-color: ' + category.backgroundColor"
+      >
+        {{ category.name }}
+      </div>
+      <q-virtual-scroll
+        class="scroll-area q-pt-md"
+        type="table"
+        flat
+        style="max-height: 100px"
+        :thumb-style="thumbStyle"
+        :bar-style="barStyle"
+        :virtual-scroll-item-size="25"
+        :virtual-scroll-sticky-size-start="20"
+        :virtual-scroll-sticky-size-end="25"
+        :items="category.items"
+        v-slot="{ item: row, index }"
+      >
+        <div class="row items-center justify-center q-px-md">
+          {{ row }}
+        </div>
+      </q-virtual-scroll>
+    </div> -->
   </div>
 </template>
 
@@ -83,6 +114,26 @@ const visibleItems = computed(() => {
   let calmdays = store.getOceanConditionList;
   console.log(calmdays.calm);
   return calmdays;
+});
+
+const categories = computed(() => {
+  return [
+    {
+      name: "Calm Days",
+      backgroundColor: "#2bdc1080",
+      items: visibleItems.value.calm,
+    },
+    {
+      name: "Rough Days",
+      backgroundColor: "#efe44d80",
+      items: visibleItems.value.rough,
+    },
+    {
+      name: "Dangerous Days",
+      backgroundColor: "#de1d1380",
+      items: visibleItems.value.dangerous,
+    },
+  ];
 });
 
 const thumbStyle = ref({
