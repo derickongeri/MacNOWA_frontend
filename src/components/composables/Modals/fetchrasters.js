@@ -11,8 +11,7 @@ export default function setSelectedRaster() {
 
     let layer = layerName + "_" + layerDate;
 
-    const wmsURL =
-      "https://geoportal.gmes.ug.edu.gh/geoserver/marcnowa/wms";
+    const wmsURL = "http://197.255.126.45/geoserver/marcnowa/wms";
 
     const selectedLayer = L.tileLayer.wms(wmsURL, {
       layers: `marcnowa:${layer}`,
