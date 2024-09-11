@@ -676,7 +676,7 @@ export default defineComponent({
         map.value.removeLayer(marker.value);
       }
       // Construct WFS URL with CQL filter
-      const wfsBaseURL = "http://197.255.126.45/geoserver/marcnowa/ows";
+      const wfsBaseURL = "https://geoportal.gmes.ug.edu.gh/geoserver/marcnowa/ows";
       const wfsParams = new URLSearchParams({
         service: "WFS",
         version: "1.0.0",

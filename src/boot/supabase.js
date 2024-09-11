@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 //import userAuthUser from "src/composables/userAuthUser";
 
 //const supabaseUrl = "https://zziuvvorxkugtbmruglb.supabase.co";
-const supabaseUrl = "http://197.255.126.45:8000";
+const supabaseUrl = "https://admin.geoportal.gmes.ug.edu.gh";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE";
 

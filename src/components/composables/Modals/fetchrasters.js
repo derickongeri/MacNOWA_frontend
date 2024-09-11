@@ -11,7 +11,7 @@ export default function setSelectedRaster() {
 
     let layer = layerName + "_" + layerDate;
 
-    const wmsURL = "http://197.255.126.45/geoserver/marcnowa/wms";
+    const wmsURL = "https://geoportal.gmes.ug.edu.gh/geoserver/marcnowa/wms";
 
     const selectedLayer = L.tileLayer.wms(wmsURL, {
       layers: `marcnowa:${layer}`,
@@ -40,10 +40,14 @@ export default function setSelectedRaster() {
 
     switch (val) {
       case "landcover":
-        response = await axios.get("http://197.255.126.45:3000/api/landcovermap");
+        response = await axios.get(
+          "https://geoportal.gmes.ug.edu.gh/ee/api/landcovermap"
+        );
         break;
       default:
-        response = await axios.get("http://197.255.126.45:3000/api/mapid");
+        response = await axios.get(
+          "https://geoportal.gmes.ug.edu.gh/ee/api/mapid"
+        );
         break;
     }
 
