@@ -65,12 +65,12 @@ async function fetchGridValues(variable, tableID, gridID, pixelID) {
       const dataValues = data.map((item) => item[`${pixelID}`]);
       // Create data object for Chart.js
       chartData = {
-        labels: labels.reverse(),
+        labels: labels,
         datasets: [
           {
             label: "Pixel Value",
             backgroundColor: "#002F6B60",
-            data: dataValues.reverse(),
+            data: dataValues,
             tension: 0.25,
             fill: true,
             borderColor: "#002F6B80",
