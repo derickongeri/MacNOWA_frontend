@@ -10,7 +10,7 @@
         class="row text-h4 text-left justify-center text-primary"
         style="font-weight: 400"
       >
-        {{ $t("Sing Up") }}
+        {{ $t("signup") }}
       </div>
 
       <div style="margin: auto; min-width: 25vw" class="q-pt-lg">

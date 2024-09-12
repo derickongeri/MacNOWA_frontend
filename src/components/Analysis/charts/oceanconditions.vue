@@ -54,7 +54,7 @@
               round
               color="primary"
               icon="mdi-image-outline"
-              @click="exportChart(service.name)"
+              @click="exportChart(service.name, service.id)"
             >
               <q-tooltip class="bg-primary">download image</q-tooltip>
             </q-btn>
@@ -125,7 +125,7 @@
         v-if="service.name !== 'Ocean State'"
         class="q-my-md"
       >
-        <linechart :data="getChartData(service.variableKey)" /></div
+        <linechart :id="service.id" :data="getChartData(service.variableKey)" /></div
     ></transition>
 
     <div v-if="visible" style="min-width: 200px; min-height: 250px">
@@ -168,37 +168,42 @@ const services = ref([
   {
     name: "Sea Surface Temperature (SST)",
     chart: linechart,
+    id: "line-chart-sst",
     variableKey: "sst",
     value: "SST",
   },
   {
     name: "Salinity (Salt)",
     chart: linechart,
+    id: "line-chart-salt",
     variableKey: "salt",
     value: "SALT",
   },
   {
     name: "Sea Surface Currents",
     chart: linechart,
+    id: "line-chart-ssc",
     variableKey: "ssc",
     value: "SSC",
   },
   {
     name: "Sea Surface Height",
     chart: linechart,
+    id: "line-chart-ssh",
     variableKey: "ssh",
     value: "SSH",
   },
   {
     name: "Significant Wave Height",
     chart: linechart,
+    id: "line-chart-swh",
     variableKey: "swh",
     value: "SWH",
   },
 ]);
 
-const exportChart = (val) => {
-  let elementIdname = "line-chart";
+const exportChart = (val, chatId) => {
+  let elementIdname = chatId;
   let chart = document.getElementById(elementIdname).toDataURL("image/png");
   let a = document.createElement("a");
   a.href = chart;

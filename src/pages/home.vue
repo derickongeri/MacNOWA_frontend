@@ -289,6 +289,12 @@
         </div>
         <div class="column q-pl-md">
           <img
+            src="~/src/assets/Partner_logos/missing.jpeg"
+            style="position: relative; width: 100%; height: 70px; left: -1%"
+          />
+        </div>
+        <div class="column q-pl-md">
+          <img
             src="~/src/assets/Partner_logos/NatureTodayLogo.jpg"
             style="position: relative; width: 100%; height: 70px; left: -1%"
           />
@@ -359,21 +365,37 @@
                   color="grey-3"
                   size="lg"
                   icon="mdi-facebook"
-                />
+                  href="https://www.facebook.com/RegionalMarineCentre"
+                  target="_blank"
+                >
+                </q-btn>
                 <q-btn
                   round
                   flat
                   color="grey-3"
                   size="lg"
                   icon="mdi-linkedin"
+                  href="https://www.linkedin.com/company/regional-marine-centre"
+                  target="_blank"
                 />
-                <q-btn round flat color="grey-3" size="lg" icon="mdi-twitter" />
                 <q-btn
                   round
                   flat
                   color="grey-3"
                   size="lg"
-                  icon="mdi-content-copy"
+                  href="https://x.com/ug_gmes"
+                  target="_blank"
+                >
+                  <i class="fa-brands fa-x-twitter"></i>
+                </q-btn>
+                <q-btn
+                  round
+                  flat
+                  color="grey-3"
+                  size="lg"
+                  icon="mdi-youtube"
+                  href="https://www.youtube.com/@ug-gmes_regionalmarinecent8332"
+                  target="_blank"
                 />
               </div>
             </div>
