@@ -243,7 +243,7 @@
       >
         <!-- {{ $t("other partners") }} -->
       </div>
-      <div class="row q-gutter-x-lg">
+      <div class="row justify-center q-gutter-lg q-mx-lg q-mb-xl">
         <div class="column">
           <img
             src="~/src/assets/Partner_logos/cert.gif"

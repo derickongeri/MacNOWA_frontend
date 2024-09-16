@@ -681,7 +681,7 @@ export default defineComponent({
         service: "WFS",
         version: "1.0.0",
         request: "GetFeature",
-        typeName: "marcnowa:SALT_grids",
+        typeName: "marcnowa:Grids",
         outputFormat: "application/json",
         srsName: "EPSG:4326", // Specify the desired CRS here
         CQL_FILTER: `DWITHIN(the_geom, POINT(${lng} ${lat}), 0.000001, meters)`,
