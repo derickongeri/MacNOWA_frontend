@@ -12,7 +12,7 @@
     "
     leaflet-browser-print-content
   >
-    Map Title
+    {{ mapTitle }}
   </h6>
   <div
     class="north-arrow q-px-md"
@@ -114,6 +114,7 @@ import {
   onBeforeMount,
 } from "vue";
 // import { useVectorStore } from "../../../../stores/vector_store/index.js";
+import { useRasterStore } from "src/stores/rasterstore";
 import legend from "../Layercomponents/Legend.vue"
 
 export default {
@@ -121,11 +122,16 @@ export default {
     Maplegend: legend,
   },
   setup() {
-    // const store = useVectorStore();
+    const store = useRasterStore();
+
+    const mapTitle = computed(() => {
+      store.getselectedLayerName
+    })
 
     return{
       // selectedArea: ref(store.getselectedRegion),
       // fireDates: ref(store.getDatesSelected),
+      mapTitle
     }
   },
 }

@@ -15,7 +15,7 @@ async function fetchGridValues(variable, tableID, gridID, pixelID) {
 
     let chartData;
 
-    if (variable == "oceanstate") {
+    if (variable == "ug_gmes_ocean_state_forecast") {
       // Initialize arrays to store dates for each condition
       const calmDays = [];
       const roughDays = [];
@@ -88,7 +88,14 @@ async function fetchGridValues(variable, tableID, gridID, pixelID) {
 
 export default function setSelectedPixelData() {
 
-  const oceanVariables = ["oceanstate", "salt", "sst", "ssc", "ssh", "swh"];
+  const oceanVariables = [
+    "ug_gmes_ocean_state_forecast",
+    "salt",
+    "sst",
+    "ssc",
+    "ssh",
+    "swh",
+  ];
 
   const setLineChart = async function () {
     let pixelInfo = store.getSelectedGrid;

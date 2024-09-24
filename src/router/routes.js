@@ -14,6 +14,11 @@ const routes = [
         name: "home",
         component: () => import("pages/home.vue"),
       },
+      {
+        path: "/uploadstats",
+        name: "uploadstats",
+        component: () => import("pages/admin/postStats.vue"),
+      },
     ],
   },
 

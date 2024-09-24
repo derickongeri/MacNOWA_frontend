@@ -13,7 +13,7 @@ export const useStatsStore = defineStore({
       dangerous: null,
     },
     chartData: {
-      oceanstate: null,
+      ug_gmes_ocean_state_forecast: null,
       salt: null,
       sst: null,
       ssc: null,
@@ -46,7 +46,7 @@ export const useStatsStore = defineStore({
       this.oceanConditionList = {
         calm: val[0],
         rough: val[1],
-        dangerous: val[2]
+        dangerous: val[2],
       };
     },
   },

@@ -58,17 +58,17 @@ const group = ref(store.getLayerName);
 
 const options = computed(() => {
   return [
-    {
-      label: t('pfzLayer'),
-      icon: "mdi-fish",
-      value: "PFZ",
-      img: pfzImg,
-      activeStatus: false,
-    },
+    // {
+    //   label: t('pfzLayer'),
+    //   icon: "mdi-fish",
+    //   value: "PFZ",
+    //   img: pfzImg,
+    //   activeStatus: false,
+    // },
     {
       label: t("fdmLayer"),
       icon: "mdi-fish",
-      value: "FDM",
+      value: "Density_Map",
       img: pfzImg,
       activeStatus: false,
     },

@@ -162,7 +162,7 @@ const services = ref([
   {
     name: "Ocean State",
     chart: polarArea,
-    variableKey: "oceanstate",
+    variableKey: "ug_gmes_ocean_state_forecast",
     value: "UG_GMES_ocean_state_forecast",
   },
   {
