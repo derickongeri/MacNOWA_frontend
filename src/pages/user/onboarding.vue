@@ -237,17 +237,19 @@ const getCountryNames = (data) => {
 };
 
 const getUserMeta = async () => {
-  const { data, error } = await supabase.auth.setSession({
-    access_token,
-    refresh_token,
-  });
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('access_token');
+
+  console.log(token)
+
+  const { data, error } = await supabase.auth.getUser()
 
   if (error) {
     console.error("Error fetching user data:", error.message); // Log the error if any
     return null; // Return null if an error occurred
   }
 
-  console.log(data.user.email); // Log the user data
+  console.log(data.user); // Log the user data
   form.value.firstName = data.user.user_metadata.firstName;
   form.value.lastName = data.user.user_metadata.lastName;
   form.value.email = data.user.email;
