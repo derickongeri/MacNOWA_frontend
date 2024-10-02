@@ -5,7 +5,7 @@ const user = ref(null);
 
 export default function userAuthUser() {
   const { supabase } = useSupabase();
-  const baseUrl = "http://geoportal.gmes.ug.edu.gh/#/onboarding/";
+  const baseUrl = "http://geoportal.gmes.ug.edu.gh/#/onboarding?";
   // const baseUrl = "http://localhost:9000/#/onboarding/";
 
   const login = async ({ email, password }) => {

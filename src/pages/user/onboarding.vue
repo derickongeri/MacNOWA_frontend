@@ -237,10 +237,10 @@ const getCountryNames = (data) => {
 };
 
 const getUserMeta = async () => {
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get('access_token');
+  // const params = new URLSearchParams(window.location.search);
+  // const token = params.get('access_token');
 
-  console.log(token)
+  // console.log(token)
 
   const { data, error } = await supabase.auth.getUser()
 
