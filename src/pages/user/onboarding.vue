@@ -236,9 +236,28 @@ const getCountryNames = (data) => {
   return data.countries.map((country) => country.name);
 };
 
+const getUserMeta = async () => {
+  const { data, error } = await supabase.auth.setSession({
+    access_token,
+    refresh_token,
+  });
+
+  if (error) {
+    console.error("Error fetching user data:", error.message); // Log the error if any
+    return null; // Return null if an error occurred
+  }
+
+  console.log(data.user.email); // Log the user data
+  form.value.firstName = data.user.user_metadata.firstName;
+  form.value.lastName = data.user.user_metadata.lastName;
+  form.value.email = data.user.email;
+  return data.user; // Return the user data
+};
+
 onMounted(() => {
   sectors.value = getSectorsFromJsonData(rolesData);
   countries.value = getCountryNames(rolesData);
+  getUserMeta();
 });
 
 const isValid = computed(
