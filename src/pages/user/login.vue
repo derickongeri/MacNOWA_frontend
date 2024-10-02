@@ -98,13 +98,16 @@
 <script setup>
 import { defineComponent, ref, onBeforeMount, computed } from "vue";
 import imagePath from "src/assets/DJI_00371.png";
+import useSupabase from "src/boot/supabase";
 
 import userAuthUser from "src/composables/userAuthUser";
 import useNotify from "src/composables/useNotify";
 import { useRouter } from "vue-router";
 
+const { supabase } = useSupabase();
+
 const router = useRouter();
-const { login, isLoggedIn } = userAuthUser();
+const { login, isLoggedIn, user } = userAuthUser();
 const { notifyError, notifySuccess } = useNotify();
 
 const form = ref({
@@ -112,11 +115,37 @@ const form = ref({
   password: "",
 });
 
+const getUserProfileByEmail = async (email) => {
+  try {
+    const { data, error } = await supabase
+      .from("user_analytics")
+      .select("*")
+      .eq("email", email) // Filter by email
+      .single(); // We use .single() to get a single row
+
+    if (error) {
+      // console.error("Error fetching user profile:", error.message);
+      router.push({
+        name: "onboarding",
+      });
+      return null;
+    }
+
+    // console.log("User profile:", data);
+
+    return data;
+  } catch (err) {
+    console.error("Error:", err.message);
+    return null;
+  }
+};
+
 //method to handle login and redirect to dashboard
 const handleLogin = async () => {
   try {
     await login(form.value);
-    notifySuccess("Login successfully!");
+    notifySuccess("Login successfull!");
+    getUserProfileByEmail(user.value.email);
     router.push({
       name: "home",
     });

@@ -35,6 +35,7 @@
                 bg-color="grey-1"
                 type="email"
                 placeholder="Firstname"
+                readonly
               />
             </div>
           </div>
@@ -54,6 +55,7 @@
                 bg-color="grey-1"
                 type="email"
                 placeholder="Lastname"
+                readonly
               />
             </div>
           </div>
@@ -73,6 +75,7 @@
                 bg-color="grey-1"
                 type="email"
                 placeholder="example@mail.com*"
+                readonly
               />
             </div>
           </div>
