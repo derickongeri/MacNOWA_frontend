@@ -3,11 +3,12 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("pages/home.vue") },
+      { path: "", name: "", component: () => import("pages/home.vue") },
       {
         path: "/dashboard",
+        name: "dashboard",
         component: () => import("pages/dashboard.vue"),
-        meta: { keepAlive: true },
+        meta: { keepAlive: true, requiresAuth: true },
       },
       {
         path: "/home",
@@ -20,6 +21,23 @@ const routes = [
         component: () => import("pages/admin/postStats.vue"),
       },
     ],
+  },
+
+  {
+    path: "/",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+
+      {
+        path: "/dashboard",
+        name: "dashboard",
+        component: () => import("pages/dashboard.vue"),
+        meta: { keepAlive: true, requiresAuth: true },
+      },
+    ],
+    meta: {
+      requiresAuth: true
+    }
   },
 
   {
@@ -45,6 +63,11 @@ const routes = [
         path: "/email-confirmation",
         name: "email-confirmation",
         component: () => import("pages/user/EmailConfirmation.vue"),
+      },
+      {
+        path: "/onboarding",
+        name: "onboarding",
+        component: () => import("pages/user/onboarding.vue"),
       },
     ],
   },

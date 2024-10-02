@@ -5,7 +5,8 @@ const user = ref(null);
 
 export default function userAuthUser() {
   const { supabase } = useSupabase();
-  const baseUrl = "http://localhost:9000/#/login";
+  const baseUrl = "http://geoportal.gmes.ug.edu.gh/#/onboarding/";
+  //const baseUrl = "http://localhost:9000/#/login";
 
   const login = async ({ email, password }) => {
     const response = await supabase.auth.signInWithPassword({
@@ -26,6 +27,7 @@ export default function userAuthUser() {
 
   const logout = async () => {
     const { error } = await supabase.auth.signOut();
+    user.value = null
     if (error) throw error;
   };
 

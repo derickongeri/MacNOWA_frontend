@@ -451,7 +451,7 @@ export default defineComponent({
       mangrove_layer_2020 = ref(null),
       change_layer_2015_2020 = ref(null),
       landcoverLayer = ref(null),
-      center = ref([18.678691, 4.329978]),
+      center = ref([16.678691, 4.329978]),
       current_top_base_layer = ref(null),
       baseMaps = ref([]),
       scaleBar = ref(null),
@@ -481,7 +481,7 @@ export default defineComponent({
         layersControl: true,
         attributionControl: false,
         center: center.value,
-        //maxBounds: bounds,
+        // maxBounds: bounds,
         zoom: 4.7,
         maxZoom: 17,
         zoomSnap: 0.1,
@@ -584,7 +584,7 @@ export default defineComponent({
       }
     };
 
-    const resetZoomLevel = async function () {
+    const resetZoomLevel = function () {
       const layers = [
         currentRasterLayer.value,
         mangrove_layer_2015.value,
@@ -593,20 +593,54 @@ export default defineComponent({
         landcoverLayer.value,
       ];
 
-      // map.value.eachLayer(function (layer) {
-      //   //
-      //   console.log(layer);
-      // });
+      switch (store.layerName) {
+        case "landcover":
+          landcoverLayer.value.bringToFront();
+          break;
+
+        case "mangrove":
+          mangrove_layer_2015.value.bringToFront();
+          mangrove_layer_2020.value.bringToFront();
+          change_layer_2015_2020.value.bringToFront();
+          break;
+
+        default:
+          const targetPoint = [18.9, 0.9799450162558969]; // New center point
+          const newZoomLevel = 5; // New zoom level
+
+          map.value.setView(targetPoint, newZoomLevel);
+          break;
+      }
 
       layers.forEach((layer) => {
         if (currentRasterLayer.value || landcoverLayer.value) {
-          // const bounds = layer.getBounds()
-          console.log(layer);
-          const southWest = L.latLng(-3.057970512549133, -24.192587749018344),
-            northEast = L.latLng(36.86581397425627, 37.478968184546005),
-            bounds = L.latLngBounds(southWest, northEast);
+          const targetPoint = [18.9, 0.9799450162558969]; // New center point
+          const newZoomLevel = 5; // New zoom level
 
-          map.value.flyToBounds(bounds);
+          map.value.setView(targetPoint, newZoomLevel);
+        } else {
+          const targetPoint = [13.254094739970756, -16.17314525052899]; // New center point
+          const newZoomLevel = 9; // New zoom level
+          map.value.setView(targetPoint, newZoomLevel);
+        }
+      });
+    };
+
+    const setPrintZoomLevel = function () {
+      const layers = [
+        currentRasterLayer.value,
+        mangrove_layer_2015.value,
+        mangrove_layer_2020.value,
+        change_layer_2015_2020.value,
+        landcoverLayer.value,
+      ];
+
+      layers.forEach((layer) => {
+        if (currentRasterLayer.value) {
+          const targetPoint = [18.9, 0.9799450162558969]; // New center point
+          const newZoomLevel = 4; // New zoom level
+
+          map.value.setView(targetPoint, newZoomLevel);
         } else {
           const targetPoint = [13.254094739970756, -16.17314525052899]; // New center point
           const newZoomLevel = 9; // New zoom level
@@ -616,8 +650,10 @@ export default defineComponent({
       });
     };
 
-    const printLayer = async () => {
-      await resetZoomLevel().then(() => {
+    const printLayer = () => {
+      setPrintZoomLevel();
+
+      setTimeout(() => {
         let clonedDiv = null;
 
         const targetDiv = document.querySelector(".target-div");
@@ -651,20 +687,15 @@ export default defineComponent({
         } else {
           targetDiv.appendChild(clonedDiv);
         }
-        targetDiv.appendChild(overlayCanvas);
 
         var options = {
           documentTitle: ``,
           closePopupsOnPrint: false,
           manualMode: false,
-          //printLayer: vectorTileLayers.value
         };
-        var browserPrint = L.browserPrint(
-          map.value,
-          /*scaleBar.value,*/ options
-        );
+        var browserPrint = L.browserPrint(map.value, options);
         browserPrint.print(L.BrowserPrint.Mode.Landscape());
-      });
+      }, 300);
     };
 
     const setVectorLayer = async (lat, lng) => {
@@ -676,7 +707,8 @@ export default defineComponent({
         map.value.removeLayer(marker.value);
       }
       // Construct WFS URL with CQL filter
-      const wfsBaseURL = "https://geoportal.gmes.ug.edu.gh/geoserver/marcnowa/ows";
+      const wfsBaseURL =
+        "https://geoportal.gmes.ug.edu.gh/geoserver/marcnowa/ows";
       const wfsParams = new URLSearchParams({
         service: "WFS",
         version: "1.0.0",
@@ -864,7 +896,6 @@ export default defineComponent({
             metric: true,
           })
           .addTo(map.value);
-
 
         map.value.on("click", function (e) {
           var coords = e.latlng;
@@ -1244,7 +1275,7 @@ leaflet-browser-print-content {
   display: grid;
   grid-template: auto 1fr auto / 1fr;
   background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
   max-height: 680px;
   max-width: 99%;
   top: 2%;
@@ -1261,7 +1292,7 @@ leaflet-browser-print-content {
 
 .grid-map-print {
   grid-row: 1;
-  max-height: 89%;
+  max-height: 80%;
   max-width: 760px;
   top: 7%;
   left: 2%;
@@ -1276,9 +1307,18 @@ leaflet-browser-print-content {
   box-sizing: border-box;
   top: 7%;
   left: 2%;
-  height: 89%;
+  height: 80%;
   /* margin: auto; */
   background-color: rgb(255, 255, 255);
+}
+
+.footer-content {
+  grid-row: 1;
+  justify-self: center;
+  text-align: center;
+  color: grey;
+  box-sizing: border-box;
+  margin-bottom: 2%;
 }
 </style>
 <style>

@@ -184,6 +184,12 @@
                 />
               </router-link>
             </div>
+            <!-- <div
+              class="text-primary q-ml-md"
+              style="line-height: 1.2em; font-weight: 400; font-size: small"
+            >
+              Marine and Coastal Areas Management in North and <br> West Africa
+            </div> -->
             <div class="col">
               <div class="row items-center" style="margin-left: 10%">
                 <div class="column">
@@ -248,7 +254,7 @@
           <q-route-tab name="images" :label="$t(`home`)" to="/home" />
           <q-route-tab
             ripple="false"
-            name="videos"
+            name="dashboard"
             :label="$t('dashboard')"
             to="/dashboard"
           />
@@ -394,6 +400,8 @@ import { useI18n } from "vue-i18n";
 import userAuthUser from "src/composables/userAuthUser";
 import useNotify from "src/composables/useNotify";
 
+const $q = useQuasar();
+
 const { logout, user } = userAuthUser();
 
 const { locale } = useI18n({ useScope: "global" });
@@ -423,6 +431,18 @@ onBeforeMount(() => {
 const isHomeRoute = computed(
   () => route.path === "/home" || route.path === "/"
 );
+
+const handleLogout = async () => {
+  $q.dialog({
+    title: "Logout",
+    message: "Do you really want to leave?",
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    await logout();
+    router.replace({ name: "login" });
+  });
+};
 </script>
 
 <style lang="scss">

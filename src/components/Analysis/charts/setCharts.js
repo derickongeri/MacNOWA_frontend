@@ -13,6 +13,16 @@ async function fetchGridValues(variable, tableID, gridID, pixelID) {
 
     console.log("Fetched data:", data);
 
+    // const { data_list, error } = await supabase.rpc("fetch_rows_by_pixel_id", {
+    //   start_date: "2024-01-01",
+    //   end_date: "2024-12-31",
+    //   table_name: "ssc_001",
+    //   jsonb_column_name: "0053",
+    //   pixel_id: "N33D04389965CP39D04326123",
+    // });
+
+    // console.log(data_list);
+
     let chartData;
 
     if (variable == "ug_gmes_ocean_state_forecast") {
@@ -36,11 +46,11 @@ async function fetchGridValues(variable, tableID, gridID, pixelID) {
       getConditionDays(roughDays, 2);
       getConditionDays(dangerousDays, 3);
 
-      oceanConditions.push(calmDays)
-      oceanConditions.push(roughDays)
-      oceanConditions.push(dangerousDays)
+      oceanConditions.push(calmDays);
+      oceanConditions.push(roughDays);
+      oceanConditions.push(dangerousDays);
 
-      store.updateOceanCondition(oceanConditions)
+      store.updateOceanCondition(oceanConditions);
 
       // Chart data for Polar Area chart using Chart.js
       chartData = {
@@ -87,7 +97,6 @@ async function fetchGridValues(variable, tableID, gridID, pixelID) {
 }
 
 export default function setSelectedPixelData() {
-
   const oceanVariables = [
     "ug_gmes_ocean_state_forecast",
     "salt",

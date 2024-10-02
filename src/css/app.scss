@@ -1,3 +1,4 @@
+@import 'cards';
 // app global css in SCSS form
 .carousel-control {
   position: absolute;
@@ -55,10 +56,23 @@
 }
 
 #hero {
-  background-image: url("~src/assets/DJI_00371.png");
+  background-image: url("~/src/assets/DJI_00371.png");
   background-size: 100%;
   /* Center and scale the image nicely */
   // background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* animation-name: beat;
+  animation-duration: 1.5s;
+  animation-iteration-count: 5; */
+}
+
+#onboarding {
+  background-image: url("src/assets/DJI_0030.JPG");
+  background-size: 100%;
+  /* Center and scale the image nicely */
+  background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

@@ -1,10 +1,28 @@
 <template>
-  <div
-    v-if="matchMediaDesktop"
-    class="row q-mx-xl q-my-sm items-start jumbotron"
-    id="hero"
-  >
-    <carouselContent />
+  <div v-if="matchMediaDesktop" class="q-mx-xl q-my-sm jumbotron" id="hero">
+    <div
+        class="justify-center"
+        style="
+          min-width: 0vw;
+          position: absolute;
+          right: 50%;
+          top: 25%;
+          z-index: 8000;
+        "
+      >
+        <q-btn
+          class=""
+          unelevated
+          round
+          outline
+          color="white"
+          text-color="white"
+          icon="mdi-chevron-down"
+          @click="scrollToProducts()"
+        />
+      </div>
+    <carouselContent/>
+    <!-- <div style="margin-top: 5vh">MarCNoWA Services</div> -->
   </div>
 
   <div
@@ -16,44 +34,10 @@
   </div>
 
   <div
-    class="bg-white q-mx-md q-my-sm"
-    style="margin: auto; position: relative"
+    class="bg-white q-mx-md q-my-xl"
+    style=" position: relative"
     id="products-section"
   >
-    <div
-      v-if="matchMediaDesktop"
-      class="my-font-2 text-Primary text-center q-px-md q-mt-lg"
-      style="
-        font-weight: 700;
-        font-size: 30px;
-        color: #25408f;
-
-        margin-left: auto;
-      "
-    >
-      <div
-        class="row justify-center"
-        style="
-          min-width: 0vw;
-          position: absolute;
-          right: 50%;
-          top: -7%;
-          z-index: 1000;
-        "
-      >
-        <q-btn
-          class="bg-white"
-          unelevated
-          round
-          outline
-          color="white"
-          text-color="primary"
-          icon="mdi-chevron-down"
-          @click="scrollToProducts()"
-        />
-      </div>
-      <!-- <div style="margin-top: 5vh">MarCNoWA Services</div> -->
-    </div>
     <serviceContent />
   </div>
 
@@ -162,29 +146,33 @@
       </div>
       <div class="row q-gutter-x-md q-my-lg">
         <div class="column">
-          <img
-            src="~/src/assets/GMES.png"
-            style="position: relative; width: 100%; height: 35px"
-          />
+          <a href="http://gmes.africa-union.org" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/GMES.png"
+              style="position: relative; width: 100%; height: 35px"
+          /></a>
         </div>
         <div class="column q-pl-md">
-          <img
-            src="~/src/assets/AU logo.png"
-            style="position: relative; width: 100%; height: 35px; left: -1%"
-          />
+          <a href="" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/AU logo.png"
+              style="position: relative; width: 100%; height: 35px; left: -1%"
+          /></a>
         </div>
 
         <div class="column q-pl-md">
-          <img
-            src="~/src/assets/EU logo.png"
-            style="position: relative; width: 100%; height: 35px; left: -1%"
-          />
+          <a href="" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/EU logo.png"
+              style="position: relative; width: 100%; height: 35px; left: -1%"
+          /></a>
         </div>
         <div class="column q-pl-md">
-          <img
-            src="~/src/assets/UG logo 23.png"
-            style="position: relative; width: 100%; height: 50px; left: -1%"
-          />
+          <a href="" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/UG logo 23.png"
+              style="position: relative; width: 100%; height: 50px; left: -1%"
+          /></a>
         </div>
       </div>
     </div>
@@ -206,30 +194,58 @@
         {{ $t("partners") }}
       </div>
       <div class="row q-gutter-x-lg justify-center">
-        <div class="column">
-          <img
-            src="~/src/assets/GMES.png"
-            style="position: relative; width: 100%; height: 70px"
-          />
+        <div
+          class="column"
+          @mousemove="moveTooltip('Gmes & Africa', $event)"
+          @mouseleave="hideTooltip"
+        >
+          <a href="http://gmes.africa-union.org" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/GMES.png"
+              style="position: relative; width: 100%; height: 70px"
+          /></a>
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/AU logo.png"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="moveTooltip('African Union', $event)"
+          @mouseleave="hideTooltip"
+        >
+          <a href="https://au.int/" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/AU logo.png"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
 
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/EU logo.png"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="moveTooltip('European Union', $event)"
+          @mouseleave="hideTooltip"
+        >
+          <a
+            href="https://european-union.europa.eu"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/src/assets/EU logo.png"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/UG logo 23.png"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="moveTooltip('University of Ghana', $event)"
+          @mouseleave="hideTooltip"
+        >
+          <a
+            href="https://cbas.ug.edu.gh/news/cbas-launches-%E2%82%AC24-million-marcnowa-project-under-gmes-and-africa-programme"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/src/assets/UG logo 23.png"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
       </div>
       <div
@@ -244,66 +260,163 @@
         <!-- {{ $t("other partners") }} -->
       </div>
       <div class="row justify-center q-gutter-lg q-mx-lg q-mb-xl">
-        <div class="column">
-          <img
-            src="~/src/assets/Partner_logos/cert.gif"
-            style="position: relative; width: 100%; height: 70px"
-          />
+        <div
+          class="column"
+          @mousemove="
+            moveTooltip(
+              'Centre d\'Etudes et de Recherche des Télécommunications (CERT)',
+              $event
+            )
+          "
+          @mouseleave="hideTooltip"
+        >
+          <a href="https://www.cert.tn/" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/Partner_logos/cert.gif"
+              style="position: relative; width: 100%; height: 70px"
+          /></a>
+          <!-- Tooltip -->
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/Partner_logos/CRODT.png"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="
+            moveTooltip(
+              'The Centre for Oceanographic Research of Dakar-Thiaroye (CRODT)',
+              $event
+            )
+          "
+          @mouseleave="hideTooltip"
+        >
+          <a href="https://isra.sn/" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/Partner_logos/CRODT.png"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
 
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/Partner_logos/CURAT_LOGO.jpg"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="
+            moveTooltip(
+              'Centre Universitaire de Recherche d\'Application en Télédétection (CURAT)',
+              $event
+            )
+          "
+          @mouseleave="hideTooltip"
+        >
+          <a href="https://www.curat-edu.org/" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/Partner_logos/CURAT_LOGO.jpg"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/Partner_logos/Edenwaylogo.png"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="moveTooltip('Edenway Foundation', $event)"
+          @mouseleave="hideTooltip"
+        >
+          <a href="https://gaiaclubs.org/" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/Partner_logos/Edenwaylogo.png"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/Partner_logos/Ghana Met 2.jpg"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="moveTooltip('Ghana Meteorological Agency', $event)"
+          @mouseleave="hideTooltip"
+        >
+          <a
+            href="https://www.meteo.gov.gh/gmet/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/src/assets/Partner_logos/Ghana Met 2.jpg"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/Partner_logos/Logo_IRHOB_New logo.png"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="
+            moveTooltip(
+              'Institut de Recherches Halieutiques et Océanologiques du Bénin',
+              $event
+            )
+          "
+          @mouseleave="hideTooltip"
+        >
+          <a
+            href="https://www.facebook.com/IRHOBBenin/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/src/assets/Partner_logos/Logo_IRHOB_New logo.png"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/Partner_logos/LOGO-UCD.jpeg"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="moveTooltip('Chouaib Doukkali University (UCD)', $event)"
+          @mouseleave="hideTooltip"
+        >
+          <a href="https://www.fs.ucd.ac.ma/" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/Partner_logos/LOGO-UCD.jpeg"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/Partner_logos/missing.jpeg"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="
+            moveTooltip(
+              'Centre for the Environment for Arab Region and Europe (CEDARE)',
+              $event
+            )
+          "
+          @mouseleave="hideTooltip"
+        >
+          <a
+            href="https://new.cedare.org/new.cedare.org/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/src/assets/Partner_logos/missing.jpeg"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/Partner_logos/NatureTodayLogo.jpg"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="moveTooltip('Nature Today Ghana', $event)"
+          @mouseleave="hideTooltip"
+        >
+          <a href="https://naturetodaygh.com" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/Partner_logos/NatureTodayLogo.jpg"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
         </div>
-        <div class="column q-pl-md">
-          <img
-            src="~/src/assets/Partner_logos/NIOMR.jpg"
-            style="position: relative; width: 100%; height: 70px; left: -1%"
-          />
+        <div
+          class="column q-pl-md"
+          @mousemove="
+            moveTooltip(
+              'The Nigerian Institute for Oceanography and Marine Research (NIOMR)',
+              $event
+            )
+          "
+          @mouseleave="hideTooltip"
+        >
+          <a href="https://www.niomr.gov.ng/" target="_blank" rel="noopener">
+            <img
+              src="~/src/assets/Partner_logos/NIOMR.jpg"
+              style="position: relative; width: 100%; height: 70px; left: -1%"
+          /></a>
+        </div>
+
+        <div v-if="showTooltip" :style="tooltipStyle" class="tooltip">
+          {{ institutionName }}
         </div>
       </div>
     </div>
@@ -420,8 +533,9 @@
                   color="white"
                   text-color="grey-7"
                   :label="$t('signup')"
+                  to="/signup"
                 />
-                <q-btn outline color="white" :label="$t('login')" />
+                <q-btn outline color="white" :label="$t('login')" to="/login"/>
               </div>
             </div>
           </div>
@@ -501,6 +615,47 @@ const localeOptions = ref([
   { value: "fr", label: "French" },
 ]);
 
+const institutionName = ref("");
+const showTooltip = ref(false);
+const tooltipStyle = ref({
+  position: "fixed",
+  top: "0px",
+  left: "0px",
+  display: "none",
+});
+
+let tooltipTimeout = null;
+
+const moveTooltip = (name, event) => {
+  // Clear any existing timeout to prevent multiple triggers
+  clearTimeout(tooltipTimeout);
+
+  tooltipTimeout = setTimeout(() => {
+    institutionName.value = name;
+    showTooltip.value = true;
+    // Capture the position of the mouse when the tooltip is triggered
+    const x = event.clientX + 0; // Fixed tooltip 20px to the right
+    const y = event.clientY + 0; // Fixed tooltip 20px below the cursor
+
+    tooltipStyle.value = {
+      top: `${y}px`,
+      left: `${x}px`,
+      position: "fixed",
+      backgroundColor: "#1d1d1d", // Match your primary color
+      color: "#fff",
+      padding: "5px",
+      // borderRadius: "5px",
+      display: "block",
+      zIndex: 1000,
+    };
+  }, 300); // Delay of 2 seconds
+};
+
+const hideTooltip = () => {
+  clearTimeout(tooltipTimeout);
+  showTooltip.value = false;
+};
+
 const navigateTodashboard = () => {
   // Navigate to the individual post by pushing the route to the router
   router.push(`/dashboard`);
@@ -522,3 +677,11 @@ onBeforeMount(() => {
   matchMediaDesktop.value = window.matchMedia("(min-width: 768px)").matches;
 });
 </script>
+
+<style scoped>
+.tooltip {
+  transition: all 0.2s ease;
+  font-size: 12px;
+  z-index: 1000;
+}
+</style>

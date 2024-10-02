@@ -42,7 +42,7 @@
     <div class="h6 q-pa-xs text-bold">{{ legendTitle }}</div>
 
     <div class="column" style="max-width: 100%">
-      <img :src="legendImg" style="width: 80%" alt="" />
+      <img :src="legendImg" style="width: 85%" alt="" />
     </div>
   </div>
 </template>
