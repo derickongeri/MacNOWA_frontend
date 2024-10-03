@@ -5,23 +5,23 @@ import useSupabase from "src/boot/supabase";
 const { supabase } = useSupabase();
 const store = useStatsStore();
 
-async function fetchGridValues(variable, tableID, gridID, pixelID) {
+async function fetchGridValues(dates, variable, tableID, gridID, pixelID) {
   try {
-    const { data, error } = await supabase
-      .from(`${variable}_${tableID}`)
-      .select(`date, ${gridID}->${pixelID}`);
+    // const { data, error } = await supabase
+    //   .from(`${variable}_${tableID}`)
+    //   .select(`date, ${gridID}->${pixelID}`);
 
-    console.log("Fetched data:", data);
+    // console.log("Fetched data:", data);
 
-    // const { data_list, error } = await supabase.rpc("fetch_rows_by_pixel_id", {
-    //   start_date: "2024-01-01",
-    //   end_date: "2024-12-31",
-    //   table_name: "ssc_001",
-    //   jsonb_column_name: "0053",
-    //   pixel_id: "N33D04389965CP39D04326123",
-    // });
+    const { data, error } = await supabase.rpc("fetch_rows_by_pixel_id", {
+      start_date: dates.start,
+      end_date: dates.end,
+      table_name: `${variable}_${tableID}`,
+      jsonb_column_name: `${gridID}`,
+      pixel_id: `${pixelID}`,
+    });
 
-    // console.log(data_list);
+    console.log(data);
 
     let chartData;
 
@@ -35,7 +35,7 @@ async function fetchGridValues(variable, tableID, gridID, pixelID) {
       // Function to filter dates based on pixel value
       const getConditionDays = (list, value) => {
         data.forEach((entry) => {
-          if (entry[pixelID] === value) {
+          if (entry[`data`] === value) {
             list.push(entry.date);
           }
         });
@@ -72,7 +72,7 @@ async function fetchGridValues(variable, tableID, gridID, pixelID) {
     } else {
       // Extract dates and values
       const labels = data.map((item) => item[`date`]);
-      const dataValues = data.map((item) => item[`${pixelID}`]);
+      const dataValues = data.map((item) => item[`data`]);
       // Create data object for Chart.js
       chartData = {
         labels: labels,
@@ -108,16 +108,18 @@ export default function setSelectedPixelData() {
 
   const setLineChart = async function () {
     let pixelInfo = store.getSelectedGrid;
+    let filterDates = store.getfilterdates;
 
     for (const variable of oceanVariables) {
       const chartData = await fetchGridValues(
+        filterDates,
         variable,
         pixelInfo.majorid,
         pixelInfo.minorid,
         pixelInfo.UniqueID
       );
 
-      // Assuming you have a method to update the chart in the store
+      //a method to update the chart in the store
       store.updateChartData(variable, chartData);
     }
   };

@@ -50,13 +50,24 @@
           <div class="">
             <div class="row q-mx-none q-mb-lg items-center">
               <div class="col">
-                <q-select
+                <q-input
                   readonly
                   outlined
-                  v-model="model"
+                  v-model="centerPoint"
                   :options="options"
-                  :label="centerPoint"
-                />
+                  label="Lat,Lon"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="place" />
+                  </template>
+                  <template v-slot:append>
+                    <q-icon
+                      name="close"
+                      @click="text = ''"
+                      class="cursor-pointer"
+                    />
+                  </template>
+                </q-input>
               </div>
               <q-btn
                 class="q-mx-md"
@@ -65,6 +76,11 @@
                 color="primary"
                 icon="mdi-share-variant-outline"
               />
+            </div>
+            <div class="row q-mx-none q-mb-lg items-center">
+              <div class="col">
+                <dateFilter/>
+              </div>
             </div>
             <q-scroll-area
               class="analysis-scroll-area"
@@ -88,6 +104,7 @@
 import { computed, ref, watch } from "vue";
 import layerselectpanel from "src/components/Analysis/Layerselection.vue";
 import layerAnalysis from "src/components/Analysis/charts/oceanconditions.vue";
+import dateFilter from "src/components/Analysis/deteFilter.vue"
 import { useStatsStore } from "src/stores/statsStore";
 
 const statsStore = useStatsStore();

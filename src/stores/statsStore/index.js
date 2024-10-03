@@ -7,6 +7,7 @@ export const useStatsStore = defineStore({
   state: () => ({
     selectedGrid: null,
     centerPoint: null,
+    dates: null,
     oceanConditionList: {
       calm: null,
       rough: null,
@@ -26,6 +27,7 @@ export const useStatsStore = defineStore({
     getCenterPoint: (state) => state.centerPoint,
     getChartData: (state) => (variable) => state.chartData[variable],
     getOceanConditionList: (state) => state.oceanConditionList,
+    getfilterdates: (state)=> state.dates,
   },
   actions: {
     setSelectedGrid(val) {
@@ -49,5 +51,9 @@ export const useStatsStore = defineStore({
         dangerous: val[2],
       };
     },
+    setFilterDates(val) {
+      console.log(val)
+      this.dates = val
+    }
   },
 });

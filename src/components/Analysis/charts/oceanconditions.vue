@@ -39,7 +39,7 @@
                 downloadCSV({
                   filename: service.name,
                   chart: getChartData(service.variableKey),
-                  variableName: service.variableKey
+                  variableName: service.variableKey,
                 })
               "
             >
@@ -125,7 +125,10 @@
         v-if="service.name !== 'Ocean State'"
         class="q-my-md"
       >
-        <linechart :id="service.id" :data="getChartData(service.variableKey)" /></div
+        <linechart
+          :id="service.id"
+          :data="getChartData(service.variableKey)"
+        /></div
     ></transition>
 
     <div v-if="visible" style="min-width: 200px; min-height: 250px">
@@ -241,7 +244,7 @@ function convertChartDataToCSV(args) {
   return result;
 }
 
-function createDataObjects(chartData,variableName) {
+function createDataObjects(chartData, variableName) {
   const { labels, datasets } = chartData;
 
   if (!labels || !datasets || datasets.length === 0) {
@@ -315,6 +318,20 @@ onMounted(async () => {
 
 watch(
   () => store.selectedGrid,
+  async () => {
+    visible.value = true;
+    showSimulatedReturnData.value = false;
+
+    await setLineChart().then(() => {
+      visible.value = false;
+      showSimulatedReturnData.value = true;
+    });
+  },
+  { deep: true }
+);
+
+watch(
+  () => store.dates,
   async () => {
     visible.value = true;
     showSimulatedReturnData.value = false;
