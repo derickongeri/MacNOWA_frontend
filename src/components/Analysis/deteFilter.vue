@@ -31,7 +31,7 @@
         </q-input>
       </div>
     </div>
-    <div class="col-2 text-center">---</div>
+    <div class="col-1 text-center">---</div>
     <div class="col">
       <div class="column">
         <div class="row text-primary">End Date:</div>

@@ -382,11 +382,11 @@
 }
 
 .analysis-scroll-area {
-  height: 65vh;
+  height: 60vh;
   min-width: 300px;
   overflow: hidden;
 
   @media (max-width: $breakpoint-md-max) {
-   height: 55vh;
+   height: 45vh;
   }
 }
