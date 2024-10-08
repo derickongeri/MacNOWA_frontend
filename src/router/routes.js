@@ -27,7 +27,6 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-
       {
         path: "/dashboard",
         name: "dashboard",
@@ -36,8 +35,8 @@ const routes = [
       },
     ],
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
 
   {
@@ -68,6 +67,11 @@ const routes = [
         path: "/onboarding",
         name: "onboarding",
         component: () => import("pages/user/onboarding.vue"),
+      },
+      {
+        path: "/me",
+        name: "profile",
+        component: () => import("pages/user/profile.vue"),
       },
     ],
   },

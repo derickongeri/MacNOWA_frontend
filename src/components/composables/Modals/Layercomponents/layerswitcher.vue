@@ -7,7 +7,10 @@
         :label="layerName"
         default-opened
       >
-        <datepicker />
+        <datepicker v-if="dailyData" />
+        <!-- <layerSelector v-if="!dailyData"/> -->
+        <layerList v-if="!dailyData && currentLayer == 'mangrove'"/>
+        <yearselection v-if="!dailyData && currentLayer == 'landcover'"/>
       </q-expansion-item>
     </q-list>
   </div>
@@ -17,17 +20,28 @@
 import { ref, onMounted, watch, computed } from "vue";
 import { useRasterStore } from "src/stores/rasterstore/index.js";
 import datepicker from "src/components/Analysis/dateselection.vue";
+import layerSelector from "src/components/Analysis/Layerselectors/coastalecolayers.vue";
+import layerList from "src/components/Analysis/Layerselectors/mangroveSelector.vue";
+import yearselection from "src/components/Analysis/yearselection.vue";
 
 const store = useRasterStore();
 
 const layerName = ref("");
 
+const dailyData = computed(() => {
+  return !["ESA WorldCover 10m", "Mangrove Cover"].includes(layerName.value);
+});
+
+const currentLayer = computed(() => {
+  return store.layerName
+})
+
 const setLayerName = (layer) => {
   switch (layer) {
-    case "Landcover":
+    case "landcover":
       layerName.value = "ESA WorldCover 10m";
       break;
-    case "Mangrove":
+    case "mangrove":
       layerName.value = "Mangrove Cover";
       break;
     case "SST":
@@ -54,14 +68,14 @@ const setLayerName = (layer) => {
 watch(
   () => store.getLayerName,
   (val) => {
-    setLayerName(val)
+    setLayerName(val);
   },
-  {deep: true}
-)
+  { deep: true }
+);
 
-onMounted(
-  ()=>{
-    setLayerName(store.getLayerName)
-  }
-)
+onMounted(() => {
+  setLayerName(store.getLayerName);
+});
 </script>
+
+

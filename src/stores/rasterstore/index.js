@@ -6,20 +6,27 @@ export const useRasterStore = defineStore({
   id: "fetchRasterStore",
   state: () => ({
     selectedDate: "20231105",
+    selectedYear: "100",
     layerName: "UG_GMES_ocean_state_forecast",
     selectedRaster: "UG_GMES_ocean_state_forecast",
     selectedLayerName: "",
-    currentSelectedRaster: ""
+    currentSelectedRaster: "",
+    ecosystemLayers: {
+      landcover: "landcover2020",
+      mangrove: "mangrove2020",
+    },
+    layerList: ["mangrove2020"],
   }),
   getters: {
     getSelectedDate: (state) => state.selectedDate,
     getLayerName: (state) => state.layerName,
     getselectedRaster: (state) => state.selectedRaster,
     getselectedLayerName: (state) => state.selectedLayerName,
-  },
+    getecosystemLayers: (state) => state.ecosystemLayers,
+    getLayerList: (state) => state.layerList,
+    getSelectedYear: (state) => state.selectedYear},
   actions: {
-
-    setSelectedDate(date){
+    setSelectedDate(date) {
       const selectedDay = date.getDate();
       const selectedMonth = date.getMonth() + 1;
       const selectedYear = date.getFullYear();
@@ -31,12 +38,28 @@ export const useRasterStore = defineStore({
       console.log(this.selectedDate);
     },
 
-    setLayerName(raster){
-      this.layerName = raster
+    setSelectedYear(val) {
+      this.selectedYear = val
     },
 
-    setSelectedLayerName(){
-      let layer = this.layerName
+    setLayerName(raster) {
+      this.layerName = raster;
+    },
+
+    setEcosystemLayerName(layer, val) {
+      if (this.ecosystemLayers.hasOwnProperty(layer)) {
+        this.ecosystemLayers[layer] = val;
+      }
+      console.log(this.ecosystemLayers);
+    },
+
+    updateLayerList(val) {
+      this.layerList = val;
+      console.log(this.layerList)
+    },
+
+    setSelectedLayerName() {
+      let layer = this.layerName;
       switch (layer) {
         case "Landcover":
           this.slectedLayerName = "ESA WorldCover 10m";
@@ -60,9 +83,9 @@ export const useRasterStore = defineStore({
           this.slectedLayerName = "Sea Surface Currents (SSC)";
           break;
         default:
-          this.selectedLayerName = "Ocean State"
+          this.selectedLayerName = "Ocean State";
           break;
       }
-    }
+    },
   },
 });

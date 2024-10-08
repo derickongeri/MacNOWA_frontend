@@ -37,16 +37,25 @@ export default function setSelectedRaster() {
     let eeLayer = null;
     let layerList = [];
     let response = null;
+    let selectedyear = store.getSelectedYear;
 
     switch (val) {
       case "landcover":
-        response = await axios.get(
-          "https://geoportal.gmes.ug.edu.gh/ee/api/landcovermap"
+        response = await axios.post(
+          "https://geoportal.gmes.ug.edu.gh/ee/api/landcovermap",
+          // "http://localhost:3000/api/landcovermap",
+          { year: selectedyear },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
         break;
       default:
         response = await axios.get(
-          "https://geoportal.gmes.ug.edu.gh/ee/api/mapid"
+          "https://geoportal.gmes.ug.edu.gh/ee/api/mangrovemap"
+          // "http://localhost:3000/ee/api/mangrovemap"
         );
         break;
     }

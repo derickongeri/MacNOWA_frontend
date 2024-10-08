@@ -398,6 +398,11 @@ import { useI18n } from "vue-i18n";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+import "@geoman-io/leaflet-geoman-free";
+import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+
+import "leaflet-geometryutil";
+
 import "leaflet.browser.print/dist/leaflet.browser.print";
 
 import "./Modals/betterScale";
@@ -459,7 +464,8 @@ export default defineComponent({
       showLayer = ref(false),
       currentBaseLayer = ref(null),
       vectorLayer = ref(null),
-      marker = ref(null);
+      marker = ref(null),
+      custom_geojson = ref(null);
 
     const setLeafletMap = async function () {
       const { osmTiles, darkMap, satellite } = baselayers;
@@ -490,6 +496,7 @@ export default defineComponent({
         scrollWheelZoom: false,
         smoothWheelZoom: true,
         smoothSenesitivity: 0.5,
+        pmIgnore: false,
         // layers: [darkMap, osm, mapbox, mapboxSatellite]
         //layers: [satellite],
       });
@@ -531,6 +538,59 @@ export default defineComponent({
       //   .addTo(map.value);
 
       map.value.getContainer().classList.add("crosshair-cursor");
+    };
+
+    const setupGeoman = () => {
+      // Initialize Geoman drawing tools on the map
+      map.value.pm.addControls({
+        position: "topright",
+        drawMarker: false,
+        drawPolygon: true,
+        drawPolyline: false,
+        drawCircle: false,
+        drawCircleMarker: false,
+        drawRectangle: true,
+        editMode: false,
+        dragMode: false,
+        cutPolygon: false,
+        removalMode: true,
+        rotateMode: false,
+        drawText: false,
+        oneBlock: true,
+      });
+
+      map.value.pm.setPathOptions({
+        color: "black",
+        fillColor: "green",
+        fillOpacity: 0,
+      });
+
+      if (!["mangrove", "landcover"].includes(store.layerName)) {
+        map.value.pm.disableDraw();
+      }
+      // Optional: Listen for events such as when a shape is created
+      map.value.on("pm:create", (e) => {
+        if (custom_geojson.value) {
+          map.value.removeLayer(custom_geojson.value);
+        }
+        if (vectorLayer.value) {
+          map.value.removeLayer(vectorLayer.value);
+          vectorLayer.value = null;
+        }
+        custom_geojson.value = e.layer;
+        const geojson = JSON.stringify(e.layer.toGeoJSON().geometry);
+        statsStore.setCustomPolygon(geojson);
+        // console.log("geojson ", geojson);
+        map.value.fitBounds(custom_geojson.value.getBounds(), {
+          padding: [50, 50],
+        });
+      });
+
+      map.value.on("pm:remove", (e) => {
+        custom_geojson.value = null;
+        statsStore.setCustomPolygon(null);
+        resetZoomLevel();
+      });
     };
 
     const zoom_in = function () {
@@ -585,69 +645,25 @@ export default defineComponent({
     };
 
     const resetZoomLevel = function () {
-      const layers = [
-        currentRasterLayer.value,
-        mangrove_layer_2015.value,
-        mangrove_layer_2020.value,
-        change_layer_2015_2020.value,
-        landcoverLayer.value,
-      ];
+      const mapSettings = {
+        landcover: { center: [18.9, 0.9799450162558969], zoom: 5 },
+        mangrove: { center: [13.254094739970756, -16.17314525052899], zoom: 9 },
+      };
 
-      switch (store.layerName) {
-        case "landcover":
-          landcoverLayer.value.bringToFront();
-          break;
+      // Default to landcover settings if the layer name is not recognized
+      const { center, zoom } =
+        mapSettings[store.layerName] || mapSettings.landcover;
 
-        case "mangrove":
-          mangrove_layer_2015.value.bringToFront();
-          mangrove_layer_2020.value.bringToFront();
-          change_layer_2015_2020.value.bringToFront();
-          break;
-
-        default:
-          const targetPoint = [18.9, 0.9799450162558969]; // New center point
-          const newZoomLevel = 5; // New zoom level
-
-          map.value.setView(targetPoint, newZoomLevel);
-          break;
-      }
-
-      layers.forEach((layer) => {
-        if (currentRasterLayer.value || landcoverLayer.value) {
-          const targetPoint = [18.9, 0.9799450162558969]; // New center point
-          const newZoomLevel = 5; // New zoom level
-
-          map.value.setView(targetPoint, newZoomLevel);
-        } else {
-          const targetPoint = [13.254094739970756, -16.17314525052899]; // New center point
-          const newZoomLevel = 9; // New zoom level
-          map.value.setView(targetPoint, newZoomLevel);
-        }
-      });
+      map.value.setView(center, zoom);
     };
 
     const setPrintZoomLevel = function () {
-      const layers = [
-        currentRasterLayer.value,
-        mangrove_layer_2015.value,
-        mangrove_layer_2020.value,
-        change_layer_2015_2020.value,
-        landcoverLayer.value,
-      ];
+      const defaultSettings = { center: [18.9, 0.9799450162558969], zoom: 5 }; // Default center point and zoom level
 
-      layers.forEach((layer) => {
-        if (currentRasterLayer.value) {
-          const targetPoint = [18.9, 0.9799450162558969]; // New center point
-          const newZoomLevel = 4; // New zoom level
-
-          map.value.setView(targetPoint, newZoomLevel);
-        } else {
-          const targetPoint = [13.254094739970756, -16.17314525052899]; // New center point
-          const newZoomLevel = 9; // New zoom level
-
-          map.value.setView(targetPoint, newZoomLevel);
-        }
-      });
+      //checks whether the layerName is not in list. If it's neither, it sets the view to the default values.
+      if (!["landcover", "mangrove"].includes(store.layerName)) {
+        map.value.setView(defaultSettings.center, defaultSettings.zoom);
+      }
     };
 
     const printLayer = () => {
@@ -699,6 +715,7 @@ export default defineComponent({
     };
 
     const setVectorLayer = async (lat, lng) => {
+      if (custom_geojson.value) map.value.removeLayer(custom_geojson.value);
       if (vectorLayer.value) {
         map.value.removeLayer(vectorLayer.value);
         vectorLayer.value = null;
@@ -728,7 +745,7 @@ export default defineComponent({
       console.log("response", vectLayer.features);
 
       if (vectLayer.features.length === 0) {
-        mapError("Click on the map layer for analysis!");
+        // mapError("Click on the map layer for analysis!");
       } else {
         statsStore.setSelectedGrid(vectLayer.features[0].properties);
         // statsStore.setChartData(vectLayer.features[0].properties);
@@ -776,11 +793,6 @@ export default defineComponent({
 
         vectorLayer.value.addTo(map.value).bringToFront();
       }
-
-      // map.value.fitBounds(vectorLayer.value.getBounds(), {
-      //   // paddingBottomRight: [0, 0],
-      //   setZoom: 2,
-      // });
     };
 
     const setRasterLayer = async function () {
@@ -799,11 +811,6 @@ export default defineComponent({
           landcoverLayer.value,
         ];
 
-        // map.value.eachLayer(function (layer) {
-        //   //
-        //   console.log(layer);
-        // });
-
         layers.forEach((layer) => {
           if (layer) {
             console.log(layer);
@@ -812,6 +819,7 @@ export default defineComponent({
         });
 
         current_selected_layer.value = store.getLayerName;
+        const mangroveLayer = store.getecosystemLayers.mangrove;
 
         console.log(current_selected_layer.value);
 
@@ -838,15 +846,26 @@ export default defineComponent({
 
             let geeLayers = await getEarthEngineLayer("mangrove");
 
-            mangrove_layer_2015.value = geeLayers[1];
-            mangrove_layer_2020.value = geeLayers[2];
+            let selectedLayerOption;
+            mangrove_layer_2015.value = geeLayers[2];
+            mangrove_layer_2020.value = geeLayers[1];
             change_layer_2015_2020.value = geeLayers[0];
 
-            mangrove_layer_2015.value.addTo(map.value);
-            mangrove_layer_2020.value.addTo(map.value);
-            change_layer_2015_2020.value.addTo(map.value).bringToFront();
+            switch (mangroveLayer) {
+              case `mangrove2015`:
+                selectedLayerOption = mangrove_layer_2015.value;
+                break;
+              case `mangroveChange`:
+                selectedLayerOption = change_layer_2015_2020.value;
+                break;
+              default:
+                selectedLayerOption = mangrove_layer_2020.value;
+                break;
+            }
 
-            change_layer_2015_2020.value.on("load", () => {
+            selectedLayerOption.addTo(map.value).bringToFront();
+
+            selectedLayerOption.on("load", () => {
               Loading.hide();
             });
 
@@ -872,6 +891,41 @@ export default defineComponent({
       }
     };
 
+    const switchLayers = () => {
+      const layers = [
+        mangrove_layer_2015.value,
+        mangrove_layer_2020.value,
+        change_layer_2015_2020.value,
+      ];
+
+      layers.forEach((layer) => {
+        if (layer) {
+          console.log(layer);
+          map.value.removeLayer(layer);
+        }
+      });
+
+      // store.getLayerList;
+      let layersList = store.getLayerList;
+      const mangroveLayers = [
+        { layer: mangrove_layer_2015.value, name: "mangrove2015" },
+        { layer: mangrove_layer_2020.value, name: "mangrove2020" },
+        {
+          layer: change_layer_2015_2020.value,
+          name: "mangroveChange",
+        },
+      ];
+
+      // Filter the mangroveLayers array to return only the objects whose name matches the items in the layers list
+      const matchedLayers = mangroveLayers.filter((item) =>
+        layersList.includes(item.name)
+      );
+
+      for (const item of matchedLayers) {
+        item.layer.addTo(map.value).bringToFront();
+      }
+    };
+
     const mediaChange = computed(() => {
       return window.matchMedia("(max-width: 768px)").matches;
     });
@@ -888,6 +942,7 @@ export default defineComponent({
 
     onMounted(() => {
       setLeafletMap().then(() => {
+        setupGeoman();
         showLayer.value = !showLayer.value;
 
         L.control
@@ -903,14 +958,10 @@ export default defineComponent({
           var lng = coords.lng;
           console.log(lat, lng);
 
-          setVectorLayer(lat, lng);
+          if (!["mangrove", "landcover"].includes(store.layerName)) {
+            setVectorLayer(lat, lng);
+          }
         });
-
-        //  setRasterLayer();
-        // map.value.eachLayer(function (layer) {
-        //   //
-        //   console.log(layer);
-        // });
       });
 
       // Select all elements with class 'overlay-div'
@@ -930,7 +981,9 @@ export default defineComponent({
       return {
         layer: store.getLayerName,
         date: store.getSelectedDate,
+        year: store.getSelectedYear,
         showLayer: showLayer.value,
+        subLayers: store.getecosystemLayers.mangrove,
       };
     });
 
@@ -950,8 +1003,16 @@ export default defineComponent({
       // setRasterLayer();
     });
 
+    const LayersListMangrove = computed(() => {
+      return store.getLayerList;
+    });
+
     watch(selectedLayer, () => {
       setRasterLayer();
+    });
+
+    watch(LayersListMangrove, () => {
+      switchLayers();
     });
 
     watch(selectedLayer, () => {

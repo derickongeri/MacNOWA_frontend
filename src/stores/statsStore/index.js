@@ -7,6 +7,7 @@ export const useStatsStore = defineStore({
   state: () => ({
     selectedGrid: null,
     centerPoint: null,
+    customPolygon: null,
     dates: null,
     oceanConditionList: {
       calm: null,
@@ -20,6 +21,9 @@ export const useStatsStore = defineStore({
       ssc: null,
       ssh: null,
       swh: null,
+      mangrovecover: null,
+      mangrovechange: null,
+      landcover: null,
     },
   }),
   getters: {
@@ -27,12 +31,16 @@ export const useStatsStore = defineStore({
     getCenterPoint: (state) => state.centerPoint,
     getChartData: (state) => (variable) => state.chartData[variable],
     getOceanConditionList: (state) => state.oceanConditionList,
-    getfilterdates: (state)=> state.dates,
+    getfilterdates: (state) => state.dates,
+    getCustomPolygon: (state) => state.customPolygon,
   },
   actions: {
     setSelectedGrid(val) {
       this.selectedGrid = val;
       console.log(this.selectedGrid);
+    },
+    setCustomPolygon(val) {
+      this.customPolygon = val;
     },
     setCenterPoint(val) {
       this.centerPoint = val;

@@ -1,9 +1,15 @@
+import { Notify } from "quasar";
 import { ref } from "vue";
 import { useStatsStore } from "src/stores/statsStore";
+import { useRasterStore } from "src/stores/rasterstore";
 import useSupabase from "src/boot/supabase";
+import { axios } from "src/boot/axios";
+import useNotify from "src/composables/useNotify.js";
 
+// const { notifySuccess } = useNotify();
 const { supabase } = useSupabase();
 const store = useStatsStore();
+const rasterstore = useRasterStore();
 
 async function fetchGridValues(dates, variable, tableID, gridID, pixelID) {
   try {
@@ -96,6 +102,59 @@ async function fetchGridValues(dates, variable, tableID, gridID, pixelID) {
   }
 }
 
+function fetchRasterStats(dataObject, variable) {
+  const variableMapping = {
+    mangrovecover: {
+      data: dataObject.coverstats,
+      chartColors: ["#04ff17"],
+    },
+    mangrovechange: {
+      data: dataObject.changestats,
+      chartColors: ["green", "red"],
+    },
+    default: {
+      data: dataObject.stats,
+      chartColors: [
+        "#006400",
+        "#ffbb22",
+        "#ffff4c",
+        "#f096ff",
+        "#fa0000",
+        "#b4b4b4",
+        "#f0f0f0",
+        "#0064c8",
+        "#0096a0",
+        "#00cf75",
+        "#fae6a0",
+      ],
+    },
+  };
+
+  const { data, chartColors } =
+    variableMapping[variable] || variableMapping.default;
+
+  const labels = data.map((item) => item.layername);
+  const dataValues = data.map((item) => item.ha);
+
+  return {
+    labels,
+    datasets: [
+      {
+        label: "Area in ha",
+        backgroundColor: chartColors,
+        data: dataValues,
+        tension: 0.25,
+        fill: true,
+        borderColor: "#002F6B80",
+        borderWidth: 0,
+        radius: "75%",
+        cutout: "150",
+        borderRadius: 20,
+      },
+    ],
+  };
+}
+
 export default function setSelectedPixelData() {
   const oceanVariables = [
     "ug_gmes_ocean_state_forecast",
@@ -105,6 +164,51 @@ export default function setSelectedPixelData() {
     "ssh",
     "swh",
   ];
+
+  const mangroveVariables = ["mangrovecover", "mangrovechange"];
+  const landcoverVariables = ["landcover"];
+
+  const setBarChart = async () => {
+    const polygon = store.getCustomPolygon;
+    const layer = rasterstore.getLayerName;
+    const selectedyear = rasterstore.getSelectedYear;
+
+    const params =
+      layer === "landcover"
+        ? { geometry: polygon, year: selectedyear }
+        : { geometry: polygon };
+
+    const fetchData = async () => {
+      const response = await axios.post(
+        `https://geoportal.gmes.ug.edu.gh/ee/api/${layer}stats`,
+        // `http://localhost:3000/api/${layer}stats`,
+        params,
+        { headers: { "Content-Type": "application/json" } }
+      );
+      return response.data;
+    };
+
+    const dataObject = await fetchData();
+    if (process.env.DEV) console.log(dataObject);
+
+    const variables =
+      layer === "landcover" ? landcoverVariables : mangroveVariables;
+
+    for (const variable of variables) {
+      try {
+        const chartData = fetchRasterStats(dataObject, variable);
+        if (process.env.DEV) console.log(chartData);
+        store.updateChartData(variable, chartData);
+      } catch (error) {
+        const errorMessage = dataObject.message.split(".")[2].trim() + ".";
+        Notify.create({
+          type: "negative",
+          color: "primary",
+          message: `The selected area is too large for processing. ${errorMessage}`,
+        });
+      }
+    }
+  };
 
   const setLineChart = async function () {
     let pixelInfo = store.getSelectedGrid;
@@ -126,5 +230,6 @@ export default function setSelectedPixelData() {
 
   return {
     setLineChart,
+    setBarChart,
   };
 }

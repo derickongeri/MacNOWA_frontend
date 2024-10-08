@@ -147,7 +147,7 @@ const handleLogin = async () => {
     notifySuccess("Login successfull!");
     getUserProfileByEmail(user.value.email);
     router.push({
-      name: "home",
+      name: "dashboard",
     });
   } catch (error) {
     notifyError(error.message);
