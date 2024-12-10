@@ -1,6 +1,88 @@
 <template>
+  <div class="mobile-analysis" style="min-width: 100%;">
+    <div v-if="dailyData">
+      <div>
+        <div class="row q-mx-none q-mb-lg items-center">
+          <div class="col">
+            <q-input
+              readonly
+              outlined
+              v-model="centerPoint"
+              :options="options"
+              label="Lat,Lon"
+            >
+              <template v-slot:prepend>
+                <q-icon name="place" />
+              </template>
+              <template v-slot:append>
+                <q-icon
+                  name="close"
+                  @click="text = ''"
+                  class="cursor-pointer"
+                />
+              </template>
+            </q-input>
+          </div>
+          <q-btn
+            class="q-mx-md"
+            flat
+            round
+            color="primary"
+            icon="mdi-share-variant-outline"
+          />
+        </div>
+        <div class="row q-mx-none q-mb-lg items-center">
+          <div class="col">
+            <dateFilter />
+          </div>
+        </div>
+        <div class="analysis-scroll-area">
+          <q-scroll-area
+            class="analysis-scroll-area"
+            :thumb-style="scrollBar.thumbStyle"
+            :bar-style="scrollBar.barStyle"
+            style=""
+          >
+            <layerAnalysis />
+          </q-scroll-area>
+        </div>
+      </div>
+    </div>
+    <div
+      v-else-if="showMangroveStats"
+      class="analysis-scroll-area"
+      style="height: 75vh"
+    >
+      <q-scroll-area
+        class="analysis-scroll-area"
+        :thumb-style="scrollBar.thumbStyle"
+        :bar-style="scrollBar.barStyle"
+        style="height: 100%"
+      >
+        <mangroveAnalysis />
+      </q-scroll-area>
+    </div>
+    <div
+      v-else-if="showLandcoverStats"
+      class="analysis-scroll-area"
+      style="height: 75vh"
+    >
+      <q-scroll-area
+        class="analysis-scroll-area"
+        :thumb-style="scrollBar.thumbStyle"
+        :bar-style="scrollBar.barStyle"
+        style="height: 100%"
+      >
+        <landcoverAnalysis />
+      </q-scroll-area>
+    </div>
+    <div v-else class="absolute-center">
+      click on map or draw polygon for analysis
+    </div>
+  </div>
+
   <div
-    class="q-px-sm q-py-md"
+    class="q-px-sm q-py-md desktop-analysis"
     style="position: absolute; width: 100%; min-height: 100%"
   >
     <div

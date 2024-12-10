@@ -1,4 +1,4 @@
-@import 'cards';
+@import "cards";
 // app global css in SCSS form
 .carousel-control {
   position: absolute;
@@ -242,6 +242,18 @@
   }
 }
 
+.mobile-analysis {
+  @media (min-width: $breakpoint-md-min) {
+    display: none;
+  }
+}
+
+.desktop-analysis {
+  @media (max-width: $breakpoint-sm-min) {
+    display: none;
+  }
+}
+
 .gradient-rect {
   width: 75%;
   min-height: 20px;
@@ -387,6 +399,6 @@
   overflow: hidden;
 
   @media (max-width: $breakpoint-md-max) {
-   height: 45vh;
+    height: 45vh;
   }
 }
